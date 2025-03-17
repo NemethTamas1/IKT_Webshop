@@ -3,15 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PersonDatabaseTest extends TestCase
 {
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function test_IsEmptyPersonDatabase(): void
+    {
+        $this->assertDatabaseEmpty('Persons');
     }
 }
