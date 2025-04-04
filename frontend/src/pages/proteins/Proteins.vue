@@ -8,13 +8,19 @@
                     megtalálhatók.. Céltól, esetleges ételérzékenységtől, vagy egyszerűen ízléstől függően itt biztosan
                     megtalálod, amit keresel!</p>
             </div>
+
+            <div>
+                <p class="text-3xl font-bold text-center my-4" style="font-family:'Nunito'">Fehérje készítmények webáruházunkban</p>
+
+                <BaseProductCard/>
+            </div>
         </div>
     </BaseLayout>
 </template>
 
 <script setup>
 import BaseLayout from '@layouts/BaseLayout.vue';
-
+import BaseProductCard from '@layouts/BaseProductCard.vue';
 
 
 </script>
