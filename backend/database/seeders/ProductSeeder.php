@@ -19,9 +19,9 @@ class ProductSeeder extends Seeder
                     4000 => 25880
                 ],
                 'flavours' => [
-                    'Vanilla',
-                    'Chocolate',
-                    'Blackberries-WhiteChocolate'
+                    'vanilla',
+                    'chocolate',
+                    'blackberries-WhiteChocolate'
                 ]
             ],
             'Scitec' => [

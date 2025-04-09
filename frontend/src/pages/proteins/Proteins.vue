@@ -10,9 +10,9 @@
             </div>
 
             <div>
-                <p class="text-3xl font-bold text-center my-4" style="font-family:'Nunito'">Fehérje készítmények webáruházunkban</p>
-
-                <BaseProductCard/>
+                <p class="text-3xl font-bold text-center my-4" style="font-family:'Nunito'">Fehérje készítmények
+                    webáruházunkban</p>
+                <BaseProductCard :products="productStore.products" />
             </div>
         </div>
     </BaseLayout>
@@ -21,9 +21,30 @@
 <script setup>
 import BaseLayout from '@layouts/BaseLayout.vue';
 import BaseProductCard from '@layouts/BaseProductCard.vue';
+import { useProductStore } from '@stores/ProductStore.mjs';
+import { onMounted, ref } from 'vue';
+import { ToastService } from '@stores/ToastService';
 
+const productStore = useProductStore();
+const loading = ref(false);
+const error = ref(null);
 
+onMounted(async () => {
+    loading.value = true;
+    const toastId = ToastService.showLoading("Adatok szinkronizálása...")
+    try {
+        productStore.getProducts();
+        ToastService.updateToSuccess(toastId, "Adatok szinkronizálva!")
+    } catch (err) {
+        error.value = err.message;
+        ToastService.updateToError(toastId, "Hiba a lekérdezéskor!")
+    } finally {
+        loading.value = false;
+    }
+});
 </script>
+
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 </style>

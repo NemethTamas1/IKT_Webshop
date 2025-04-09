@@ -15,7 +15,7 @@ class Category extends Model
     protected $keyType = 'int';
     public $incrementing = true;
 
-    protected $fillable = ['category_name', 'brand'];
+    protected $fillable = ['id', 'category_name', 'brand'];
 
     public function products(): BelongsToMany
     {

@@ -12,19 +12,19 @@ class CategorySeeder extends Seeder
         $categories = [
             [
                 'brand' => 'Builder',
-                'category_name' => 'Protein',
+                'category_name' => 'protein',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 'brand' => 'Scitec',
-                'category_name' => 'Protein',
+                'category_name' => 'protein',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 'brand' => 'Pro Nutrition',
-                'category_name' => 'Protein',
+                'category_name' => 'protein',
                 'created_at' => now(),
                 'updated_at' => now()
             ]

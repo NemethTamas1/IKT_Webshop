@@ -38,6 +38,7 @@ RUN npm cache add @vueuse/core@10.11.0
 RUN npm cache add @vueuse/head@2.0.0
 RUN npm cache add @vueuse/components@10.11.0
 RUN npm chache add @fortawesome/vue-fontawesome
+RUN npm cache add @vue3-toastify
 
 RUN npm i
 

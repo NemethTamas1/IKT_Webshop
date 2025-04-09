@@ -7,13 +7,24 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'description' => $this->description,
+            'weight' => $this->weight,
+            'flavour' => $this->flavour,
+            'price' => $this->price,
+            'categories' => $this->whenLoaded('categories', function () {
+                return $this->categories->map(function ($category) {
+                    return [
+                        'brand' => $category->brand,
+                        'category_name' => $category->category_name,
+                        'stock' => $category->pivot->stock,
+                        'available' => $category->pivot->available
+                    ];
+                });
+            })
+        ];
     }
 }
