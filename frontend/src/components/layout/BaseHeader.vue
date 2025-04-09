@@ -23,22 +23,22 @@
       </div>
 
       <div class="w-full md:block md:w-auto bg-sky-50/65 rounded" :class="{ 'hidden': !menuOpen }">
-        <ul class="flex flex-col p-4 md:flex-row md:p-0 md:space-x-8 md:flex" :class="{ 'hidden': !menuOpen }">
+        <ul class="nav-primary flex flex-col p-4 md:flex-row md:p-0 md:space-x-8 md:flex "
+          :class="{ 'hidden': !menuOpen }">
           <!-- Mobilon más lesz a nézet!!! -->
           <li
-            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-blue-400 hover:transition-all hover:duration-200 hover:scale-105 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
+            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow"><i class="md:fa-solid md:fa-user"></i>Bejelentkezés</RouterLink>
           </li>
 
           <li class="text-lg relative">
             <div @click="mobileToggleBrands"
-              class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-blue-400 hover:transition-all hover:duration-300 hover:scale-105 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
+              class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
               <span class="flex-grow font-medium">Minden gyártó</span>
-              <i class="fa-solid w-6 text-center transition-all "
-                :class="showBrandsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+              <i class="fa-solid w-6 text-center " :class="showBrandsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </div>
             <ul v-if="showBrandsMenu"
-              class="md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1 transition-all duration-300">
+              class="md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1 ">
               <BaseMobileNavBarDrop :linkText="'/brands'" menuOption="Scitec" />
               <BaseMobileNavBarDrop :linkText="'/brands'" menuOption="Builder" />
               <BaseMobileNavBarDrop :linkText="'/brands'" menuOption="Pro Nutrition" />
@@ -47,36 +47,35 @@
 
           <li class="text-lg relative">
             <div @click="mobileToggleTapkieg"
-              class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-blue-400 hover:transition-all hover:duration-300 hover:scale-105 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
-              <span class="flex-grow font-medium">Táplálékkiegészítők</span>
-              <i class="fa-solid w-6 text-center transition-all "
-                :class="showTapkiegMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+              class="text-lg flex justify-between cursor-pointer items-center p-2 text-sky-500 font-medium hover:text-white hover:bg-sky-400 rounded ">
+              <span class="font-medium">Táplálékkiegészítők</span>
+              <i class="fa-solid w-6 text-center" :class="showTapkiegMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </div>
 
             <!-- Tápkiegek menüpontjában lévő termékek -->
-            <ul v-if="showTapkiegMenu" class="md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48
-                md:z-10 pl-4 md:pl-0 mt-1 transition-all duration-300">
-              <BaseMobileNavBarDrop linkText="/proteins/Proteins" menuOption="Fehérjék" />
-              <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Multivitaminok" />
-              <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Vitaminok" />
-              <BaseMobileNavBarDrop linkText="/controll-formulas" menuOption="Testsúly-kontroll formulák" />
+            <ul v-if="showTapkiegMenu"
+              class="no-transform md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1">
+              <BaseMobileNavBarDrop linkText="/proteins/Proteins" menuOption="Fehérjék" class="no-transform" />
+              <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Multivitaminok" class="no-transform" />
+              <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Vitaminok" class="no-transform" />
+              <BaseMobileNavBarDrop linkText="/controll-formulas" menuOption="Testsúly-kontroll formulák" class="no-transform" />
             </ul>
           </li>
 
           <li
-            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-blue-400 hover:transition-all hover:duration-200 hover:scale-105 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
+            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow">Sportruházat</RouterLink>
             <i class="fa-solid fa-angle-right w-6 text-center"></i>
           </li>
 
           <li
-            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-blue-400 hover:transition-all hover:duration-200 hover:scale-105 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
+            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow">Kapcsolat</RouterLink>
             <i class="fa-solid fa-angle-right w-6 text-center"></i>
           </li>
 
           <li
-            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-blue-400 hover:transition-all hover:duration-200 hover:scale-105 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
+            class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow">Szállítás és fizetés</RouterLink>
             <i class="fa-solid fa-angle-right w-6 text-center"></i>
           </li>
@@ -85,7 +84,6 @@
     </div>
   </nav>
 </template>
-
 <script setup>
 import BaseMobileNavBarDrop from './BaseMobileNavBarDrop.vue';
 
@@ -102,6 +100,7 @@ const showTapkiegMenu = ref(false);
 const mobileToggleTapkieg = () => {
   showTapkiegMenu.value = !showTapkiegMenu.value;
 }
+
 const showBrandsMenu = ref(false);
 const mobileToggleBrands = () => {
   showBrandsMenu.value = !showBrandsMenu.value;
@@ -110,4 +109,53 @@ const mobileToggleBrands = () => {
 
 <style>
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
+
+@media (min-width: 768px) {
+  .nav-primary > li {
+    transition: all 0.3s ease-in-out;
+    transform: scale(1.05);
+    will-change: transform;
+    position: relative;
+  }
+
+  .nav-primary > li:hover {
+    transform: scale(1.1);
+    color: white;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-primary > li,
+  .nav-primary > li:hover,
+  .no-transform,
+  .no-transform:hover,
+  .no-transform > *,
+  .no-transform > *:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: white;
+}
+
+@media (max-width: 768px) {
+  .dropdown-menu {
+    position: static;
+  }
+}
+
+@media (min-width: 768px) {
+  .dropdown-menu :deep(li) {
+    transition: background-color 0.2s ease-in-out;
+  }
+  .dropdown-menu :deep(li:hover) {
+    background-color: rgb(96 165 250 / 0.1);
+  }
+}
 </style>
