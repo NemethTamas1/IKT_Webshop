@@ -19,9 +19,10 @@ class ProductSeeder extends Seeder
                     4000 => 25880
                 ],
                 'flavours' => [
-                    'vanilla',
-                    'chocolate',
-                    'blackberries-WhiteChocolate'
+                    'Vanilla',
+                    'Chocolate',
+                    'Black Raspberry-White Chocolate',
+                    'Cookies And Cream'
                 ]
             ],
             'Scitec' => [
@@ -83,7 +84,7 @@ class ProductSeeder extends Seeder
                         'category_id' => $category->id,
                         'description' => $description,
                         'weight' => $weight,
-                        'flavour'=>$flavour,
+                        'flavour' => $flavour,
                         'price' => $price,
                         'created_at' => now(),
                         'updated_at' => now()

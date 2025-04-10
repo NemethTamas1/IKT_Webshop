@@ -4,8 +4,11 @@
          hover:border-sky-700/20 transition-all duration-300
         ease-in-out shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 hover:scale-105 cursor-pointer">
             <div class="h-64 overflow-hidden bg-gray-100 flex items-center justify-center my-auto">
-                <img :src="getImagePath(product.weight, product.flavour)" :alt="product.description"
-                    class="max-w-[200px] max-h-[200px] ">
+                <img :src="getImagePath(
+                    product.categories[0].brand,
+                    product.weight,
+                    product.flavour
+                )" :alt="product.description" class="max-w-[200px] max-h-[200px]" @error="handleImageError">
 
             </div>
             <div class="p-6">
@@ -13,13 +16,12 @@
                     {{ product.description }}
                 </p>
                 <h2 class="text-gray-900 font-bold text-xl mb-2">
-                    {{ product.categories[0].brand }} 
+                    {{ product.categories[0].brand }}
                 </h2>
                 <p class="text-sky-500 font-bold text-2xl mb-4">{{ product.price }} Ft</p>
 
                 <div class="mb-4">
-                    <span
-                        class="inline-block bg-sky-100  rounded-2xl px-3 py-1 text-sm font-medium text-gray-700 mr-2">
+                    <span class="inline-block bg-sky-100  rounded-2xl px-3 py-1 text-sm font-medium text-gray-700 mr-2">
                         {{ product.flavour }}
                     </span>
                 </div>
@@ -41,12 +43,26 @@ const props = defineProps({
         required: true
     }
 })
-const images = import.meta.glob('@/assets/products_img/Scitec/wpp/**/*.webp', { eager: true })
-const getImagePath = (weight, flavor) => {
+const images = import.meta.glob('@/assets/products_img/**/*.webp', { eager: true })
+const getImagePath = (brand, weight, flavour) => {
+    const brandPath = {
+        'Scitec': 'wpp',
+        'ProNutrition': 'ProWhey',
+        'Builder': 'WheyProtein'
+    }
+
+    const subfolder = brandPath[brand] || ''
+    const expectedPattern = `products_img/${brand}/${subfolder}/${weight}/${weight}_${flavour}.webp`
+
     const key = Object.keys(images).find(path =>
-        path.includes(`${weight}/${weight}_${flavor}.webp`)
+        path.toLowerCase().includes(expectedPattern.toLowerCase())
     )
-    console.log(key ? images[key].default : '');
-    return key ? images[key].default : ''
+
+    if (!key) {
+        console.warn(`Nem elérhető az útvonal ehhez: ${expectedPattern}`)
+        return ''
+    }
+
+    return images[key].default
 }
 </script>
