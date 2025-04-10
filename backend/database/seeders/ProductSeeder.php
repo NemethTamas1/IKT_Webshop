@@ -31,7 +31,6 @@ class ProductSeeder extends Seeder
                     500 => 5510,
                     920 => 12490,
                     2350 => 25990,
-                    5000 => 49990
                 ],
                 'flavours' => [
                     'Vanilla',
@@ -51,6 +50,24 @@ class ProductSeeder extends Seeder
                     'Salted-Caramel',
                     'White-Chocolate',
                     'Pistachio-White Chocolate'
+                ]
+            ],
+            // 5kg | Nincs minden íz!
+            'Scitec' => [
+                'weights_prices' => [
+                    5000 => 49990
+                ],
+                'flavours' => [
+                    'Chocolate-Cookie',
+                    'Lemon-Cheesecake',
+                    'Chocolate',
+                    'Vanilla',
+                    'Chocolate-Nuts',
+                    'Strawberry-WhiteChoco',
+                    'Chocolate-Coconut',
+                    'Banana',
+                    'Vanilla-Raspberries',
+                    'Strawberry',
                 ]
             ],
             'Pro Nutrition' => [

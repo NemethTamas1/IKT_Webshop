@@ -47,7 +47,7 @@ const images = import.meta.glob('@/assets/products_img/**/*.webp', { eager: true
 const getImagePath = (brand, weight, flavour) => {
     const brandPath = {
         'Scitec': 'wpp',
-        'ProNutrition': 'ProWhey',
+        'Pro Nutrition': 'Pro Whey',
         'Builder': 'WheyProtein'
     }
 
