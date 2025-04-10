@@ -1,6 +1,6 @@
 <template>
     <BaseLayout>
-        <div class="mx-auto w-full">
+        <div class="mx-auto w-full mb-[250px]">
             <div>
                 <p class="text-3xl font-bold text-center my-4" style="font-family:'Nunito'">Fehérjék</p>
                 <p class="font-2xl font-semibold text-center" style="font-family:'Nunito'">
@@ -31,10 +31,8 @@ const error = ref(null);
 
 onMounted(async () => {
     loading.value = true;
-    const toastId = ToastService.showLoading("Adatok szinkronizálása...")
     try {
         productStore.getProducts();
-        ToastService.updateToSuccess(toastId, "Adatok szinkronizálva!")
     } catch (err) {
         error.value = err.message;
         ToastService.updateToError(toastId, "Hiba a lekérdezéskor!")

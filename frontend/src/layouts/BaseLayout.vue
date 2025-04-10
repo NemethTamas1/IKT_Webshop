@@ -1,14 +1,14 @@
 <template>
   <BaseHeader />
-  <main class="container mx-auto">
+  <main class="container mx-auto min-h-screen">
     <slot />
   </main>
+  <BaseFooter />
 </template>
-<script>
+
+
+<script setup>
 import BaseHeader from '@components/layout/BaseHeader.vue'
-export default {
-  components: {
-    BaseHeader
-  }
-}
+import BaseFooter from '@components/layout/BaseFooter.vue'
+
 </script>

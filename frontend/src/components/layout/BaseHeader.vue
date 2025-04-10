@@ -60,9 +60,9 @@
             </div>
             <ul v-if="showBrandsMenu"
               class="md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1 ">
-              <BaseMobileNavBarDrop :linkText="'/brands'" menuOption="Scitec" />
-              <BaseMobileNavBarDrop :linkText="'/brands'" menuOption="Builder" />
-              <BaseMobileNavBarDrop :linkText="'/brands'" menuOption="Pro Nutrition" />
+              <BaseMobileNavBarDrop :linkText="'/brands/scitec'" menuOption="Scitec" />
+              <BaseMobileNavBarDrop :linkText="'/brands/builder'" menuOption="Builder" />
+              <BaseMobileNavBarDrop :linkText="'/brands/pronutrition'" menuOption="Pro Nutrition" />
             </ul>
           </li>
 
