@@ -40,6 +40,25 @@ export const useProductStore = defineStore("products", () => {
     }
   };
 
+  const sortGetOneProduct = async (brandName, weight, flavour) => {
+    try{
+      const threeFiltered = products.value.filter((product) =>
+        product.categories[0].brand.toLowerCase() === brandName.toLowerCase() &&
+        product.categories[0].available === 1 &&
+        product.weight === weight &&
+        product.flavour.toLowerCase() === flavour.toLowerCase()
+    );
+    
+    filtered.value = threeFiltered;
+
+    return filtered.value;
+
+    } catch(err){
+      console.error("Hiba a termék lekérdezése során: ", err);
+      throw err;
+    }
+  }
+
   return {
     products,
     product,
@@ -48,5 +67,6 @@ export const useProductStore = defineStore("products", () => {
     getProducts,
     getProduct,
     sortProductsByBrand,
+    sortGetOneProduct
   };
 });
