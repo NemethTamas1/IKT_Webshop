@@ -1,6 +1,6 @@
 <template>
   <BaseHeader />
-  <div id="banner" class="min-w-[1080px] min-h-svh grid grid-cols-2 mx-auto">
+  <div id="banner" class="min-w-[1080px] min-h-svh grid grid-cols-2 mx-auto mb-24">
 
     <div class="grid m-auto lg:max-w-[700px] h-3/5 w-4/5">
       <div class="headerlineOne h-fit shadow-xl" style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
@@ -29,19 +29,66 @@
     </div>
 
   </div>
-  <div class="container mx-auto min-h-screen">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat architecto, aspernatur atque minus est, labore
-    </p>
-    <p>accusantium nostrum dolorem quis, repellendus repudiandae explicabo nisi sunt. Aperiam, repellendus repellat?</p>
-    <p>Sequi, inventore placeat!</p>
+  <div v-if="productStore.filtered && productStore.filtered.length" class="mx-auto mb-48">
+    <p class="text-3xl font-extrabold my-2 underline underline-offset-4 text-center mb-8">Kiemelt akcióink:</p>
+    <div class="buttons space-x-8 flex justify-center">
+      <button @click="changeToBuilder" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded ">
+        Builder
+      </button>
 
+      <button @click="changeToScitec" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">
+        Scitec
+      </button>
+
+      <button @click="changeToProNutrition" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">
+        Pro Nutrition
+      </button>
+
+    </div>
+    <BaseProductCard :products="productStore.filtered" />
   </div>
-
-
+  <div v-else class="">
+    <p>Betöltés folyamatban vagy nincs találat...</p>
+  </div>
 </template>
 
 <script setup>
 import BaseHeader from '@layout/BaseHeader.vue'
+import BaseProductCard from '@layouts/BaseProductCard.vue';
+
+import { defineStore } from 'pinia';
+import { useProductStore } from '@stores/ProductStore.mjs';
+import { storeToRefs } from 'pinia';
+import { onMounted, ref } from 'vue';
+
+const productStore = useProductStore();
+const { products } = storeToRefs(productStore);
+const filteredByBrand = ref("Builder");
+
+const changeToProNutrition = (async () => {
+  filteredByBrand.value = "Pro Nutrition";
+  await productStore.sortProductsByBrand(filteredByBrand.value);
+});
+const changeToScitec = (async () => {
+  filteredByBrand.value = "Scitec";
+  await productStore.sortProductsByBrand(filteredByBrand.value);
+});
+const changeToBuilder = (async () => {
+  filteredByBrand.value = "Builder";
+  productStore.sortProductsByBrand(filteredByBrand.value);
+});
+onMounted(async () => {
+  try {
+    await productStore.getProducts();
+    await productStore.sortProductsByBrand(filteredByBrand.value);
+    console.log("Termékek betöltve:", productStore.filtered);
+  } catch (error) {
+    console.error("Hiba történt:", error);
+  }
+});
+
+
+
 </script>
 
 <style>

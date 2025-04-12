@@ -6,6 +6,7 @@ export const useProductStore = defineStore("products", () => {
   const products = ref([]);
   const product = ref(null);
   const productsByBrand = ref([]);
+  const filtered = ref([]);
 
   async function getProducts() {
     const resp = await http.get("/products");
@@ -17,21 +18,32 @@ export const useProductStore = defineStore("products", () => {
     product.value = resp.data.data;
   }
 
-  // márkára és elérhetőségre szűrés!
+  // [Elsőnek] >> márkára és elérhetőségre szűrés!
+  // [Másodsorban] >> minden termék 1x!
   const sortProductsByBrand = async (brandname) => {
-    const filtered = products.value.filter(
-      (product) =>
-        product.categories.brand === brandname &&
-        product.categories.avaliable === 1
-    );
-    productsByBrand.value = filtered;
-    return filtered;
+    try {
+      const brandFiltered = products.value.filter(
+        (product) =>
+          product.categories[0].brand === brandname &&
+          product.categories[0].available === 1
+      );
+      filtered.value = brandFiltered.filter((product, index, self) =>
+        index === self.findIndex((p) => p.weight === product.weight)
+      );
+
+      // Debug
+      console.log("Szűrt termékek:", filtered.value);
+      return filtered.value;
+    } catch (error) {
+      console.error("Hiba a szűrésnél:", error);
+      throw error;
+    }
   };
 
   return {
     products,
     product,
-    productsByBrand,
+    filtered,
 
     getProducts,
     getProduct,
