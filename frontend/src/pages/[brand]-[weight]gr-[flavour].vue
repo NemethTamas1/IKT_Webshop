@@ -37,16 +37,17 @@
             <p v-else class="text-3xl text-red-600 font-semibold">
               Nincs raktáron
             </p>
-            <FormKit type="select" label="Íz kiválasztása" name="flavour"
+            <!-- <FormKit type="select" label="Íz kiválasztása" name="flavour"
               class="w-full p-3 rounded-md bg-gray-600 text-slate-700"
-              @click="getFlavours(product.description, product.weight)" :options="filteredFlavours" />
+              @click="getFlavours(product.description, product.weight)" :options="filteredFlavours" /> -->
 
             <!-- <p v-for="egy in filteredFlavours" :key="egy.id">
               {{ egy.value }}
             </p> -->
-            <!-- <select class name="cars" id="cars">
-              <option v-for="egy in filteredFlavours" :key="egy.id" value={{egy.value}}>{{ egy.label }}</option>
-            </select> -->
+            <label>ÍZ kiválasztása</label>
+            <select @click="getFlavours(product.description, product.weight)" class="w-fit min-w-[250px] bg-gray-400 text-lime-300 text-center text-lg font-bold py-2 rounded" name="flavours" label="Íz kiválasztása">
+              <option class="text-sky-500 bg-sky-50 font-semibold px-4" v-for="egy in filteredFlavours" :key="egy.id" value={{egy.value}}>{{ egy.label }}</option>
+            </select>
           </div>
         </div>
       </div>
@@ -77,7 +78,6 @@ const description = route.params.description;
 const weight = Number(route.params.weight);
 const brand = route.params.brand;
 const flavour = route.params.flavour;
-
 //Függvények
 const getImagePath = (brand, weight, flavour, description) => {
   const getProductLine = (brand, description) => {
@@ -108,6 +108,7 @@ onMounted(async () => {
   try {
     await productStore.getProducts();
     await productStore.sortGetOneProduct(brand, weight, flavour);
+
     if (description && weight) {
       await getFlavours(description, weight);
     }
