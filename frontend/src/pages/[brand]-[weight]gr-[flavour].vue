@@ -1,42 +1,69 @@
 <template>
   <BaseLayout>
-    <div v-if="!loading" class="grid grid-cols-3 gap-4 w-full bg-red-500">
-      <!-- Kép bal oldalon -->
-      <img 
-        :src="getImagePath(
-          product.categories[0].brand,
-          product.weight,
-        product.flavour,
-        product.description
-      )"
-        :alt="product.description"
-        class="w-full h-full object-contain col-span-1" 
-      />
+    <div v-if="!loading">
 
-      <!-- Információk a jobb oldalon -->
-      <div class="col-span-2 space-y-2">
-        <h1 class="text-xl font-semibold">{{ product.categories[0].brand }}</h1>
-        <p class="text-lg">{{ product.description }} ({{ product.weight }}gr)</p>
-        <p class="text-lg">{{ product.price }} Ft</p>
-        <p v-if="product.categories[0].available=1">Raktáron</p>
-        <p v-else>Nincs raktáron</p>
-        <FormKit label="Íz" type="select"/> <!-- :options=""-el fel kell tölteni -->
-        <p>Darabszám</p><!-- Itt bele kell implementálni egy számlálót -->
+      <div class="flex justify-center w-full h-full mx-auto">
+
+        <div class="grid grid-cols-3">
+          <div class="grid col-span-1">
+            <img :src="getImagePath(
+              product.categories[0].brand,
+              product.weight,
+              product.flavour,
+              product.description
+            )" :alt="product.description" class="mx-auto object-contain w-full h-full bg-lime-300" />
+          </div>
+          <!-- Kép bal oldalon -->
+
+
+
+          <!-- Információk a jobb oldalon -->
+          <div class="flex pl-6 flex-col justify-center col-span-2 space-y-2 bg-gray-50">
+            <p class="my-2 font-extrabold text-3xl">
+              {{ product.categories[0]?.brand }}
+            </p>
+            <p class="my-2 font-extrabold text-4xl">
+              {{ product.description }} <i>({{ product.weight }}gr)</i>
+            </p>
+            <p class="my-2 font-semibold text-4xl">
+              {{ product.price }} Ft
+            </p>
+            <p class="my-2 font-semibold italic text-gray-500 text-xl">
+              {{ Math.round(product.price / product.weight * 1000) }} Ft / kg
+            </p>
+            <p v-if="product.categories[0]?.available === 1" class="text-3xl text-green-500 font-bold">
+              Raktáron
+            </p>
+            <p v-else class="text-3xl text-red-600 font-semibold">
+              Nincs raktáron
+            </p>
+            <FormKit type="select" label="Íz kiválasztása" name="flavour"
+              class="w-full p-3 rounded-md bg-gray-600 text-slate-700"
+              @click="getFlavours(product.description, product.weight)" :options="filteredFlavours" />
+
+            <!-- <p v-for="egy in filteredFlavours" :key="egy.id">
+              {{ egy.value }}
+            </p> -->
+            <!-- <select class name="cars" id="cars">
+              <option v-for="egy in filteredFlavours" :key="egy.id" value={{egy.value}}>{{ egy.label }}</option>
+            </select> -->
+          </div>
+        </div>
       </div>
+    </div>
+    <div v-else>
+
     </div>
   </BaseLayout>
 </template>
 
-
-
-  
-
 <script setup>
 //Importok
 import BaseLayout from '@layouts/BaseLayout.vue';
-import {useProductStore} from '@stores/ProductStore';
+import { useProductStore } from '@stores/ProductStore';
 import { onMounted, computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { ToastService } from '@stores/ToastService.js';
 
 //Változók
 const productStore = useProductStore();
@@ -44,6 +71,12 @@ const route = useRoute();
 const product = computed(() => productStore.oneProduct[0] ?? null);
 const loading = ref(true);
 const images = import.meta.glob('@/assets/products_img/**/*.webp', { eager: true })
+const error = ref(null);
+const filteredFlavours = ref([]);
+const description = route.params.description;
+const weight = Number(route.params.weight);
+const brand = route.params.brand;
+const flavour = route.params.flavour;
 
 //Függvények
 const getImagePath = (brand, weight, flavour, description) => {
@@ -68,15 +101,38 @@ const getImagePath = (brand, weight, flavour, description) => {
   return key ? images[key].default : ''
 }
 
-
-
-onMounted(async ()=>{
-  await productStore.getProducts();
-  await productStore.sortGetOneProduct(
-    route.params.brand,
-    Number(route.params.weight),
-    route.params.flavour);
-
-  loading.value=false;
+onMounted(async () => {
+  loading.value = true;
+  error.value = null;
+  const toastId = ToastService.showLoading("Termékadatok betöltése folyamatban...");
+  try {
+    await productStore.getProducts();
+    await productStore.sortGetOneProduct(brand, weight, flavour);
+    if (description && weight) {
+      await getFlavours(description, weight);
+    }
+    ToastService.updateToSuccess(toastId, "Termékadatok sikeresen betöltve!");
+  } catch (err) {
+    error.value = err.message;
+    ToastService.updateToError(
+      toastId,
+      `Hiba az adatok betöltésekor: ${error.message}`
+    );
+  } finally {
+    loading.value = false;
+  }
 })
+const getFlavours = async (description, weight) => {
+  try {
+    const flavours = await productStore.sortProductByDescriptionAndWeigthToGetFlavours(description, weight);
+    // Formátum FormKit számára
+    filteredFlavours.value = flavours.map((flavour) => ({
+      label: flavour, // Felhasználónak megjelenő label
+      value: flavour, // Kiválasztott érték
+    }));
+    console.log("Flavours betöltve:", filteredFlavours.value); // Debug
+  } catch (error) {
+    console.error("Hiba az ízek betöltésekor:", error);
+  }
+};
 </script>
