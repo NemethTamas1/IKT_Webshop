@@ -7,6 +7,7 @@ export const useProductStore = defineStore("products", () => {
   const product = ref(null);
   const productsByBrand = ref([]);
   const filtered = ref([]);
+  const oneProduct = ref([]);
 
   async function getProducts() {
     const resp = await http.get("/products");
@@ -40,29 +41,53 @@ export const useProductStore = defineStore("products", () => {
     }
   };
 
+
+
+
+
+
   const sortGetOneProduct = async (brandName, weight, flavour) => {
     try{
-      const threeFiltered = products.value.filter((product) =>
-        product.categories[0].brand.toLowerCase() === brandName.toLowerCase() &&
-        product.categories[0].available === 1 &&
-        product.weight === weight &&
-        product.flavour.toLowerCase() === flavour.toLowerCase()
-    );
+      console.log("Szűrés paraméterei: ", brandName, weight, typeof(weight), flavour);
+      console.log("Elérhető termékek: ", products.value);
+
+
+      console.log("Minden termék (brand szerint):");
+      products.value.forEach((product) => {
+      console.log(product.categories?.[0]?.brand);
+  });
+  console.log("Összehasonlító brand param:", brandName.toLowerCase());
+
+
+  const threeFiltered = products.value.filter(
+    (product) =>
+      product.categories[0].brand.toLowerCase() === brandName.toLowerCase() &&
+      product.weight === weight &&
+      product.categories[0].available === 1 &&
+      product.flavour.toLowerCase() === flavour
+  );
+
     
-    filtered.value = threeFiltered;
+  oneProduct.value = threeFiltered;
 
-    return filtered.value;
+  return threeFiltered;
 
-    } catch(err){
-      console.error("Hiba a termék lekérdezése során: ", err);
-      throw err;
-    }
+} catch(err){
+    console.error("Hiba a termék lekérdezése során: ", err);
+    throw err;
   }
+}
+
+
+
+
+
 
   return {
     products,
     product,
     filtered,
+    oneProduct,
 
     getProducts,
     getProduct,
