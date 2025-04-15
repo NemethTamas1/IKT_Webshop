@@ -1,139 +1,158 @@
 <template>
   <BaseLayout>
-    <div v-if="!loading">
-
+    <div v-if="!productStore.loading">
       <div class="flex justify-center w-full h-full mx-auto">
-
         <div class="grid grid-cols-3">
+          <!-- Image on the left side -->
           <div class="grid col-span-1">
-            <img :src="getImagePath(
-              product.categories[0].brand,
-              product.weight,
-              product.flavour,
-              product.description
-            )" :alt="product.description" class="mx-auto object-contain w-full h-full bg-lime-300" />
+            <img
+              :src="productStore.getImagePath(
+                productStore.currentProduct?.categories?.[0]?.brand,
+                productStore.currentProduct?.weight,
+                productStore.selectedFlavour,
+                productStore.currentProduct?.description
+              )"
+              :alt="productStore.currentProduct?.description"
+              class="mx-auto object-contain w-full h-full bg-lime-300"
+            />
           </div>
-          <!-- Kép bal oldalon -->
 
-
-
-          <!-- Információk a jobb oldalon -->
+          <!-- Information on the right side -->
           <div class="flex pl-6 flex-col justify-center col-span-2 space-y-2 bg-gray-50">
             <p class="my-2 font-extrabold text-3xl">
-              {{ product.categories[0]?.brand }}
+              {{ productStore.currentProduct?.categories?.[0]?.brand }}
             </p>
             <p class="my-2 font-extrabold text-4xl">
-              {{ product.description }} <i>({{ product.weight }}gr)</i>
+              {{ productStore.currentProduct?.description }}
+              <i>({{ productStore.currentProduct?.weight }} gr)</i>
             </p>
             <p class="my-2 font-semibold text-4xl">
-              {{ product.price }} Ft
+              {{ productStore.currentProduct?.price }} Ft
             </p>
             <p class="my-2 font-semibold italic text-gray-500 text-xl">
-              {{ Math.round(product.price / product.weight * 1000) }} Ft / kg
+              {{
+                productStore.currentProduct?.price &&
+                productStore.currentProduct?.weight
+                  ? Math.round(
+                      (productStore.currentProduct.price /
+                        productStore.currentProduct.weight) *
+                        1000
+                    )
+                  : ''
+              }}
+              Ft / kg
             </p>
-            <p v-if="product.categories[0]?.available === 1" class="text-3xl text-green-500 font-bold">
-              Raktáron
+            <p
+              v-if="productStore.currentProduct?.categories?.[0]?.available === 1"
+              class="my-2 font-bold text-green-500"
+            >
+              Készleten
             </p>
-            <p v-else class="text-3xl text-red-600 font-semibold">
-              Nincs raktáron
-            </p>
-            <!-- <FormKit type="select" label="Íz kiválasztása" name="flavour"
-              class="w-full p-3 rounded-md bg-gray-600 text-slate-700"
-              @click="getFlavours(product.description, product.weight)" :options="filteredFlavours" /> -->
+            <p v-else class="my-2 font-bold text-red-500">Elfogyott</p>
 
-            <!-- <p v-for="egy in filteredFlavours" :key="egy.id">
-              {{ egy.value }}
-            </p> -->
-            <label>ÍZ kiválasztása</label>
-            <select @click="getFlavours(product.description, product.weight)" class="w-fit min-w-[250px] bg-gray-400 text-lime-300 text-center text-lg font-bold py-2 rounded" name="flavours" label="Íz kiválasztása">
-              <option class="text-sky-500 bg-sky-50 font-semibold px-4" v-for="egy in filteredFlavours" :key="egy.id" value={{egy.value}}>{{ egy.label }}</option>
-            </select>
+            <!-- Flavor selector -->
+            <div class="select-container mt-6">
+              <label class="block text-lg font-medium">Ízesítés:</label>
+              <select
+                v-model="productStore.selectedFlavour"
+                @change="onFlavourChange"
+                id="scrollable-entity"
+                class="mt-1 block max-w-fit py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option v-for="flavour in productStore.availableFlavours" :key="flavour" :value="flavour">
+                  {{ flavour }}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
 
+      <div class="mx-auto mt-16 w-4/5">
+        <p class="text-xl font-bold">Vásárlói értékelések</p>
+        <star-rating
+          :rating="4.5"
+          :disabled="true"
+          :increment="0.5"
+          :show-rating="true"
+          :read-only="true"
+        ></star-rating>
+      </div>
+      <div>
+        <p class="text-xl font-bold">Termékleírás</p>
+      </div>
+    </div>
+    <div v-else class="flex justify-center items-center h-64">
+      <div class="text-xl text-gray-500">Betöltés...</div>
     </div>
   </BaseLayout>
 </template>
 
 <script setup>
-//Importok
-import BaseLayout from '@layouts/BaseLayout.vue';
-import { useProductStore } from '@stores/ProductStore';
-import { onMounted, computed, ref } from 'vue';
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { ToastService } from '@stores/ToastService.js';
+import { useProductStore } from '@stores/ProductStore.mjs';
+import BaseLayout from '@layouts/BaseLayout.vue';
+import StarRating from 'vue-star-rating';
 
-//Változók
-const productStore = useProductStore();
 const route = useRoute();
-const product = computed(() => productStore.oneProduct[0] ?? null);
-const loading = ref(true);
-const images = import.meta.glob('@/assets/products_img/**/*.webp', { eager: true })
-const error = ref(null);
-const filteredFlavours = ref([]);
-const description = route.params.description;
-const weight = Number(route.params.weight);
-const brand = route.params.brand;
-const flavour = route.params.flavour;
-//Függvények
-const getImagePath = (brand, weight, flavour, description) => {
-  const getProductLine = (brand, description) => {
-    if (brand === 'Scitec') {
-      return description.includes('Jumbo') ? 'Jumbo!' : 'wpp';
-    }
+const productStore = useProductStore();
 
-    const brandLines = {
-      'Pro Nutrition': 'Pro Whey',
-      'Builder': 'WheyProtein'
-    };
+// Route helpers
+const getBrandFromRoute = () => route.params.brand;
+const getWeightFromRoute = () => Number(route.params.weight);
+const getFlavourFromRoute = () => route.params.flavour;
 
-    return brandLines[brand] || '';
-  }
-  const subfolder = getProductLine(brand, description)
-  const expectedPattern = `products_img/${brand}/${subfolder}/${weight}/${weight}_${flavour}.webp`
-  const key = Object.keys(images).find(path =>
-    path.toLowerCase().includes(expectedPattern.toLowerCase())
-  );
-
-  return key ? images[key].default : ''
-}
-
+// Restore state from localStorage on page load (e.g., after F5 refresh)
 onMounted(async () => {
-  loading.value = true;
-  error.value = null;
-  const toastId = ToastService.showLoading("Termékadatok betöltése folyamatban...");
   try {
-    await productStore.getProducts();
-    await productStore.sortGetOneProduct(brand, weight, flavour);
+    await productStore.restoreStateFromLocalStorage();
 
-    if (description && weight) {
-      await getFlavours(description, weight);
+    const brand = getBrandFromRoute();
+    const weight = getWeightFromRoute();
+    const flavour = getFlavourFromRoute();
+
+    // Load product details only if needed
+    if (
+      productStore.currentProduct &&
+      (productStore.currentProduct.categories?.[0]?.brand !== brand ||
+        productStore.currentProduct.weight?.toString() !== weight?.toString() ||
+        productStore.currentFlavour !== flavour)
+    ) {
+      await productStore.loadProductDetails(brand, weight, flavour);
+    } else if (!productStore.currentProduct) {
+      await productStore.loadProductDetails(brand, weight, flavour);
     }
-    ToastService.updateToSuccess(toastId, "Termékadatok sikeresen betöltve!");
-  } catch (err) {
-    error.value = err.message;
-    ToastService.updateToError(
-      toastId,
-      `Hiba az adatok betöltésekor: ${error.message}`
-    );
-  } finally {
-    loading.value = false;
-  }
-})
-const getFlavours = async (description, weight) => {
-  try {
-    const flavours = await productStore.sortProductByDescriptionAndWeigthToGetFlavours(description, weight);
-    // Formátum FormKit számára
-    filteredFlavours.value = flavours.map((flavour) => ({
-      label: flavour, // Felhasználónak megjelenő label
-      value: flavour, // Kiválasztott érték
-    }));
-    console.log("Flavours betöltve:", filteredFlavours.value); // Debug
+
+    await productStore.saveStateToLocalStorage();
   } catch (error) {
-    console.error("Hiba az ízek betöltésekor:", error);
+    console.error('Hiba a komponens adatlekérési részében:', error);
   }
+});
+
+// Handle flavor change
+const onFlavourChange = () => {
+  productStore.updateSelectedFlavour(productStore.selectedFlavour);
+  const brand = productStore.currentProduct?.categories?.[0]?.brand;
+  const weight = productStore.currentProduct?.weight;
+  const flavour = productStore.selectedFlavour;
+
+  if (brand && weight && flavour) {
+    productStore.loadProductDetails(brand, weight, flavour);
+  }
+  productStore.saveStateToLocalStorage();
+  console.log(`Az új íz, amire váltottunk: >> ${productStore.selectedFlavour}`);
 };
 </script>
+
+<style>
+.select-container {
+  position: relative;
+}
+
+#scrollable-entity {
+  max-height: 50px;
+  overflow-y: auto;
+  width: 100%;
+}
+</style>

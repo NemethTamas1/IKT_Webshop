@@ -40,6 +40,7 @@ RUN npm cache add @vueuse/components@10.11.0
 RUN npm chache add @fortawesome/vue-fontawesome
 RUN npm cache add vue3-toastify@latest
 RUN npm cache add install swiper@latest
+RUN npm cache add vue-star-rating@next
 
 
 RUN npm i

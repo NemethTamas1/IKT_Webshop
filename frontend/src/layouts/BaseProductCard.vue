@@ -6,7 +6,7 @@
             <div class="h-64 overflow-hidden bg-gray-100 flex items-center justify-center my-auto">
                 <router-link
                     :to="`/${product.categories[0].brand.toLowerCase()}-${product.weight}gr-${product.flavour.toLowerCase()}`">
-                    <img :src="getImagePath(
+                    <img :src="productStore.getImagePath(
                         product.categories[0].brand,
                         product.weight,
                         product.flavour,
@@ -45,38 +45,13 @@
 </template>
 
 <script setup>
+import { useProductStore } from '@stores/ProductStore.mjs'
+const productStore=useProductStore();
+
 const props = defineProps({
     products: {
         type: Array,
         required: true
     }
 })
-const images = import.meta.glob('@/assets/products_img/**/*.webp', { eager: true })
-
-const getImagePath = (brand, weight, flavour, description) => {
-    // Mivel a Scitec-hez tartozik a Jumbo! meg a WPP is, ezért összeakadna, így külön vizsgáljuk!
-    const getProductLine = (brand, description) => {
-        if (brand === 'Scitec') {
-            return description.includes('Jumbo') ? 'Jumbo!' : 'wpp';
-        }
-        const brandLines = {
-            'Pro Nutrition': 'Pro Whey',
-            'Builder': 'WheyProtein'
-        };
-        return brandLines[brand] || '';
-    }
-
-    const subfolder = getProductLine(brand, description)
-    const expectedPattern = `products_img/${brand}/${subfolder}/${weight}/${weight}_${flavour}.webp`
-    const key = Object.keys(images).find(path =>
-        path.toLowerCase().includes(expectedPattern.toLowerCase())
-    )
-
-    // if (!key) {
-    //     // console.warn(`Nem elérhető az útvonal ehhez: ${expectedPattern}`)
-    //     return ''
-    // }
-
-    return images[key].default
-}
 </script>
