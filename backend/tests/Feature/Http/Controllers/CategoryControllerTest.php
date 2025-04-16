@@ -8,13 +8,13 @@ use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
+    public function test_can_get_all_categories(): void
     {
-        $response = $this->get('/');
-
+        $response = $this->get('/api/categories');
         $response->assertStatus(200);
+
+        $data = $response->json('data');
+
+        $response = $this->assertNotEmpty($data);
     }
 }

@@ -43,7 +43,8 @@
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"file_exists('.testing') || copy('.env.testing', '.testing');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
