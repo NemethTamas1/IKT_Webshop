@@ -47,7 +47,6 @@
             </p>
             <p v-else class="my-2 font-bold text-red-500">Elfogyott</p>
 
-            <!-- Flavor selector -->
             <div class="select-container mt-6">
               <label class="block text-lg font-medium">Ízesítés:</label>
               <select v-model="productStore.selectedFlavour" @change="onFlavourChange" id="scrollable-entity"
