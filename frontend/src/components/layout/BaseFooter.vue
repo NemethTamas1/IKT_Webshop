@@ -1,75 +1,68 @@
 <template>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <section class="py-8 text-white border-t-4 rounded-t-md shadow-2xl border-sky-700 bg-sky-600 ">
-        <div class="mx-auto w-full ">
-            <div class="grid grid-cols px-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 ">
+        <div class="mx-auto w-full justify-center align-middle ">
+            <div class="grid grid-cols px-4 grid-cols-1 lg:grid-cols-5 ">
+
                 <!-- Contact Info -->
-                <div class="mx-auto w-auto">
-                    <h4 class="text-3xl text-sky-50 font-bold mb-4">Elérhetőség</h4>
 
-                    <div class="w-fit pt-2 2xl:text-lg font-semibold border-t-2 border-sky-100 border-dashed border-opacity-70">
-                        <a href="#" class="flex items-center space-x-2 py-1">
-                            <i class="fa-solid fa-map-location-dot text-center" aria-hidden="true"></i>
-                            <div class="hover:text-lime-300">1111 Kozma u. 13.</div>
-                        </a>
-                        <a href="#" class="flex items-center space-x-2 py-1">
-                            <i class="fa fa-phone text-center" aria-hidden="true"></i>
-                            <div class="hover:text-lime-300">+36 1 123 4567</div>
-                        </a>
-                        <a href="#" class="flex items-center space-x-2 py-1">
-                            <i class="fa fa-envelope text-center" aria-hidden="true"></i>
-                            <div class="hover:text-lime-300">info@buzzshop.com</div>
-                        </a>
-                    </div>
-
-                    <div class="flex max-w-fit justify-normal space-x-4 lg:justify-between  sm:justify-normal
-                         sm:space-x-4 md:justify-start md:space-x-5 md:mt-4 md:py-4 py-3 
-                        border-y-2 border-gray-100 border-dashed border-opacity-70 
-                        ">
-                        <a href="" class="text-white transition-all ease-in-out duration-200">
-                            <i class="fab fa-facebook fa-2x hover:bg-sky-800 shadow-md rounded-full "
-                                aria-hidden="true"></i>
-                        </a>
-                        <a href="" class="text-blue-50 hover:text-yellow-400 transition-all ease-in-out duration-200">
-                            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
-                        </a>
-                        <a href=""
-                            class="text-white bg-inherit hover:text-sky-100 transition-all ease-in-out duration-200 ">
-                            <i class="fab fa-linkedin fa-2x"></i>
-                        </a>
-                        <a href="" class="text-pink-400 hover:text-red-600 transition-all ease-in-out duration-200">
-                            <i class="fab fa-instagram fa-2x " aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
 
                 <!-- Info Detail -->
-                <div class="w-fit mx-auto">
+                <div class="w-4/5 mx-auto justify-center grid col-span-2 my-12 lg:my-0">
                     <RouterLink to="/" class="flex items-center justify-center space-x-3">
                         <span class="text-3xl text-center text-sky-950 font-bold mb-4 self-center">Buzz<i
                                 class="fa-solid fa-bolt text-white"></i>Shop</span>
                     </RouterLink>
                     <p
-                        class="max-w-fit border-t-2 text-base 2xl:text-lg border-gray-100 border-dashed border-opacity-70 py-4 italic">
+                        class="w-full border-t-2 text-base 2xl:text-lg border-gray-100 border-dashed border-opacity-70 py-4 italic">
                         Táplálékkiegészítők, kondigépek online vásárlása, rendelése. Kedvező árak, gyors házhozszállítás
                     </p>
-                    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-2 w-full lg:mt-2 text-base xl:text-lg font-semibold italic">
-                        <a href="/" class="hover:text-lime-300">Főoldal</a>
-                        <a href="/login" class="hover:text-lime-300">Bejelentkezés</a>
-                        <a href="/brands" class="hover:text-lime-300">Gyártók</a>
-                        <a href="/proteins" class="hover:text-lime-300">Táplálékkiegészítők</a>
-                        <a href="/clothes" class="hover:text-lime-300">Sportruházatok</a>
-                        <a href="/contact" class="hover:text-lime-300">Kapcsolat</a>
-                        <a href="/delivery" class="hover:text-lime-300">Szállítás</a>
-                        <a href="/payment" class="hover:text-lime-300">Fizetés</a>
+
+                    <div class="w-full flex flex-row text-base 2xl:text-lg py-4 italic">
+                        <div class="mx-auto">
+                            <a href="/" class="w-full mx-auto self-center hover:text-lime-300 text-center">Főoldal</a>
+                        </div>
+                        <div class="mx-auto">
+                            <a href="/brands"
+                                class="w-full mx-auto self-center hover:text-lime-300 text-center">Gyártók</a>
+                        </div>
+
+                        <div class="mx-auto">
+                            <a href="/proteins"
+                                class="w-full mx-auto self-center hover:text-lime-300 text-center">Táplálékkiegészítők</a>
+
+                        </div>
+
+                        <div class="mx-auto"><a href="/delivery"
+                                class="w-full mx-auto self-center hover:text-lime-300 text-center">Szállítás</a>
+                        </div>
+
+
+
+                    </div>
+                    <div class="w-full flex flex-row text-base 2xl:text-lg py-4 italic">
+                        <div class="mx-auto">
+                            <a href="/login" class="w-fit hover:text-lime-300 text-center">Bejelentkezés</a>
+                        </div>
+
+                        <div class="mx-auto"><a href="/payment"
+                                class="w-fit hover:text-lime-300 text-center">Fizetés</a>
+                        </div>
+
+                        <div class="mx-auto"> <a href="/clothes"
+                                class="w-fit hover:text-lime-300 text-center">Sportruhák</a></div>
+
+                        <div class="mx-auto text-center flex justify-center align-middle">
+                            <a href="/contact" class="w-fit hover:text-lime-300 text-center">Kapcsolat</a>
+                        </div>
                     </div>
                 </div>
 
 
-                <div class="w-fit mx-auto mt-4 sm:mt-0">
-                    <h4 class="text-2xl text-sky-50 font-bold uppercase mb-4">Feliratkozás</h4>
+                <div class="grid col-span-2 w-4/5 mx-auto mt-4 lg:mt-0">
+                    <h4 class="text-2xl text-center text-sky-50 font-bold uppercase mb-4">Feliratkozás</h4>
                     <h5
-                        class="font-semibold py-2 2xl:text-xl lg:text-lg md:text-sm text-amber-50 italic border-t-2 border-gray-100 border-opacity-10">
+                        class="font-semibold text-center py-2 2xl:text-xl lg:text-lg md:text-sm text-amber-50 italic border-t-2 border-gray-100 border-opacity-10">
                         Értesülj elsőkként az újdonságainkról!
                     </h5>
                     <form action="#" class="space-y-3">
@@ -84,6 +77,58 @@
                             általános <u>szerződési feltételeket.</u></div>
                     </form>
                 </div>
+
+                <div class="grid grid-cols-1 w-full lg:w-5/6 mx-auto justify-center mt-12 lg-mt-0">
+
+                    <div class="grid pt-2 2xl:text-lg justify-center align-middle my-auto mr-4 font-semibold">
+                        <h4 class="text-3xl text-sky-50 font-bold mb-4">Elérhetőség</h4>
+                    </div>
+
+                    <div class="grid grid-cols-3 w-full justify-center pt-2 2xl:text-lg font-semibold">
+                        <div><a href="#" class="flex items-center space-x-2 py-1">
+                                <i class="fa-solid fa-map-location-dot text-center" aria-hidden="true"></i>
+                                <span class="hover:text-lime-300">1111 Kozma u. 13.</span>
+                            </a></div>
+
+                        <div><a href="#" class="flex items-center space-x-2 py-1">
+                                <i class="fa fa-phone text-center" aria-hidden="true"></i>
+                                <span class="hover:text-lime-300 w-3/4">+36 1 123 4567</span>
+                            </a></div>
+
+                        <div class="grid flex-wrap w-full">
+                            <a href="#" class="flex items-center justify-center py-1">
+                                <div class="grid w-full justify-start flex-wrap">
+                                    <i class="fa fa-envelope text-center " aria-hidden="true"></i>
+                                    <span class="hover:text-lime-300 w-full overflow-auto">info@buzzshop.com</span>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <div class="grid grid-cols-4 w-full justify-center items-center mx-auto align-middle mt-4 lg:py-4
+                        border-y-2 border-gray-100 border-dashed border-opacity-70 
+                        ">
+                        <a href="" class="text-white text-center transition-all ease-in-out duration-200">
+                            <i class="fab fa-facebook fa-2x hover:bg-sky-800 shadow-md rounded-full "
+                                aria-hidden="true"></i>
+                        </a>
+                        <a href=""
+                            class="text-blue-50 text-center hover:text-yellow-400 transition-all ease-in-out duration-200">
+                            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+                        </a>
+                        <a href=""
+                            class="text-white bg-inherit text-center hover:text-sky-100 transition-all ease-in-out duration-200 ">
+                            <i class="fab fa-linkedin fa-2x"></i>
+                        </a>
+                        <a href=""
+                            class="text-pink-400 text-center hover:text-red-600 transition-all ease-in-out duration-200">
+                            <i class="fab fa-instagram fa-2x " aria-hidden="true"></i>
+                        </a>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 

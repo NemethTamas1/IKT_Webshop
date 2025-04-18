@@ -1,9 +1,12 @@
 <template>
-    <div class="grid grid-cols-3">
-        <div v-for="product in products" :key="product.id" class="mx-auto mt-12 px-6 w-4/5 rounded-lg border-b-4 border-r-4 border-sky-700/10
-        hover:border-sky-700/20 transition-all duration-300
-        ease-in-out shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 hover:scale-105 cursor-pointer">
-            <div class="h-64 overflow-hidden bg-gray-100 flex items-center justify-center my-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 mx-8 md:mx-4 lg:m-0 gap-2">
+        <div v-for="product in products" :key="product.id" class="mx-auto mt-12 px-6 w-full md:w-4/5 rounded-lg bg-gray-100/50
+        border-b-4 border-r-4 border-sky-700/20
+        hover:border-sky-700/30 transition-all duration-300
+        ease-in-out shadow-xl overflow-hidden
+         grid grid-cols-1 md:grid-cols-2 hover:scale-105 cursor-pointer">
+            <div class="h-64 overflow-hidden flex items-center justify-center my-auto"> 
+                <!--  -->
                 <router-link
                     :to="`/${product.categories[0].brand.toLowerCase()}-${product.weight}gr-${product.flavour.toLowerCase()}`">
                     <img :src="productStore.getImagePath(
