@@ -79,11 +79,6 @@ class CategoryControllerTest extends TestCase
         $id = $response->json('data.id');
         $response = $this->put($this->baseURL.$id, $updateData);
         $response->assertStatus(200);
-        // $this->assertDatabaseHas('categories', [
-        //     'id' => $id,
-        //     'category_name' => 'TestCategory_2',
-        //     'brand' => 'TestProtein_2'
-        // ]);
     }
     public function test_can_delete_category_data(): void
     {

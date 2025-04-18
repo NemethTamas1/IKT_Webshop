@@ -54,7 +54,7 @@
 
           <li class="text-lg relative">
             <div @click="mobileToggleBrands"
-              class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
+              class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:text-white">
               <span class="flex-grow font-medium">Minden gyártó</span>
               <i class="fa-solid w-6 text-center " :class="showBrandsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </div>
