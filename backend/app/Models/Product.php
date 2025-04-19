@@ -14,7 +14,7 @@ class Product extends Model
     protected $keyType = 'int';
     public $incrementing = true;
 
-    protected $fillable = ['id','category_id', 'description', 'weight', 'flavour', 'price'];
+    protected $fillable = ['id','category_id', 'description', 'weight', 'flavour', 'price','created_at', 'updated_at', 'deleted_at'];
 
     public function categories(): BelongsToMany
     {
