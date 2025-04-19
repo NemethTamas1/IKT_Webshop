@@ -50,10 +50,12 @@
   <div v-else class="">
     <p>Betöltés folyamatban vagy nincs találat...</p>
   </div>
+  <BaseFooter />
 </template>
 
 <script setup>
 import BaseHeader from '@layout/BaseHeader.vue'
+import BaseFooter from '@layout/BaseFooter.vue'
 import BaseProductCard from '@layouts/BaseProductCard.vue';
 
 import { defineStore } from 'pinia';
