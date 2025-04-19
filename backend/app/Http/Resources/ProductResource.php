@@ -19,7 +19,6 @@ class ProductResource extends JsonResource
             'categories' => $this->whenLoaded('categories', function () {
                 return $this->categories->map(function ($category) {
                     return [
-                        // 'category_id' => $category->id,
                         'category_name' => $category->category_name,
                         'brand' => $category->brand,
                         'stock' => $category->pivot->stock,
