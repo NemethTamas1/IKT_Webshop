@@ -20,21 +20,21 @@
 
                     <div class="w-full flex flex-row text-base 2xl:text-lg py-4 italic">
                         <div class="mx-auto">
-                            <a href="/" class="w-full mx-auto self-center hover:text-lime-300 text-center">Főoldal</a>
+                            <a href="/" class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Főoldal</a>
                         </div>
                         <div class="mx-auto">
                             <a href="/brands"
-                                class="w-full mx-auto self-center hover:text-lime-300 text-center">Gyártók</a>
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Gyártók</a>
                         </div>
 
                         <div class="mx-auto">
                             <a href="/proteins"
-                                class="w-full mx-auto self-center hover:text-lime-300 text-center">Táplálékkiegészítők</a>
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Táplálékkiegészítők</a>
 
                         </div>
 
                         <div class="mx-auto"><a href="/delivery"
-                                class="w-full mx-auto self-center hover:text-lime-300 text-center">Szállítás</a>
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Szállítás</a>
                         </div>
 
 
@@ -84,26 +84,31 @@
                         <h4 class="text-3xl text-sky-50 font-bold mb-4">Elérhetőség</h4>
                     </div>
 
-                    <div class="grid grid-cols-3 w-full justify-center pt-2 2xl:text-lg font-semibold">
-                        <div><a href="#" class="flex items-center space-x-2 py-1">
+                    <!-- Elérhetőség elemek -->
+                    <div class="grid lg:grid-cols-3 sm:grid-cols-1 w-full justify-center pt-2 2xl:text-lg font-semibold">
+                        <!-- Cím -->
+                        <div class="md:mx-auto">   
+                            <a href="#" class="flex flex-row lg:flex-col items-center space-x-2 py-1 lg:space-x-0 lg:space-y-2">
                                 <i class="fa-solid fa-map-location-dot text-center" aria-hidden="true"></i>
-                                <span class="hover:text-lime-300">1111 Kozma u. 13.</span>
-                            </a></div>
-
-                        <div><a href="#" class="flex items-center space-x-2 py-1">
-                                <i class="fa fa-phone text-center" aria-hidden="true"></i>
-                                <span class="hover:text-lime-300 w-3/4">+36 1 123 4567</span>
-                            </a></div>
-
-                        <div class="grid flex-wrap w-full">
-                            <a href="#" class="flex items-center justify-center py-1">
-                                <div class="grid w-full justify-start flex-wrap">
-                                    <i class="fa fa-envelope text-center " aria-hidden="true"></i>
-                                    <span class="hover:text-lime-300 w-full overflow-auto">info@buzzshop.com</span>
-                                </div>
+                                <span class="hover:text-lime-300 lg:text-sm">1111 Kozma u. 13.</span>
                             </a>
                         </div>
 
+                        <!-- Telefon -->
+                        <div class="md:mx-auto">
+                            <a href="#" class="flex flex-row lg:flex-col items-center space-x-2 py-1 lg:space-x-0 lg:space-y-2">
+                                <i class="fa fa-phone text-center" aria-hidden="true"></i>
+                                <span class="hover:text-lime-300 w-3/4 md:w-full lg:text-sm">+36 1 123 4567</span>
+                            </a>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="grid flex-wrap w-full">
+                            <a href="#" class="md:mx-auto flex flex-row lg:flex-col items-center space-x-2 py-1 lg:space-x-0 lg:space-y-2">
+                                <i class="fa fa-envelope text-center " aria-hidden="true"></i>
+                                <span class="hover:text-lime-300 lg:text-sm">info@buzzshop.com</span>
+                            </a>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-4 w-full justify-center items-center mx-auto align-middle mt-4 lg:py-4
