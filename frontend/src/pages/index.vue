@@ -1,34 +1,41 @@
 <template>
   <BaseHeader />
-  <div id="banner" class="min-w-[1080px] min-h-svh grid grid-cols-2 mx-auto mb-24">
 
-    <div class="grid m-auto lg:max-w-[700px] h-3/5 w-4/5">
-      <div class="headerlineOne h-fit shadow-xl" style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
-        <p>Tavaszi Mega Akció!</p>
-      </div>
-      <div class="headerlineTwo h-fit" style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
-        <ul>
+
+  <div id="banner" class="w-full mx-auto pl-4 mb-24 md:min-h-svh grid grid-cols-5 bg-right">
+    <div class="grid col-span-1 lg:col-span-2 mx-auto md:px-4 w-auto lg:max-w-[700px]">
+
+      <p class="headerlineOne my-auto max-w-fit h-fit shadow-xl pr-5 pl-2"
+        style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
+        Tavaszi Mega Akció!
+      </p>
+
+      <div class="headerlineTwo max-w-fit" style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
+        <ul class="mb-8">
           <li class="font-bold"> Minden táplálékkiegészítő és vitamin</li>
           <li class="font-bold"> Akár 30% kedvezménnyel, és</li>
-          <li class="bg-purple-400 w-fit px-3 mt-1 rounded-lg text-sky-50 shadow-xl italic">
-            Ingyenes kiszállítással!*</li>
+          <li class="freeshipping w-fit mt-4 rounded-lg font-semibold p-1 text-sky-50 shadow-xl italic">
+            Ingyenes kiszállítással!*
+          </li>
         </ul>
+
+        <p class="headerlineThree text-base h-fit max-w-fit bg-gray-500/50 p-1 text-amber-50 rounded-md italic"
+          style="font-family:'Montserrat',Arial,Helvetica,sans-serif;">
+          *<b>Limitált ajánlat:</b> Május 22-31. között!
+        </p>
+
+        <button class="checkitout transition-all ease-in-out duration-200 mt-8">
+          Megnézem
+        </button>
       </div>
 
-      <p class="text-base h-fit w-fit bg-gray-500/50 p-1 text-amber-50 rounded-md italic"
-        style="font-family:'Montserrat'Arial,Helvetica,sans-serif;">
-        *<b>Limitált ajánlat:</b> Május 22-31. között!
-      </p>
-      <button class="checkitout transition-all ease-in-out duration-200">
-        Megnézem
-      </button>
     </div>
 
-    <div class="grid">
+    <div class="grid col-span-4 lg:col-span-3 m-auto w-1/2 lg:w-full">
       <!-- Ez a másik, jobboldali col. Üresen marad a kép miatt -->
     </div>
-
   </div>
+
   <div v-if="productStore.filtered && productStore.filtered.length" class="mx-auto mb-48">
     <p class="text-3xl font-extrabold my-2 underline underline-offset-4 text-center mb-8">Kiemelt akcióink:</p>
     <div class="buttons space-x-8 flex justify-center">
@@ -50,19 +57,18 @@
   <div v-else class="">
     <p>Betöltés folyamatban vagy nincs találat...</p>
   </div>
+  <BaseFooter />
 </template>
 
 <script setup>
 import BaseHeader from '@layout/BaseHeader.vue'
 import BaseProductCard from '@layouts/BaseProductCard.vue';
+import BaseFooter from '@layout/BaseFooter.vue';
 
-import { defineStore } from 'pinia';
 import { useProductStore } from '@stores/ProductStore.mjs';
-import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';
 
 const productStore = useProductStore();
-const { products } = storeToRefs(productStore);
 const filteredByBrand = ref("Builder");
 
 const changeToProNutrition = (async () => {
@@ -96,14 +102,18 @@ onMounted(async () => {
 
 #banner {
   background-image: linear-gradient(to right, rgba(79, 194, 190, 0.2), rgba(98, 233, 228, 0)), url('../assets/banners/banner.png');
-  /* A gradient ad bele egy kis színes átmenetet, hogy ne legyen annyira "matt" */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
+  @media screen and (max-width: 1024px) {
+    min-height: 75vh;
+  }
 }
 
+
 .headerlineOne {
-  font-size: 3.5rem;
+  font-size: clamp(2.2rem, 2.3vw, 3.5rem);
   font-weight: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -111,19 +121,36 @@ onMounted(async () => {
   background-color: rgb(0, 251, 255);
   border-radius: 1.5rem;
   border: 3px solid rgba(255, 255, 0, 0.7);
-  width: fit-content;
-  padding-left: 1rem;
-  padding-right: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
+  text-wrap: nowrap;
 }
 
 .headerlineTwo {
-  font-size: 2rem;
+  font-size: clamp(1rem, 2vw, 2rem);
+  font-style: italic;
+
+  @media screen and (max-width: 1024px) {
+    min-width: 16rem;
+    font-size: 1rem;
+    text-wrap: wrap;
+  }
+
+}
+
+.freeshipping {
+  background-color: rgb(159, 80, 159);
+  padding: 0.2rem 0.6rem;
+
+
+}
+
+.headerlineThree {
+  font-size: clamp(0.5rem, 1vw, 1.6rem);
   font-style: italic;
 }
 
 .checkitout {
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 2vw, 1.4rem);
   font-weight: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -131,13 +158,11 @@ onMounted(async () => {
   background-color: rgb(0, 251, 255);
   border-radius: .5rem;
   border: 3px solid rgba(255, 255, 255, .8);
-  width: fit-content;
-  height: fit-content;
   padding: 0.5rem 1rem;
 }
 
 .checkitout:hover {
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 2vw, 1.4rem);
   font-weight: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -145,8 +170,58 @@ onMounted(async () => {
   background-color: #486aa9;
   border-radius: .5rem;
   border: 3px solid rgb(157, 255, 245);
-  width: fit-content;
-  height: fit-content;
   padding: 0.5rem 1rem;
+}
+
+@media screen and (min-width:768px) and (max-width: 1024px) {}
+
+
+
+@media screen and (min-width:480px) and (max-width: 768px) {
+  #banner {
+    background-position: calc(100%) right;
+    background-image: url('../assets/banners/banner.png');
+  }
+
+  .headerlineOne {
+    font-size: 1.5rem;
+    width: max-content;
+    padding: 0.4rem 0.7rem 0.4rem 0.3rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .headerlineTwo {
+    min-width: 5rem;
+    max-width: 10rem;
+    font-size: 1rem;
+    text-wrap: wrap;
+    padding-right: 0.2rem;
+  }
+
+  .headerlineThree {
+    font-size: 0.45rem;
+    padding: 0 0.5rem;
+  }
+
+  .freeshipping {
+    min-width: 10rem;
+    font-size: 0.8rem;
+    text-wrap: nowrap;
+  }
+
+}
+
+
+@media screen and (max-width: 480px) {
+  .headerlineOne {
+    min-width: 10rem;
+    font-size: 1.2rem;
+    text-wrap: nowrap;
+  }
+
+  #banner {
+    background-position: calc(100% + 28rem) center;
+    background-image: url('../assets/banners/banner.png');
+  }
 }
 </style>
