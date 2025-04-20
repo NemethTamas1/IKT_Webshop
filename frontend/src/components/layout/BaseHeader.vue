@@ -47,11 +47,14 @@
         <ul class="nav-primary flex flex-col p-4 md:flex-row md:p-0 md:space-x-8 md:flex "
           :class="{ 'hidden': !menuOpen }">
           <!-- Mobilon más lesz a nézet!!! -->
+
+          <!-- Bejelentkezés -->
           <li
             class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow"><i class="md:fa-solid md:fa-user"></i>Bejelentkezés</RouterLink>
           </li>
 
+          <!-- Minden gyártó -->
           <li class="text-lg relative">
             <div @click="mobileToggleBrands"
               class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:text-white">
@@ -66,6 +69,7 @@
             </ul>
           </li>
 
+          <!-- Táplálékkiegészítők -->
           <li class="text-lg relative">
             <div @click="mobileToggleTapkieg"
               class="text-lg flex justify-between cursor-pointer items-center p-2 text-sky-500 font-medium hover:text-white hover:bg-sky-400 rounded ">
@@ -84,18 +88,21 @@
             </ul>
           </li>
 
+          <!-- Sportruházat -->
           <li
             class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow">Sportruházat</RouterLink>
             <i class="fa-solid fa-angle-right w-6 text-center"></i>
           </li>
 
+          <!-- Kapcsolat -->
           <li
             class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow">Kapcsolat</RouterLink>
             <i class="fa-solid fa-angle-right w-6 text-center"></i>
           </li>
 
+          <!-- Szállítás és fizetés -->
           <li
             class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
             <RouterLink to="#" class="flex-grow">Szállítás és fizetés</RouterLink>
@@ -106,10 +113,12 @@
     </div>
   </nav>
 </template>
+
+
 <script setup>
 import BaseMobileNavBarDrop from './BaseMobileNavBarDrop.vue';
 
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const menuOpen = ref(false);
 
@@ -126,7 +135,21 @@ const mobileToggleTapkieg = () => {
 const showBrandsMenu = ref(false);
 const mobileToggleBrands = () => {
   showBrandsMenu.value = !showBrandsMenu.value;
+  console.log("showBrandsMenu.value: ", showBrandsMenu.value)
 }
+
+const handleClickAway= (evt) => {
+  const nav = document.querySelector('nav')
+
+  if(nav && !nav.contains(evt.target)){
+    showBrandsMenu.value = false
+    showTapkiegMenu.value = false
+  }
+}
+
+onMounted(()=>{
+  document.addEventListener('click', handleClickAway)
+})
 </script>
 
 <style>
