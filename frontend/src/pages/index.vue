@@ -58,7 +58,6 @@ import BaseHeader from '@layout/BaseHeader.vue'
 import BaseFooter from '@layout/BaseFooter.vue'
 import BaseProductCard from '@layouts/BaseProductCard.vue';
 
-import { defineStore } from 'pinia';
 import { useProductStore } from '@stores/ProductStore.mjs';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref } from 'vue';

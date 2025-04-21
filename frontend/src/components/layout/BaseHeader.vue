@@ -117,10 +117,11 @@
 
 <script setup>
 import BaseMobileNavBarDrop from './BaseMobileNavBarDrop.vue';
-
+import { useRouter} from 'vue-router';
 import { onMounted, ref } from 'vue'
 
 const menuOpen = ref(false);
+const route = useRouter();
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
@@ -138,6 +139,7 @@ const mobileToggleBrands = () => {
   console.log("showBrandsMenu.value: ", showBrandsMenu.value)
 }
 
+//Elkattintáshoz megírt függvény, és a hozzá tartozó eseményfigyelő.
 const handleClickAway= (evt) => {
   const nav = document.querySelector('nav')
 
@@ -148,7 +150,11 @@ const handleClickAway= (evt) => {
 }
 
 onMounted(()=>{
-  document.addEventListener('click', handleClickAway)
+  document.addEventListener('click', handleClickAway);
+  route.afterEach(()=>{
+    showBrandsMenu.value = false;
+    showTapkiegMenu.value = false;
+  })
 })
 </script>
 
