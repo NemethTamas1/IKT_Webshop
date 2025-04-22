@@ -57,12 +57,12 @@
 
           <!-- Minden gyártó -->
           <li class="text-lg relative">
-            <div @click="mobileToggleBrands"
+            <div @click="toggleDropdown('minden-gyarto')"
               class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:text-white">
               <span class="flex-grow font-medium">Minden gyártó</span>
               <i class="fa-solid w-6 text-center " :class="showBrandsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </div>
-            <ul v-if="showBrandsMenu"
+            <ul v-if="activeDropdown === 'minden-gyarto'"
               class="md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1 ">
               <BaseMobileNavBarDrop :linkText="'/brands/scitec'" menuOption="Scitec" />
               <BaseMobileNavBarDrop :linkText="'/brands/builder'" menuOption="Builder" />
@@ -72,14 +72,14 @@
 
           <!-- Táplálékkiegészítők -->
           <li class="text-lg relative">
-            <div @click="mobileToggleTapkieg"
+            <div @click="toggleDropdown('taplalekkiegeszitok')"
               class="text-lg flex justify-between cursor-pointer items-center p-2 text-sky-500 font-medium hover:text-white hover:bg-sky-400 rounded ">
               <span class="font-medium">Táplálékkiegészítők</span>
               <i class="fa-solid w-6 text-center" :class="showTapkiegMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
             </div>
 
             <!-- Tápkiegek menüpontjában lévő termékek -->
-            <ul v-if="showTapkiegMenu"
+            <ul v-if="activeDropdown === 'taplalekkiegeszitok'"
               class="no-transform md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1">
               <BaseMobileNavBarDrop linkText="/proteins/Proteins" menuOption="Fehérjék" class="no-transform" />
               <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Multivitaminok" class="no-transform" />
@@ -124,10 +124,22 @@ import { onMounted, ref } from 'vue'
 const menuOpen = ref(false);
 const navMenuRef = ref(null);
 const route = useRouter();
+const activeDropdown = ref(null);
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };
+
+// Itt állítjuk be, hogy mi legyen az activeDropDown értéke.
+// Ha egyezik, marad, ha más, beállítja arra.
+// A DOM pedig attól függően változik, milyen értéket tárol a változó.
+const toggleDropdown = (type) => {
+  if(activeDropdown.value === type) {
+    activeDropdown.value = null;
+  } else {
+    activeDropdown.value = type;
+  }
+}
 
 // ki-be csukogatás
 const showTapkiegMenu = ref(false);
@@ -142,11 +154,13 @@ const mobileToggleBrands = () => {
 }
 
 //Elkattintáshoz megírt függvény, és a hozzá tartozó eseményfigyelő.
+//Már mobil nézeten is.
 const handleClickAway= (evt) => {
   if(navMenuRef.value && !navMenuRef.value.contains(evt.target)){
     showBrandsMenu.value = false;
     showTapkiegMenu.value = false;
     menuOpen.value = false;
+    activeDropdown.value = false;
   }
 }
 
