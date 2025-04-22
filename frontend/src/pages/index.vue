@@ -62,7 +62,6 @@
 
 <script setup>
 import BaseHeader from '@layout/BaseHeader.vue'
-import BaseFooter from '@layout/BaseFooter.vue'
 import BaseProductCard from '@layouts/BaseProductCard.vue';
 import BaseFooter from '@layout/BaseFooter.vue';
 
