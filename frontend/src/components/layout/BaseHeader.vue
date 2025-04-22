@@ -1,10 +1,11 @@
 <template>
   <nav class="bg-white">
-    <div class="flex justify-evenly p-3 border-b-2 flex-wrap">
+    <div ref="navMenuRef" class="flex justify-evenly p-3 border-b-2 flex-wrap">
       <RouterLink to="/" class="flex items-center space-x-3">
         <span class="self-center text-2xl font-semibold">Buzz<i class="fa-solid fa-bolt text-sky-500"></i>Shop</span>
       </RouterLink>
 
+      <!-- Keresés mező -->
       <form class="w-1/2 lg:w-2/5 xl:w-1/5">
         <label for="default-search"
           class="mb-2 text-sm font-medium sr-only text-white">Keresés</label>
@@ -33,7 +34,7 @@
             <i class="fa-solid fa-basket-shopping text-2xl"></i>
           </button>
 
-          <!-- menü -->
+          <!-- Hamburger menü -->
           <button class="block lg:hidden text-sky-800" @click="toggleMenu">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -121,6 +122,7 @@ import { useRouter} from 'vue-router';
 import { onMounted, ref } from 'vue'
 
 const menuOpen = ref(false);
+const navMenuRef = ref(null);
 const route = useRouter();
 
 const toggleMenu = () => {
@@ -141,16 +143,17 @@ const mobileToggleBrands = () => {
 
 //Elkattintáshoz megírt függvény, és a hozzá tartozó eseményfigyelő.
 const handleClickAway= (evt) => {
-  const nav = document.querySelector('nav')
-
-  if(nav && !nav.contains(evt.target)){
-    showBrandsMenu.value = false
-    showTapkiegMenu.value = false
+  if(navMenuRef.value && !navMenuRef.value.contains(evt.target)){
+    showBrandsMenu.value = false;
+    showTapkiegMenu.value = false;
+    menuOpen.value = false;
   }
 }
 
 onMounted(()=>{
   document.addEventListener('click', handleClickAway);
+  //document.addEventListener('touchstart', toggleMenu);
+
   route.afterEach(()=>{
     showBrandsMenu.value = false;
     showTapkiegMenu.value = false;
