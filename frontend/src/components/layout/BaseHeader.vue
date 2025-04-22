@@ -1,11 +1,11 @@
 <template>
   <nav class="bg-white">
-    <div class="flex justify-between p-3 border-b-2 flex-wrap">
+    <div class="flex justify-evenly p-3 border-b-2 flex-wrap">
       <RouterLink to="/" class="flex items-center space-x-3">
         <span class="self-center text-2xl font-semibold">Buzz<i class="fa-solid fa-bolt text-sky-500"></i>Shop</span>
       </RouterLink>
 
-      <form class="w-1/2 xl:w-1/5">
+      <form class="w-1/2 lg:w-2/5 xl:w-1/5">
         <label for="default-search"
           class="mb-2 text-sm font-medium sr-only text-white">Keresés</label>
         <div class="relative">
@@ -28,13 +28,13 @@
 
       <div class="flex justify-between items-center p-3">
         <!--Kosár-->
-        <div class="flex items-center space-x-6">
-          <button class="block md:hidden text-sky-600">
+        <div class="flex items-center justify-end">
+          <button class="text-sky-600">
             <i class="fa-solid fa-basket-shopping text-2xl"></i>
           </button>
 
           <!-- menü -->
-          <button class="block md:hidden text-sky-800" @click="toggleMenu">
+          <button class="block lg:hidden text-sky-800" @click="toggleMenu">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M1 1h15M1 7h15M1 13h15" />
@@ -43,8 +43,8 @@
         </div>
       </div>
 
-      <div class="w-full md:block md:w-auto bg-sky-50/65 rounded" :class="{ 'hidden': !menuOpen }">
-        <ul class="nav-primary flex flex-col p-4 md:flex-row md:p-0 md:space-x-8 md:flex "
+      <div class="w-full lg:block lg:w-auto bg-sky-50/65 rounded" :class="{ 'hidden': !menuOpen }">
+        <ul class="nav-primary flex flex-col p-4 md:flex-row md:p-0 md:space-x-4 md:flex "
           :class="{ 'hidden': !menuOpen }">
           <!-- Mobilon más lesz a nézet!!! -->
 

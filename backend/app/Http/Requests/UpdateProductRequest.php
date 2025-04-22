@@ -14,11 +14,11 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required'],
-            'description' => ['required'],
-            'weight' => ['required'],
-            'flavour' => ['required'],
-            'price' => ['required'],
+            'category_id' => ['required','exists:categories,id'],
+            'description' => ['required', 'string', 'max:255'],
+            'weight' => ['required', 'integer', 'max:9999'],
+            'flavour' => ['required', 'string', 'max:45'],
+            'price' => ['required', 'integer'],
         ];
     }
 }

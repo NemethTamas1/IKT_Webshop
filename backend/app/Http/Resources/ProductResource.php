@@ -11,6 +11,7 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'category_id' => $this->whenLoaded('categories',$this->id),
             'description' => $this->description,
             'weight' => $this->weight,
             'flavour' => $this->flavour,
@@ -18,8 +19,8 @@ class ProductResource extends JsonResource
             'categories' => $this->whenLoaded('categories', function () {
                 return $this->categories->map(function ($category) {
                     return [
-                        'brand' => $category->brand,
                         'category_name' => $category->category_name,
+                        'brand' => $category->brand,
                         'stock' => $category->pivot->stock,
                         'available' => $category->pivot->available
                     ];
