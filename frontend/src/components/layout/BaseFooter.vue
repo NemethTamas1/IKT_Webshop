@@ -8,7 +8,7 @@
 
 
                 <!-- Info Detail -->
-                <div class="w-4/5 mx-auto justify-center grid col-span-2 my-12 lg:my-0">
+                <div class="w-4/5 mx-auto justify-center text-center grid col-span-2">
                     <RouterLink to="/" class="flex items-center justify-center space-x-3">
                         <span class="text-3xl text-center text-sky-950 font-bold mb-4 self-center">Buzz<i
                                 class="fa-solid fa-bolt text-white"></i>Shop</span>
@@ -20,7 +20,8 @@
 
                     <div class="w-full flex flex-row text-base 2xl:text-lg py-4 italic">
                         <div class="mx-auto">
-                            <a href="/" class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Főoldal</a>
+                            <a href="/"
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Főoldal</a>
                         </div>
                         <div class="mx-auto">
                             <a href="/brands"
@@ -59,7 +60,7 @@
                 </div>
 
 
-                <div class="grid col-span-2 w-4/5 mx-auto mt-4 lg:mt-0">
+                <div class="grid col-span-2 w-4/5 md:w-3/4 mx-auto mt-4 lg:mt-0">
                     <h4 class="text-2xl text-center text-sky-50 font-bold uppercase mb-4">Feliratkozás</h4>
                     <h5
                         class="font-semibold text-center py-2 2xl:text-xl lg:text-lg md:text-sm text-amber-50 italic border-t-2 border-gray-100 border-opacity-10">
@@ -78,40 +79,28 @@
                     </form>
                 </div>
 
-                <div class="grid grid-cols-1 w-full lg:w-5/6 mx-auto justify-center mt-12 lg-mt-0">
-
-                    <div class="grid pt-2 2xl:text-lg justify-center align-middle my-auto mr-4 font-semibold">
+                <div class="grid grid-cols-1 w-full md:w-3/4 lg:w-5/6 mx-auto justify-center align-top mt-12 md:mt-0">
+                    <div class="grid pt-2 2xl:text-lg justify-center my-auto mr-4 font-semibold">
                         <h4 class="text-3xl text-sky-50 font-bold mb-4">Elérhetőség</h4>
                     </div>
-
-                    <!-- Elérhetőség elemek -->
-                    <div class="grid lg:grid-cols-3 sm:grid-cols-1 w-full justify-center pt-2 2xl:text-lg font-semibold">
-                        <!-- Cím -->
-                        <div class="md:mx-auto">   
-                            <a href="#" class="flex flex-row lg:flex-col items-center space-x-2 py-1 lg:space-x-0 lg:space-y-2">
-                                <i class="fa-solid fa-map-location-dot text-center" aria-hidden="true"></i>
-                                <span class="hover:text-lime-300 lg:text-sm">1111 Kozma u. 13.</span>
-                            </a>
-                        </div>
-
-                        <!-- Telefon -->
-                        <div class="md:mx-auto">
-                            <a href="#" class="flex flex-row lg:flex-col items-center space-x-2 py-1 lg:space-x-0 lg:space-y-2">
-                                <i class="fa fa-phone text-center" aria-hidden="true"></i>
-                                <span class="hover:text-lime-300 w-3/4 md:w-full lg:text-sm">+36 1 123 4567</span>
-                            </a>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="grid flex-wrap w-full">
-                            <a href="#" class="md:mx-auto flex flex-row lg:flex-col items-center space-x-2 py-1 lg:space-x-0 lg:space-y-2">
-                                <i class="fa fa-envelope text-center " aria-hidden="true"></i>
-                                <span class="hover:text-lime-300 lg:text-sm">info@buzzshop.com</span>
-                            </a>
+                    <div class="contact-container md:border-t-2 md:border-gray-100 md:border-opacity-10">
+                        <div class="contact-grid justify-center py-4">
+                            <div class="contact-item mx-auto lg:m-auto">
+                                <i class="fa fa-phone"></i>
+                                <span class="contact-text">+36 1 123 4567</span>
+                            </div>
+                            <div class="contact-item mx-auto lg:m-auto">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <span class="contact-text">1111 Kozma u. 13.</span>
+                            </div>
+                            <div class="contact-item mx-auto lg:m-auto">
+                                <i class="fa fa-envelope"></i>
+                                <span class="contact-text">info@buzzshop.com</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-4 w-full justify-center items-center mx-auto align-middle mt-4 lg:py-4
+                    <div class="grid grid-cols-4 py-4 w-full justify-center items-center mx-auto align-middle mt-4
                         border-y-2 border-gray-100 border-dashed border-opacity-70 
                         ">
                         <a href="" class="text-white text-center transition-all ease-in-out duration-200">
@@ -163,10 +152,32 @@
 }
 
 #newsletter:hover {
-    color: white !important;
     background-position: 100% 100%;
     box-shadow:
         0 6px 20px rgba(0, 0, 0, 0.15),
         inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: clamp(0.875rem, 1vw + 0.5rem, 1.125rem);
+}
+
+.contact-text {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+.container {
+    width: 100%;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.4rem;
 }
 </style>
