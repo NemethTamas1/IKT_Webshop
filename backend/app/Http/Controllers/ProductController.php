@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['categories','brands'])->get();
+        $products = Product::with(['category', 'brand','variants'])->get();
         return ProductResource::collection($products);
     }
 
@@ -23,7 +23,7 @@ class ProductController extends Controller
     }
     public function show(Product $product)
     {
-        $product->load('categories');
+        $product->load('categories','brands');
         return new ProductResource($product);
     }
 

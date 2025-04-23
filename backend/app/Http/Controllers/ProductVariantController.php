@@ -4,47 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductVariantRequest;
 use App\Http\Requests\UpdateProductVariantRequest;
+use App\Http\Resources\ProductVariantResource;
 use App\Models\ProductVariant;
 
 class ProductVariantController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $productVariant = ProductVariant::with(['product'])->get();
+        return ProductVariantResource::collection($productVariant);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreProductVariantRequest $request)
+    public function store(StoreProductVariantRequest $request, ProductVariant $productVariant)
     {
-        //
+        $data = $request->validated();
+        $productVariant = ProductVariant::create($data);
+        return new ProductVariantResource($productVariant);
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(ProductVariant $productVariant)
     {
-        //
+        $productVariant->load('products');
+        return new ProductVariantResource($productVariant);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateProductVariantRequest $request, ProductVariant $productVariant)
     {
-        //
+        $data = $request->validated();
+        $productVariant->update($data);
+        return new ProductVariantResource($productVariant);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ProductVariant $productVariant)
     {
-        //
+        return ($productVariant->delete()) ? response()->noContent() : abort(500);
     }
 }

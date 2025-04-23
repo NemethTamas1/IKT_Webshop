@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('slug', 100)->unique();
             $table->text('description')->nullable();
             $table->string('product_line')->nullable(); 
-            $table->boolean('avaliable')->default(true);
+            $table->boolean('available')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

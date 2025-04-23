@@ -21,4 +21,8 @@ class ProductVariant extends Model
         "updated_at",
         "deleted_at",
     ];
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

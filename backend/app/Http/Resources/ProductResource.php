@@ -11,22 +11,21 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category_id' => $this->whenLoaded('categories', $this->id),
+            'category_id' => $this->whenLoaded('category', $this->id),
+            'brand_id' => $this->brand_id,
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
             'product_line' => $this->product_line,
-            'price' => $this->price,
-            'avaliable' => $this->avaliable,
-            'categories' => $this->whenLoaded('categories', function () {
-                return $this->categories->map(function ($category) {
-                    return [
-                        'name' => $category->name,
-                        'slug' => $category->brand,
-                        'description' => $category->pivot->stock,
-                    ];
-                });
-            })
+            'available' => $this->available,
+            'created_at' => $this->created_at,
+            'category' => $this->whenLoaded('category', function () {
+                return new CategoryResource($this->category);
+            }),
+            'brand' => $this->whenLoaded('brand', function() {
+                return new BrandResource($this->brand);
+            }),
+            'variants' => ProductVariantResource::collection($this->whenLoaded('variants')),
         ];
     }
 }
