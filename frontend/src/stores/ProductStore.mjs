@@ -43,9 +43,9 @@ export const useProductStore = defineStore("products", () => {
   }
 
   // Új kiegészítő funkciók
-  // Képek útvonalának meghatározása átkerült ide a | brand-weight-flavour komponensből |
-  const getImagePath = (brand, weight, flavour, description) => {
-    if (!brand || !weight || !flavour) return "/default-image.webp";
+  // Képek útvonalának meghatározása átkerült ide a | brand-quantity-flavour komponensből |
+  const getImagePath = (brand, quantity, flavour, description) => {
+    if (!brand || !quantity || !flavour) return "/default-image.webp";
 
     const getProductLine = (brand, description) => {
       if (brand === "Scitec") {
@@ -57,7 +57,7 @@ export const useProductStore = defineStore("products", () => {
 
     const images = import.meta.glob("@/assets/products_img/**/*.webp", { eager: true });
     const subfolder = getProductLine(brand, description);
-    const pattern = `products_img/${brand}/${subfolder}/${weight}/${weight}_${flavour}.webp`;
+    const pattern = `products_img/${brand}/${subfolder}/${quantity}/${quantity}_${flavour}.webp`;
 
     const key = Object.keys(images).find((path) => path.toLowerCase().includes(pattern.toLowerCase()));
     
@@ -66,16 +66,16 @@ export const useProductStore = defineStore("products", () => {
 
   // Egy adott terméknek a részletes betöltése + állapottal kezelése és megőrzése
   // (majd később kosárhoz és az összesítőhöz jó lehet.)
-  const loadProductDetails = async (brand, weight, flavour) => {
+  const loadProductDetails = async (brand, quantity, flavour) => {
     try {
       loading.value = true;
 
-      if (!brand || !weight || !flavour) {
+      if (!brand || !quantity || !flavour) {
         console.error("loadProductDetails: Hiányzó paraméterek!");
         return;
       }
 
-      const weightNumber = weight.toString().replace("gr", "");
+      const weightNumber = quantity.toString().replace("gr", "");
       const productData = await sortGetOneProduct(brand, Number(weightNumber), flavour);
 
       if (productData?.length > 0) {
@@ -175,7 +175,7 @@ export const useProductStore = defineStore("products", () => {
       );
       filtered.value = brandFiltered.filter(
         (product, index, self) =>
-          index === self.findIndex((p) => p.weight === product.weight)
+          index === self.findIndex((p) => p.quantity === product.quantity)
       );
       // Debug
       console.log("Szűrt termékek:", filtered.value);
@@ -186,11 +186,11 @@ export const useProductStore = defineStore("products", () => {
     }
   };
 
-  const getFlavoursByDescriptionAndWeight = async (description, weight) => {
+  const getFlavoursByDescriptionAndWeight = async (description, quantity) => {
     try {
       const flavours = [];
       products.value.forEach((product) => {
-        if (product.description === description && product.weight === weight) {
+        if (product.description === description && product.quantity === quantity) {
           flavours.push(product.flavour);
         }
       });
@@ -201,16 +201,16 @@ export const useProductStore = defineStore("products", () => {
     }
   };
 
-  const sortGetOneProduct = async (brandName, weight, flavour) => {
+  const sortGetOneProduct = async (brandName, quantity, flavour) => {
     try {
       const threeFiltered = [];
       products.value.forEach((product) => {
         // Ellenőrizzük és biztosítsuk a megfelelő típusú összehasonlítást
-        const productWeight = Number(product.weight); // Konvertálás számra ha szükséges
+        const productWeight = Number(product.quantity); // Konvertálás számra ha szükséges
         if (
           product.categories[0].brand.toLowerCase() ===
             brandName.toLowerCase() &&
-          productWeight === weight &&
+          productWeight === quantity &&
           product.flavour.toLowerCase() === flavour.toLowerCase()
         ) {
           threeFiltered.push(product);

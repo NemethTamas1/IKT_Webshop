@@ -4,18 +4,18 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateBrandRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
-
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:categories,category_name', 'string', 'max:35'],
+            'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', 'unique:brands', 'slug'],
+            'logo_path' => ['string', 'max:255'],
             'description' => ['string', 'max:255'],
         ];
     }

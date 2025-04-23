@@ -35,7 +35,7 @@ class ProductDatabaseTest extends TestCase
 
     public function test_products_table_has_weight_column(): void
     {
-        $this->assertTrue(Schema::hasColumn('products', 'weight'), 'A weight mező nem létezik a products táblában');
+        $this->assertTrue(Schema::hasColumn('products', 'quantity'), 'A quantity mező nem létezik a products táblában');
     }
 
     public function test_products_table_has_flavour_column(): void
@@ -70,7 +70,7 @@ class ProductDatabaseTest extends TestCase
                 'id',
                 'category_id',
                 'description',
-                'weight',
+                'quantity',
                 'flavour',
                 'price',
                 'created_at',

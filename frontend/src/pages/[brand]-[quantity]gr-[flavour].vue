@@ -6,7 +6,7 @@
           <div class="grid col-span-1">
             <img :src="productStore.getImagePath(
               productStore.currentProduct?.categories?.[0]?.brand,
-              productStore.currentProduct?.weight,
+              productStore.currentProduct?.quantity,
               productStore.selectedFlavour,
               productStore.currentProduct?.description
             )" :alt="productStore.currentProduct?.description"
@@ -23,7 +23,7 @@
             </p>
             <p class="my-2 font-extrabold text-4xl">
               {{ productStore.currentProduct?.description }}
-              <i>({{ productStore.currentProduct?.weight }} gr)</i>
+              <i>({{ productStore.currentProduct?.quantity }} gr)</i>
             </p>
             <p class="my-2 font-semibold text-4xl">
               {{ productStore.currentProduct?.price }} Ft
@@ -31,10 +31,10 @@
             <p class="my-2 font-semibold italic text-gray-500 text-xl">
               {{
                 productStore.currentProduct?.price &&
-                  productStore.currentProduct?.weight
+                  productStore.currentProduct?.quantity
                   ? Math.round(
                     (productStore.currentProduct.price /
-                      productStore.currentProduct.weight) *
+                      productStore.currentProduct.quantity) *
                     1000
                   )
                   : ''
@@ -105,7 +105,7 @@ const productStore = useProductStore();
 
 // Route helpers
 const getBrandFromRoute = () => route.params.brand;
-const getWeightFromRoute = () => Number(route.params.weight);
+const getWeightFromRoute = () => Number(route.params.quantity);
 const getFlavourFromRoute = () => route.params.flavour;
 
 // Restore state from localStorage on page load (e.g., after F5 refresh)
@@ -114,19 +114,19 @@ onMounted(async () => {
     await productStore.restoreStateFromLocalStorage();
 
     const brand = getBrandFromRoute();
-    const weight = getWeightFromRoute();
+    const quantity = getWeightFromRoute();
     const flavour = getFlavourFromRoute();
 
     // Load product details only if needed
     if (
       productStore.currentProduct &&
       (productStore.currentProduct.categories?.[0]?.brand !== brand ||
-        productStore.currentProduct.weight?.toString() !== weight?.toString() ||
+        productStore.currentProduct.quantity?.toString() !== quantity?.toString() ||
         productStore.currentFlavour !== flavour)
     ) {
-      await productStore.loadProductDetails(brand, weight, flavour);
+      await productStore.loadProductDetails(brand, quantity, flavour);
     } else if (!productStore.currentProduct) {
-      await productStore.loadProductDetails(brand, weight, flavour);
+      await productStore.loadProductDetails(brand, quantity, flavour);
     }
 
     await productStore.saveStateToLocalStorage();
@@ -139,11 +139,11 @@ onMounted(async () => {
 const onFlavourChange = () => {
   productStore.updateSelectedFlavour(productStore.selectedFlavour);
   const brand = productStore.currentProduct?.categories?.[0]?.brand;
-  const weight = productStore.currentProduct?.weight;
+  const quantity = productStore.currentProduct?.quantity;
   const flavour = productStore.selectedFlavour;
 
-  if (brand && weight && flavour) {
-    productStore.loadProductDetails(brand, weight, flavour);
+  if (brand && quantity && flavour) {
+    productStore.loadProductDetails(brand, quantity, flavour);
   }
   productStore.saveStateToLocalStorage();
   console.log(`Az új íz, amire váltottunk: >> ${productStore.selectedFlavour}`);

@@ -133,7 +133,7 @@
 #newsletter {
     cursor: pointer;
     color: rgba(3, 77, 151, 0.9) !important;
-    font-weight: 800;
+    font-quantity: 800;
     padding: 10px;
     background-size: 200% 200%;
     background-image: linear-gradient(145deg,

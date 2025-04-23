@@ -11,18 +11,19 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category_id' => $this->whenLoaded('categories',$this->id),
+            'category_id' => $this->whenLoaded('categories', $this->id),
+            'name' => $this->name,
+            'slug' => $this->slug,
             'description' => $this->description,
-            'weight' => $this->weight,
-            'flavour' => $this->flavour,
+            'product_line' => $this->product_line,
             'price' => $this->price,
+            'avaliable' => $this->avaliable,
             'categories' => $this->whenLoaded('categories', function () {
                 return $this->categories->map(function ($category) {
                     return [
-                        'category_name' => $category->category_name,
-                        'brand' => $category->brand,
-                        'stock' => $category->pivot->stock,
-                        'available' => $category->pivot->available
+                        'name' => $category->name,
+                        'slug' => $category->brand,
+                        'description' => $category->pivot->stock,
                     ];
                 });
             })

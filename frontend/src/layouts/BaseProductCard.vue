@@ -8,10 +8,10 @@
             <div class="h-64 overflow-hidden flex items-center justify-center my-auto"> 
                 <!--  -->
                 <router-link
-                    :to="`/${product.categories[0].brand.toLowerCase()}-${product.weight}gr-${product.flavour.toLowerCase()}`">
+                    :to="`/${product.categories[0].brand.toLowerCase()}-${product.quantity}gr-${product.flavour.toLowerCase()}`">
                     <img :src="productStore.getImagePath(
                         product.categories[0].brand,
-                        product.weight,
+                        product.quantity,
                         product.flavour,
                         product.description
                     )" :alt="product.description" class="max-w-[200px] max-h-[200px]" @error="handleImageError">
@@ -32,10 +32,10 @@
                         {{ product.flavour }}
                     </span>
                 </div>
-                <p class="text-gray-700 text-base">{{ product.weight }} gr</p>
+                <p class="text-gray-700 text-base">{{ product.quantity }} gr</p>
                 <div class="mt-6">
                     <router-link
-                        :to="`/${product.categories[0].brand.toLowerCase()}-${product.weight}gr-${product.flavour.toLowerCase()}`">
+                        :to="`/${product.categories[0].brand.toLowerCase()}-${product.quantity}gr-${product.flavour.toLowerCase()}`">
                         <button class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">
                             Kosárba
                         </button>

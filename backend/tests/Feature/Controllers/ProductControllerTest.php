@@ -31,7 +31,7 @@ class ProductControllerTest extends TestCase
         $this->baseData = [
             'category_id' => $category->id,
             'description' => 'test_description',
-            'weight' => 666,
+            'quantity' => 666,
             'flavour' => 'test_flavour',
             'price' => 666,
             'categories' => [
@@ -78,7 +78,7 @@ class ProductControllerTest extends TestCase
         $updateData = [
             'category_id' => 1,
             'description' => 'test_description_modified',
-            'weight' => 555,
+            'quantity' => 555,
             'flavour' => 'test_flavour_modified',
             'price' => 555,
         ];

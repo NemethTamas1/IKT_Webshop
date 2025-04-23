@@ -114,7 +114,7 @@ onMounted(async () => {
 
 .headerlineOne {
   font-size: clamp(2.2rem, 2.3vw, 3.5rem);
-  font-weight: 800;
+  font-quantity: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   color: #041e4e;
@@ -151,7 +151,7 @@ onMounted(async () => {
 
 .checkitout {
   font-size: clamp(1rem, 2vw, 1.4rem);
-  font-weight: 800;
+  font-quantity: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   color: #041e4e;
@@ -163,7 +163,7 @@ onMounted(async () => {
 
 .checkitout:hover {
   font-size: clamp(1rem, 2vw, 1.4rem);
-  font-weight: 800;
+  font-quantity: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   color: rgb(230, 255, 255);

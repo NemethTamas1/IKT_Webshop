@@ -8,10 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 35)->unique(); 
-            $table->string('slug', 35)->nullable(); // URL-barát név kialakítása
+            $table->string('name', 50)->unique();
+            $table->string('slug', 50)->nullable()->unique(); // URL-barát név kialakítása
+            $table->string('logo_path')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -19,6 +20,6 @@ return new class extends Migration
     }
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('brands');
     }
 };
