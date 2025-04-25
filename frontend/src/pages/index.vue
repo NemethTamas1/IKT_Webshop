@@ -1,15 +1,11 @@
 <template>
   <BaseHeader />
-
-
   <div id="banner" class="w-full mx-auto pl-4 mb-24 md:min-h-svh grid grid-cols-5 bg-right">
     <div class="grid col-span-1 lg:col-span-2 mx-auto md:px-4 w-auto lg:max-w-[700px]">
-
       <p class="headerlineOne my-auto max-w-fit h-fit shadow-xl pr-5 pl-2"
-        style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
+          style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
         Tavaszi Mega Akció!
       </p>
-
       <div class="headerlineTwo max-w-fit" style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
         <ul class="mb-8">
           <li class="font-bold"> Minden táplálékkiegészítő és vitamin</li>
@@ -18,19 +14,15 @@
             Ingyenes kiszállítással!*
           </li>
         </ul>
-
         <p class="headerlineThree text-base h-fit max-w-fit bg-gray-500/50 p-1 text-amber-50 rounded-md italic"
-          style="font-family:'Montserrat',Arial,Helvetica,sans-serif;">
+            style="font-family:'Montserrat',Arial,Helvetica,sans-serif;">
           *<b>Limitált ajánlat:</b> Május 22-31. között!
         </p>
-
         <button class="checkitout transition-all ease-in-out duration-200 mt-8">
           Megnézem
         </button>
       </div>
-
     </div>
-
     <div class="grid col-span-4 lg:col-span-3 m-auto w-1/2 lg:w-full">
       <!-- Ez a másik, jobboldali col. Üresen marad a kép miatt -->
     </div>
@@ -39,18 +31,15 @@
   <div v-if="productStore.filtered && productStore.filtered.length" class="mx-auto mb-48">
     <p class="text-3xl font-extrabold my-2 underline underline-offset-4 text-center mb-8">Kiemelt akcióink:</p>
     <div class="buttons space-x-8 flex justify-center">
-      <button @click="changeToBuilder" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded ">
-        Builder
-      </button>
-
-      <button @click="changeToScitec" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">
-        Scitec
-      </button>
-
       <button @click="changeToProNutrition" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">
         Pro Nutrition
       </button>
-
+      <button @click="changeToScitec" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">
+        Scitec
+      </button>
+      <button @click="changeToBuilder" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded">
+        Builder
+      </button>
     </div>
     <BaseProductCard :products="productStore.filtered" />
   </div>
@@ -61,42 +50,38 @@
 </template>
 
 <script setup>
-import BaseHeader from '@layout/BaseHeader.vue'
+import BaseHeader from '@layout/BaseHeader.vue';
 import BaseProductCard from '@layouts/BaseProductCard.vue';
 import BaseFooter from '@layout/BaseFooter.vue';
-
 import { useProductStore } from '@stores/ProductStore.mjs';
 import { onMounted, ref } from 'vue';
 
+// Store inicializálása
 const productStore = useProductStore();
-const filteredByBrand = ref("Builder");
+const currentBrand = ref("Builder");
 
-const changeToProNutrition = (async () => {
-  filteredByBrand.value = "Pro Nutrition";
-  await productStore.sortProductsByBrand(filteredByBrand.value);
-});
-const changeToScitec = (async () => {
-  filteredByBrand.value = "Scitec";
-  await productStore.sortProductsByBrand(filteredByBrand.value);
-});
-const changeToBuilder = (async () => {
-  filteredByBrand.value = "Builder";
-  productStore.sortProductsByBrand(filteredByBrand.value);
-});
+const changeToProNutrition = async () => {
+  currentBrand.value = "Pro Nutrition";
+  await productStore.sortProductsByBrand(currentBrand.value);
+};
+const changeToScitec = async () => {
+  currentBrand.value = "Scitec";
+  await productStore.sortProductsByBrand(currentBrand.value);
+};
+const changeToBuilder = async () => {
+  currentBrand.value = "Builder";
+  await productStore.sortProductsByBrand(currentBrand.value);
+};
+
 onMounted(async () => {
   try {
     await productStore.getProducts();
-    await productStore.sortProductsByBrand(filteredByBrand.value);
-    console.log("Termékek betöltve:", productStore.filtered);
+    await productStore.sortProductsByBrand(currentBrand.value);
   } catch (error) {
     console.error("Hiba történt:", error);
   }
 });
-
-
-
 </script>
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Rasa:ital,wght@0,300..700;1,300..700&family=Tourney:wght@100..900&display=swap');
 
@@ -114,7 +99,6 @@ onMounted(async () => {
 
 .headerlineOne {
   font-size: clamp(2.2rem, 2.3vw, 3.5rem);
-  font-quantity: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   color: #041e4e;
@@ -151,7 +135,6 @@ onMounted(async () => {
 
 .checkitout {
   font-size: clamp(1rem, 2vw, 1.4rem);
-  font-quantity: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   color: #041e4e;
@@ -163,7 +146,6 @@ onMounted(async () => {
 
 .checkitout:hover {
   font-size: clamp(1rem, 2vw, 1.4rem);
-  font-quantity: 800;
   font-style: italic;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   color: rgb(230, 255, 255);

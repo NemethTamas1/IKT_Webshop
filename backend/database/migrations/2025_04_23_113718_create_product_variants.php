@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('stock')->default(0); 
             $table->integer('price')->default(666666); 
             $table->boolean('available')->default(true);
+            $table->string('image_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

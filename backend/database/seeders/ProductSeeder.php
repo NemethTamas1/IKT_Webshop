@@ -39,7 +39,7 @@ class ProductSeeder extends Seeder
                 'category_id' => $proteinCategory->id,
                 'name' => 'Jumbo!',
                 'slug' => 'jumbo',
-                'description' => 'Fehérje-kompley a gyors tömegnöveléshez',
+                'description' => 'Fehérje-komplex a gyors tömegnöveléshez',
                 'product_line' => 'Jumbo!'
             ],
             [

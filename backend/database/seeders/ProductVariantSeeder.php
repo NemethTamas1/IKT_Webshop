@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductVariantSeeder extends Seeder
 {
@@ -38,17 +39,36 @@ class ProductVariantSeeder extends Seeder
                 'unit' => 'gr',
                 'flavours' => [
                     'standard' => [
-                        'Vanilla', 'Chocolate', 'Strawberry', 'Chocolate-Nuts',
-                        'Strawberry-WhiteChoco', 'Chocolate-Coconut', 'Chocolate-Cookie',
-                        'Banana', 'Kiwi-Banana', 'Coconut', 'Lemon-Cheesecake',
-                        'Vanilla-Raspberries', 'Ice-Coffe', 'Peanut-Butter',
-                        'Salted-Caramel', 'White-Chocolate', 'Pistachio-White Chocolate'
+                        'Vanilla',
+                        'Chocolate',
+                        'Strawberry',
+                        'Chocolate-Nuts',
+                        'Strawberry-WhiteChoco',
+                        'Chocolate-Coconut',
+                        'Chocolate-Cookie',
+                        'Banana',
+                        'Kiwi-Banana',
+                        'Coconut',
+                        'Lemon-Cheesecake',
+                        'Vanilla-Raspberries',
+                        'Ice-Coffe',
+                        'Peanut-Butter',
+                        'Salted-Caramel',
+                        'White-Chocolate',
+                        'Pistachio-White Chocolate'
                     ],
                     // 5000g-os kiszerelésben az elérhető ízek
                     5000 => [
-                        'Chocolate-Cookie', 'Lemon-Cheesecake', 'Chocolate', 'Vanilla',
-                        'Chocolate-Nuts', 'Strawberry-WhiteChoco', 'Chocolate-Coconut',
-                        'Banana', 'Vanilla-Raspberries', 'Strawberry'
+                        'Chocolate-Cookie',
+                        'Lemon-Cheesecake',
+                        'Chocolate',
+                        'Vanilla',
+                        'Chocolate-Nuts',
+                        'Strawberry-WhiteChoco',
+                        'Chocolate-Coconut',
+                        'Banana',
+                        'Vanilla-Raspberries',
+                        'Strawberry'
                     ]
                 ]
             ],
@@ -63,7 +83,9 @@ class ProductVariantSeeder extends Seeder
                 'unit' => 'gr',
                 'flavours' => [
                     'standard' => [
-                        'Chocolate', 'Vanilla', 'Strawberry', 'Banana'
+                        'Chocolate',
+                        'Vanilla',
+                        'Strawberry'
                     ]
                 ]
             ],
@@ -73,7 +95,7 @@ class ProductVariantSeeder extends Seeder
                 'quantities' => [
                     90 => 4190,    // 90 tabi
                 ],
-                'unit' => 'tab.',
+                'unit' => 'tab',
                 'no_flavour' => true
             ],
 
@@ -83,7 +105,7 @@ class ProductVariantSeeder extends Seeder
                     60 => 3890,
                     120 => 6490
                 ],
-                'unit' => 'tab.',
+                'unit' => 'tab',
                 'no_flavour' => true
             ],
 
@@ -92,7 +114,7 @@ class ProductVariantSeeder extends Seeder
                 'quantities' => [
                     60 => 10490,
                 ],
-                'unit' => 'tab.',
+                'unit' => 'tab',
                 'no_flavour' => true
             ],
 
@@ -106,7 +128,9 @@ class ProductVariantSeeder extends Seeder
                 'unit' => 'gr',
                 'flavours' => [
                     'standard' => [
-                        'Vanilla', 'Chocolate', 'Black Raspberry-White Chocolate',
+                        'Vanilla',
+                        'Chocolate',
+                        'Black Raspberry-White Chocolate',
                         'Cookies And Cream'
                     ]
                 ]
@@ -122,7 +146,9 @@ class ProductVariantSeeder extends Seeder
                 'unit' => 'gr',
                 'flavours' => [
                     'standard' => [
-                        'Vanilla', 'Chocolate', 'Strawberry'
+                        'Vanilla',
+                        'Chocolate',
+                        'Strawberry'
                     ]
                 ]
             ],
@@ -132,7 +158,7 @@ class ProductVariantSeeder extends Seeder
                 'quantities' => [
                     100 => 2990,
                 ],
-                'unit' => 'tab.',
+                'unit' => 'tab',
                 'no_flavour' => true
             ],
 
@@ -141,7 +167,7 @@ class ProductVariantSeeder extends Seeder
                 'quantities' => [
                     60 => 1990,
                 ],
-                'unit' => 'tab.',
+                'unit' => 'tab',
                 'no_flavour' => true
             ],
 
@@ -159,7 +185,7 @@ class ProductVariantSeeder extends Seeder
                 'quantities' => [
                     60 => 4490,
                 ],
-                'unit' => 'tab.',
+                'unit' => 'tab',
                 'no_flavour' => true
             ],
 
@@ -168,7 +194,7 @@ class ProductVariantSeeder extends Seeder
                 'quantities' => [
                     90 => 2690,
                 ],
-                'unit' => 'tab.',
+                'unit' => 'tab',
                 'no_flavour' => true
             ],
         ];
@@ -176,6 +202,14 @@ class ProductVariantSeeder extends Seeder
         foreach ($variants as $productId => $variantData) {
             // Ha a termék nem létezik
             if (!$productId) continue;
+
+            // Lekérjük a termék adatait
+            $product = Product::find($productId);
+            if (!$product) continue;
+
+            // Brand név és product_line
+            $brandName = $product->brand->name;
+            $productLine = $product->product_line;
 
             foreach ($variantData['quantities'] as $quantity => $price) {
                 // Ha nincs íz
@@ -188,10 +222,11 @@ class ProductVariantSeeder extends Seeder
                         'stock' => 5,
                         'available' => true,
                         'unit' => $variantData['unit'],
+                        'image_path' => $this->generateImagePath($brandName, $productLine, $quantity, 'default'),
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
-                } 
+                }
                 // Ha van íz
                 else {
                     $flavours = isset($variantData['flavours'][$quantity])
@@ -207,6 +242,7 @@ class ProductVariantSeeder extends Seeder
                             'stock' => 5,
                             'available' => true,
                             'unit' => $variantData['unit'],
+                            'image_path' => $this->generateImagePath($brandName, $productLine, $quantity, $flavour),
                             'created_at' => now(),
                             'updated_at' => now()
                         ]);
@@ -216,5 +252,15 @@ class ProductVariantSeeder extends Seeder
         }
 
         $this->command->info('Termék variánsok sikeresen létrehozva!');
+    }
+
+    private function generateImagePath($brand, $productLine, $quantity, $flavour)
+    {
+        // Ha nincs íz, akkor default képet adunk vissza
+        if ($flavour === 'default') {
+            return null;
+        }
+
+        return "{$brand}/{$productLine}/{$quantity}/{$quantity}_{$flavour}.webp";
     }
 }
