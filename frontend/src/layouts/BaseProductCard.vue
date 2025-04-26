@@ -76,7 +76,7 @@ const generateProductUrl = (product) => {
   const quantity = product.productvariants.quantity;
   const flavour = product.productvariants.flavour;
 
-  return `/${urlName}-${quantity}gr-${flavour}`;
+  return `/${urlName}-${quantity}-${flavour}`;
 };
 
 // Meghagyom, hogy egyszerübben lássuk, DE KI KELL VENNI MAJD!

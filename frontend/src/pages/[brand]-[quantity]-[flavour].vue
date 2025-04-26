@@ -6,7 +6,7 @@
           <!-- Kép szekció -->
           <div class="grid col-span-1">
             <img :src="`/src/assets/products_img/${currentVariant?.image_path}`" :alt="currentVariant?.flavour"
-            class="max-w-[350px] max-h-[350px] flex mx-auto items-center justify-center bg-white " />
+              class="max-w-[350px] max-h-[350px] flex mx-auto items-center justify-center bg-white " />
           </div>
 
           <!-- Termék details -->
@@ -19,7 +19,7 @@
             <p class="my-2 font-extrabold text-4xl">
               {{ baseProduct?.name }}
               <span class="text-gray-600 text-2xl italic">({{ currentVariant?.quantity }} {{ currentVariant?.unit
-                }}.)</span>
+              }}.)</span>
             </p>
 
             <!-- Ár -->
@@ -95,11 +95,6 @@ const currentVariant = ref(null);
 const selectedFlavour = ref('');
 const selectedSize = ref('');
 
-// Computed properties
-const productImagePath = computed(() => {
-  return `/src/assets/${currentVariant.value.image_path}`;
-});
-
 const availableSizes = computed(() => {
   if (!baseProduct.value?.productvariants) return [];
 
@@ -122,65 +117,90 @@ const calculatePricePerKg = computed(() => {
   return Math.round((currentVariant.value.price / currentVariant.value.quantity) * 1000);
 });
 
-// Segédfüggvények
-
-
-const findProduct = (searchName) => {
-  return productStore.products.find(product => {
-    // Ha a keresett név Jumbo!, akkor név alapján keresünk
-    if (searchName === 'Jumbo!') {
-      return product.name === 'Jumbo!';
-    }
-    // Egyébként brand név alapján
-    return product.brand?.name === searchName;
-  });
-};
 const handleSizeChange = async () => {
   if (!baseProduct.value || !selectedSize.value) return;
-
-  const urlName = baseProduct.value.name? baseProduct.value.name : baseProduct.value.brand?.name;
   
-  const availableFlavoursForSize = baseProduct.value.productvariants
-    .filter(v => v.quantity === Number(selectedSize.value))
-    .map(v => v.flavour);
+  const variant = baseProduct.value.productvariants.find(
+    v => v.quantity === Number(selectedSize.value)
+  );
   
-  selectedFlavour.value = availableFlavoursForSize[0];
-
-  await router.push(`/${urlName}-${selectedSize.value}-${availableFlavoursForSize[0]}`);
-  await loadProduct(urlName, selectedSize.value, availableFlavoursForSize[0]);
+  if (!variant) return;
+  
+  selectedFlavour.value = variant.flavour;
+  const newUrl = `/${baseProduct.value.brand.name}-${variant.quantity}${variant.unit}-${variant.flavour}`;
+  
+  await router.push(newUrl);
+  await loadProduct(baseProduct.value.brand.name, variant.quantity, variant.flavour);
 };
-
 
 const handleFlavourChange = async () => {
   if (!baseProduct.value || !selectedFlavour.value || !selectedSize.value) return;
-
-  const urlName = baseProduct.value.name? baseProduct.value.name : baseProduct.value.brand?.name;
-
-  await router.push(`/${urlName}-${selectedSize.value}-${selectedFlavour.value}`);
-  await loadProduct(urlName, selectedSize.value, selectedFlavour.value);
+  
+  const variant = baseProduct.value.productvariants.find(
+    v => v.quantity === Number(selectedSize.value) && 
+        v.flavour === selectedFlavour.value
+  );
+  
+  if (!variant) return;
+  
+  const newUrl = `/${baseProduct.value.brand.name}-${variant.quantity}${variant.unit}-${variant.flavour}`;
+  await router.push(newUrl);
+  await loadProduct(baseProduct.value.brand.name, variant.quantity, variant.flavour);
 };
 
-// Termék betöltése
 const loadProduct = async (searchName, quantity, flavour) => {
   try {
-    console.log('Termék betöltése kezdődik:', { searchName, quantity, flavour });
     isLoading.value = true;
 
     if (productStore.products.length === 0) {
       await productStore.getProducts();
     }
-    const product = findProduct(searchName);
+    const brandProducts = productStore.products.filter(p => p.brand?.name === searchName);
+    const product = brandProducts.find(p => {
+      if (!Array.isArray(p.productvariants)) return false;
+      
+      return p.productvariants.some(v => {
+        const variantQuantity = String(v.quantity);
+        const searchQuantity = String(quantity).replace(/gr|tab/gi, '').trim();
+        return variantQuantity === searchQuantity;
+      });
+    });
+
     if (!product) {
-      console.error('Nem található termék:', searchName);
+      console.error('Nem található termék:', { searchName, quantity });
+      isLoading.value = false;
       return;
     }
+    // Variáns megkeresése
+    const variant = product.productvariants.find(v => {
+      const variantQuantity = String(v.quantity);
+      const searchQuantity = String(quantity).replace(/gr|tab/gi, '').trim();
+      const variantFlavour = v.flavour?.toLowerCase();
+      const searchFlavour = flavour?.toLowerCase();
+      
+      return variantQuantity === searchQuantity && 
+             variantFlavour === searchFlavour;
+    });
 
-    const variant = product.productvariants?.find(v => 
-      v.quantity === Number(quantity) &&
-      v.flavour === flavour
-    );
     if (!variant) {
+      // Ha nincs pontos találat >> mennyiséghez tartozó első variánst
+      const fallbackVariant = product.productvariants.find(v => 
+        String(v.quantity) === String(quantity).replace(/gr|tab/gi, '').trim()
+      );
+      
+      if (fallbackVariant) {
+        const newUrl = `/${product.brand.name}-${fallbackVariant.quantity}${fallbackVariant.unit}-${fallbackVariant.flavour}`;
+        await router.replace(newUrl);
+        
+        baseProduct.value = product;
+        currentVariant.value = fallbackVariant;
+        selectedFlavour.value = fallbackVariant.flavour;
+        selectedSize.value = fallbackVariant.quantity;
+        return;
+      }
+      
       console.error('Nem található variáns:', { quantity, flavour });
+      isLoading.value = false;
       return;
     }
 
@@ -196,22 +216,20 @@ const loadProduct = async (searchName, quantity, flavour) => {
   }
 };
 
-// Kezdeti betöltés
 onMounted(async () => {
-  const searchName = route.params.brand; // Az URL-ből jövő "brand" paraméter lehet termék név is
-  const quantity = route.params.quantity.replace('gr', '');
+  const searchName = route.params.brand;
+  const quantity = route.params.quantity;
   const flavour = route.params.flavour;
 
   await loadProduct(searchName, quantity, flavour);
 });
-
 
 // Route változás figyelése
 watch(
   () => route.params,
   async (newParams) => {
     const searchName = newParams.brand;
-    const quantity = newParams.quantity.replace('gr', '');
+    const quantity = newParams.quantity;
     const flavour = newParams.flavour;
 
     await loadProduct(searchName, quantity, flavour);
