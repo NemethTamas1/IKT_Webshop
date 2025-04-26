@@ -135,45 +135,29 @@ const findProduct = (searchName) => {
     return product.brand?.name === searchName;
   });
 };
-
-
-const findVariant = (product, quantity, flavour) => {
-  if (!product?.productvariants) return null;
-
-  return product.productvariants.find(variant =>
-    variant.quantity === Number(quantity) &&
-    variant.flavour.toLowerCase() === flavour.toLowerCase()
-  );
-};
-
 const handleSizeChange = async () => {
   if (!baseProduct.value || !selectedSize.value) return;
 
-  const newSize = selectedSize.value;
-  // URL név meghatározása: ha Jumbo!, akkor azt használjuk, egyébként a brand nevet
-  const urlName = baseProduct.value.name === 'Jumbo!' ? 'Jumbo!' : baseProduct.value.brand?.name;
+  const urlName = baseProduct.value.name? baseProduct.value.name : baseProduct.value.brand?.name;
   
   const availableFlavoursForSize = baseProduct.value.productvariants
-    .filter(v => v.quantity === Number(newSize))
+    .filter(v => v.quantity === Number(selectedSize.value))
     .map(v => v.flavour);
   
-  const newFlavour = availableFlavoursForSize[0];
-  selectedFlavour.value = newFlavour;
+  selectedFlavour.value = availableFlavoursForSize[0];
 
-  await router.push(`/${urlName}-${newSize}gr-${newFlavour}`);
-  await loadProduct(urlName, newSize, newFlavour);
+  await router.push(`/${urlName}-${selectedSize.value}-${availableFlavoursForSize[0]}`);
+  await loadProduct(urlName, selectedSize.value, availableFlavoursForSize[0]);
 };
 
 
 const handleFlavourChange = async () => {
   if (!baseProduct.value || !selectedFlavour.value || !selectedSize.value) return;
 
-  const urlName = baseProduct.value.name === 'Jumbo!' ? 'Jumbo!' : baseProduct.value.brand?.name;
-  const size = selectedSize.value;
-  const newFlavour = selectedFlavour.value;
+  const urlName = baseProduct.value.name? baseProduct.value.name : baseProduct.value.brand?.name;
 
-  await router.push(`/${urlName}-${size}gr-${newFlavour}`);
-  await loadProduct(urlName, size, newFlavour);
+  await router.push(`/${urlName}-${selectedSize.value}-${selectedFlavour.value}`);
+  await loadProduct(urlName, selectedSize.value, selectedFlavour.value);
 };
 
 // Termék betöltése
@@ -185,10 +169,7 @@ const loadProduct = async (searchName, quantity, flavour) => {
     if (productStore.products.length === 0) {
       await productStore.getProducts();
     }
-
     const product = findProduct(searchName);
-    console.log('Talált alaptermék:', product);
-
     if (!product) {
       console.error('Nem található termék:', searchName);
       return;
@@ -198,9 +179,6 @@ const loadProduct = async (searchName, quantity, flavour) => {
       v.quantity === Number(quantity) &&
       v.flavour === flavour
     );
-
-    console.log('Talált variáns:', variant);
-
     if (!variant) {
       console.error('Nem található variáns:', { quantity, flavour });
       return;

@@ -126,6 +126,14 @@ class ProductSeeder extends Seeder
                 'description' => 'Komplex napi C-vitamin bevitel.',
                 'product_line' => 'dailyhealt-c-vitamin'
             ],
+            [
+                'brand_id' => $proNutritionBrand->id,
+                'category_id' => $vitaminsCategory->id,
+                'name' => 'Dealy Health - Kalcium Magnezium',
+                'slug' => 'dailyhealt-kalcium-magnezium',
+                'description' => 'Komplex napi kalcium-magnesium bevitel.',
+                'product_line' => 'dailyhealt-kalcium-magnezium'
+            ],
         ];
 
         foreach ($products as $product) {

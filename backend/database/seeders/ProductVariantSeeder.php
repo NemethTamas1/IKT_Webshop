@@ -22,8 +22,9 @@ class ProductVariantSeeder extends Seeder
         $vitaDay = Product::where('name', 'Vitaday')->first();
         $vitaProPack = Product::where('name', 'Vitapro Pack')->first();
         $proWhey = Product::where('name', 'Pro Whey')->first();
-        $dailyHealthCompley = Product::where('name', 'Daily Health - Komplex')->first();
-        $dailyHealthCvitamin = Product::where('name', 'Daily Health - C Vitamin')->first();
+        $dailyHealthComplex = Product::where('name', 'Daily Health - Komplex')->first();
+        $dailyHealthCvitamin = Product::where('name', 'Dealy Health - C Vitamin')->first();
+        $dailyHealthKalciumMagnesium = Product::where('name', 'Dealy Health - Kalcium Magnezium')->first();
 
         // Variánsok 
         $variants = [
@@ -153,10 +154,11 @@ class ProductVariantSeeder extends Seeder
                 ]
             ],
 
-            // C vitamin - Sciteces
+            // C vitamin - Builderes
             $Cvitamin?->id => [
                 'quantities' => [
-                    100 => 2990,
+                    100 => 2190,
+                    500 => 7690,
                 ],
                 'unit' => 'tab',
                 'no_flavour' => true
@@ -165,7 +167,7 @@ class ProductVariantSeeder extends Seeder
             // Vitaday 
             $vitaDay?->id => [
                 'quantities' => [
-                    60 => 1990,
+                    60 => 2550,
                 ],
                 'unit' => 'tab',
                 'no_flavour' => true
@@ -181,7 +183,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Daily Health - Komplex 
-            $dailyHealthCompley?->id => [
+            $dailyHealthComplex?->id => [
                 'quantities' => [
                     60 => 4490,
                 ],
@@ -192,7 +194,14 @@ class ProductVariantSeeder extends Seeder
             // Daily Health - C Vitamin 
             $dailyHealthCvitamin?->id => [
                 'quantities' => [
-                    90 => 2690,
+                    50 => 3290,
+                ],
+                'unit' => 'tab',
+                'no_flavour' => true
+            ],
+            $dailyHealthKalciumMagnesium?->id => [
+                'quantities' => [
+                    60 => 3290,
                 ],
                 'unit' => 'tab',
                 'no_flavour' => true
@@ -217,12 +226,12 @@ class ProductVariantSeeder extends Seeder
                     DB::table('product_variants')->insert([
                         'product_id' => $productId,
                         'quantity' => $quantity,
-                        'flavour' => null,
+                        'flavour' => "unflavoured",
                         'price' => $price,
                         'stock' => 5,
                         'available' => true,
                         'unit' => $variantData['unit'],
-                        'image_path' => $this->generateImagePath($brandName, $productLine, $quantity, 'default'),
+                        'image_path' => $this->generateImagePath($brandName, $productLine, $quantity, $flavour = "unflavoured"),
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);
@@ -256,11 +265,6 @@ class ProductVariantSeeder extends Seeder
 
     private function generateImagePath($brand, $productLine, $quantity, $flavour)
     {
-        // Ha nincs íz, akkor default képet adunk vissza
-        if ($flavour === 'default') {
-            return null;
-        }
-
         return "{$brand}/{$productLine}/{$quantity}/{$quantity}_{$flavour}.webp";
     }
 }
