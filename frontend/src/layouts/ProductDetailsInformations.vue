@@ -1,22 +1,16 @@
 <template>
-    <div v-if="brand == 'Scitec'" class="w-4/5 mb-40">
-        <div v-if="description=='Jumbo!'"> 
-            <ScitecJumbo/>
-        </div>
-        <div v-else>
-            <ScitecWpp />
-        </div>
+    <div v-if="brand == 'Scitec' && !isJumbo" class="w-full mb-40">
+        <ScitecWpp />
     </div>
-    <div v-else-if="brand == 'Builder'"  class="w-4/5 mb-40">
+    <div v-if=isJumbo>
+        <ScitecJumbo />
+    </div>
+
+    <div v-if="brand == 'Builder'" class="w-full mb-40">
         <BuilderWhey />
     </div>
-
-    <div v-else-if="brand == 'Pro Nutrition'" class="w-4/5 mb-40">
-       <ProNutritionProWhey/>
-    </div>
-
-    <div v-else>
-        betöltés...
+    <div v-if="brand == 'Pro Nutrition'" class="w-full mb-40">
+        <ProNutritionProWhey />
     </div>
 </template>
 
@@ -35,6 +29,15 @@ const props = defineProps({
     description: {
         type: String,
         required: true
+    },
+    product: {
+        type: String,
+        required: true,
+    },
+    isJumbo: {
+        type: Boolean,
+        required: true,
     }
 })
+
 </script>

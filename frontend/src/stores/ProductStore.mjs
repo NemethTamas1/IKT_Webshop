@@ -313,7 +313,7 @@ export const useProductStore = defineStore("products", () => {
         return;
       }
 
-      const weightNumber = quantity.toString().replace("gr", "");
+      const weightNumber = quantity.replace("gr", "");
       const productData = await sortGetOneProduct(
         brand,
         Number(weightNumber),
