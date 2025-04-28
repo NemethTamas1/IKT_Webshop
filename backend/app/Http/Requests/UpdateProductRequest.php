@@ -14,11 +14,13 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required','exists:categories,id'],
-            'description' => ['required', 'string', 'max:255'],
-            'quantity' => ['required', 'integer', 'max:9999'],
-            'flavour' => ['required', 'string', 'max:45'],
-            'price' => ['required', 'integer'],
+            'category_id'  => ['required', 'exists:categories,id'],
+            'brand_id'     => ['required', 'exists:brands,id'],
+            'name'         => ['required', 'string', 'max:100'],
+            'slug'         => ['required', 'string', 'max:100'],
+            'description'  => ['required', 'string'],
+            'product_line' => ['required', 'string'],
+            'available'    => ['boolean'],
         ];
     }
 }

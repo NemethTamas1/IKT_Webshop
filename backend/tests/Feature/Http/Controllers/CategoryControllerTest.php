@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Controllers;
+namespace Tests\Http\Controllers;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
@@ -8,12 +8,6 @@ use Tests\TestCase;
 class CategoryControllerTest extends TestCase
 {
     use DatabaseTransactions;
-    // Osztály szinten deklarálom, így az összes 
-    // metódusban ha kell csak behívjuk $this->baseURL -ként.
-    // Figyeljetek, hogy ha X-edik elemet kérek le akkor (pont+idézőjelek között a számot adjuk át)
-    // $this-baseURL.'1' -t kell írni!
-
-    
     protected $baseURL;
     protected $baseData;
 
@@ -74,7 +68,7 @@ class CategoryControllerTest extends TestCase
             'brand' => 'TestProtein_2',
         ];
         $id = $response->json('data.id');
-        $response = $this->put($this->baseURL.$id, $updateData);
+        $response = $this->put($this->baseURL . $id, $updateData);
         $response->assertStatus(200);
     }
     public function test_can_delete_category_data(): void
@@ -82,7 +76,7 @@ class CategoryControllerTest extends TestCase
         $response = $this->postJson($this->baseURL, $this->baseData);
         $id = $response->json('data.id');
 
-        $response = $this->delete($this->baseURL.$id);
+        $response = $this->delete($this->baseURL . $id);
         $response->assertStatus(204);
     }
 }

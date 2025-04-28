@@ -11,21 +11,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
-    protected $primaryKey = 'id';
-    protected $keyType = 'int';
-    public $incrementing = true;
 
     protected $fillable = [
-        'id',
         'category_id',
         'brand_id',
         'name',
+        'slug',
         'description',
         'product_line',
-        'available',
-        'created_at',
-        'updated_at',
-        'deleted_at'
+        'available'
     ];
 
     public function category(): BelongsTo
