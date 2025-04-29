@@ -44,7 +44,7 @@
                             </div>
                             <p v-if="variant.brand_name" class="text-lg text-gray-600 mt-1">{{ variant.brand_name }}</p>
                             <h3 class="text-lg font-semibold">{{ variant.product_name }}</h3>
-                            <p v-if="variant.flavour" class="italic text-gray-600"> {{ variant.flavour }}</p>
+                            <!-- <p v-if="variant.flavour" class="italic text-gray-600"> {{ variant.flavour }}</p> -->
                             <p v-if="variant.quantity" class="text-gray-600">{{ variant.quantity }} {{ variant.unit}}.</p>
                             <div class="mt-4 flex justify-between items-center">
                                 <p class="text-lg font-bold">
