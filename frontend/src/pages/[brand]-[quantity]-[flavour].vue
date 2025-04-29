@@ -69,7 +69,7 @@
       <div>
 
         <ProductDetailsInformations :brand="baseProduct?.brand?.name" :product="baseProduct?.name"
-          :description="currentVariant?.flavour" :isJumbo="isJumboProduct" />
+          :description="currentVariant?.flavour" :isJumbo="isJumboProduct" :isMegaDaily = "isMegaDailyProduct"/>
       </div>
     </div>
 
@@ -99,6 +99,10 @@ const baseProduct = ref(null);
 const currentVariant = ref(null);
 const selectedFlavour = ref('');
 const selectedSize = ref('');
+
+const isMegaDailyProduct = computed(() => {
+  return baseProduct.value?.name === 'Mega Daily One' || baseProduct.value?.product_line === 'Mega Daily';
+});
 
 const availableSizes = computed(() => {
   if (!baseProduct.value?.productvariants) return [];
