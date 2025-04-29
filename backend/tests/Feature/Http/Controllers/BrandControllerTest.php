@@ -122,7 +122,6 @@ class BrandControllerTest extends TestCase
     }
     public function test_brand_can_have_many_products()
     {
-        // Brand létrehozása
         $brand = Brand::create([
             "name" => "Base Brand",
             "slug" => "base_slug_testing",

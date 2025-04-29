@@ -20,19 +20,22 @@ class ProductVariantController extends Controller
         $productVariant = ProductVariant::create($data);
         return new ProductVariantResource($productVariant);
     }
-    public function show(ProductVariant $productVariant)
+    public function show($id)
     {
-        $productVariant->load('products');
+        $productVariant = ProductVariant::with('product')->findOrFail($id);
         return new ProductVariantResource($productVariant);
     }
-    public function update(UpdateProductVariantRequest $request, ProductVariant $productVariant)
+    public function update(UpdateProductVariantRequest $request, $id)
     {
+        $productVariant = ProductVariant::findOrFail($id);
         $data = $request->validated();
         $productVariant->update($data);
         return new ProductVariantResource($productVariant);
     }
-    public function destroy(ProductVariant $productVariant)
+    public function destroy($id)
     {
-        return ($productVariant->delete()) ? response()->noContent() : abort(500);
+        $variant = ProductVariant::findOrFail($id);
+        $variant->delete();
+        return response()->noContent();
     }
 }

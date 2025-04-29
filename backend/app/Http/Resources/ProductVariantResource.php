@@ -15,10 +15,14 @@ class ProductVariantResource extends JsonResource
             "quantity" => $this->quantity,
             "unit" => $this->unit,
             "flavour" => $this->flavour,
-            "price" => $this->price,
             "stock" => $this->stock,
+            "price" => $this->price,
             "available" => $this->available,
-            "image_path"=> $this->image_path,
+            "image_path" => $this->image_path,
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
+            "deleted_at" => $this->deleted_at,
+            "product" => new ProductResource($this->whenLoaded('product')),
         ];
-    }   
+    }
 }
