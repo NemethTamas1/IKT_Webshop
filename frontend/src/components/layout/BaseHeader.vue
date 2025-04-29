@@ -81,7 +81,7 @@
             <ul v-if="activeDropdown === 'taplalekkiegeszitok'"
               class="no-transform md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1">
               <BaseMobileNavBarDrop linkText="/proteins/Proteins" menuOption="Fehérjék" class="no-transform" />
-              <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Multivitaminok" class="no-transform" />
+              <BaseMobileNavBarDrop linkText="/vitamins/Multivitamins" menuOption="Multivitaminok" class="no-transform" />
               <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Vitaminok" class="no-transform" />
               <BaseMobileNavBarDrop linkText="/controll-formulas" menuOption="Testsúly-kontroll formulák"
                 class="no-transform" />
