@@ -1,7 +1,10 @@
 <?php
 
-namespace Tests\Http\Controllers;
+namespace Tests\Feature\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -21,12 +24,10 @@ class CategoryControllerTest extends TestCase
     {
         $this->baseURL = 'api/categories/';
         $this->baseData = [
-            'category_name' => 'TestCategory_1',
+            'name' => 'TestCategory_1',
             'brand' => 'TestProtein_1',
         ];
     }
-
-    ////////////////////
     public function test_can_get_all_categories(): void
     {
         $response = $this->get($this->baseURL);
@@ -54,7 +55,7 @@ class CategoryControllerTest extends TestCase
     public function test_can_create_category_data(): void
     {
         $data = [
-            'category_name' => 'TestCategory',
+            'name' => 'TestCategory',
             'brand' => 'TestProtein',
         ];
         $response = $this->postJson($this->baseURL, $data);
@@ -64,7 +65,8 @@ class CategoryControllerTest extends TestCase
     {
         $response = $this->postJson($this->baseURL, $this->baseData);
         $updateData = [
-            'category_name' => 'TestCategory_2',
+            'name' => 'TestCategory_2',
+            "slug" => "teszt_slug_2",
             'brand' => 'TestProtein_2',
         ];
         $id = $response->json('data.id');
@@ -78,5 +80,62 @@ class CategoryControllerTest extends TestCase
 
         $response = $this->delete($this->baseURL . $id);
         $response->assertStatus(204);
+    }
+    public function test_a_category_can_be_soft_deleted_and_still_works()
+    {
+        $category = Category::create([
+            "name" => "Base Category",
+            "slug" => "base_category_slug",
+            "description" => "Base Category Description",
+        ]);
+
+        $this->delete($this->baseURL . $category->id)->assertStatus(204);
+    }
+    public function test_deleted_category_still_exists_in_database()
+    {
+        $category = Category::create([
+            "name" => "Base Category",
+            "slug" => "base_category_slug",
+            "description" => "Base Category Description",
+        ]);
+
+        $this->delete($this->baseURL . $category->id);
+
+        $this->assertDatabaseHas('categories', [
+            'id' => $category->id,
+            'deleted_at' => now()
+        ]);
+    }
+    public function test_category_can_have_many_products()
+    {
+        $brand = Brand::create([
+            "name" => "Base Brand",
+            "slug" => "base_slug_testing",
+            "description" => "Base_Updated Description",
+            "logo_path" => "Base_Logo_path_testing",
+        ]);
+
+        $category = Category::create([
+            "name" => "Base Category",
+            "slug" => "base_category_slug",
+            "description" => "Base Category Description",
+        ]);
+
+
+        Product::create([
+            "name" => "Product 1",
+            "brand_id" => $brand->id,
+            "category_id" => $category->id,
+            "slug" => "product_1_slug",
+        ]);
+
+        Product::create([
+            "name" => "Product 2",
+            "brand_id" => $brand->id,
+            "category_id" => $category->id,
+            "slug" => "product_2_slug",
+        ]);
+
+        $this->assertCount(2, $category->products);
     }
 }

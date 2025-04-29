@@ -19,7 +19,7 @@ class BrandController extends Controller
     {
         $data = $request->validated();
         $brand = Brand::create($data);
-        return new StoreBrandRequest($brand);
+        return new BrandResource($brand);
     }
     public function show(Brand $brand)
     {

@@ -114,25 +114,25 @@ class ProductSeeder extends Seeder
                 'brand_id' => $proNutritionBrand->id,
                 'category_id' => $multivitaminsCategory->id,
                 'name' => 'Daily Health - Komplex',
-                'slug' => 'dailyhealt',
+                'slug' => 'dailyhealth',
                 'description' => 'Komplex teljes napi vitaminbevitel fedezésére.',
-                'product_line' => 'dailyhealt'
+                'product_line' => 'dailyhealth'
             ],
             [
                 'brand_id' => $proNutritionBrand->id,
                 'category_id' => $vitaminsCategory->id,
                 'name' => 'Dealy Health - C Vitamin',
-                'slug' => 'dailyhealt-c-vitamin',
+                'slug' => 'dailyhealth-c-vitamin',
                 'description' => 'Komplex napi C-vitamin bevitel.',
-                'product_line' => 'dailyhealt-c-vitamin'
+                'product_line' => 'dailyhealth-c-vitamin'
             ],
             [
                 'brand_id' => $proNutritionBrand->id,
                 'category_id' => $vitaminsCategory->id,
                 'name' => 'Dealy Health - Kalcium Magnezium',
-                'slug' => 'dailyhealt-kalcium-magnezium',
+                'slug' => 'dailyhealth-kalcium-magnezium',
                 'description' => 'Komplex napi kalcium-magnesium bevitel.',
-                'product_line' => 'dailyhealt-kalcium-magnezium'
+                'product_line' => 'dailyhealth-kalcium-magnezium'
             ],
         ];
 

@@ -27,7 +27,7 @@ class CategoryDatabaseTest extends TestCase
 
     public function test_categories_table_has_category_name_column(): void
     {
-        $this->assertTrue(Schema::hasColumn('categories', 'category_name'), 'A category_name mező nem létezik a categories táblában');
+        $this->assertTrue(Schema::hasColumn('categories', 'name'), 'A name mező nem létezik a categories táblában');
     }
 
     public function test_categories_table_has_brand_column(): void
@@ -56,7 +56,7 @@ class CategoryDatabaseTest extends TestCase
         $this->assertTrue(
             Schema::hasColumns('categories', [
                 'id',
-                'category_name',
+                'name',
                 'brand',
                 'created_at',
                 'updated_at',
