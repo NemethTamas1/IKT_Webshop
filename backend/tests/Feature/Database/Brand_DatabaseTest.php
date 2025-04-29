@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Database;
 
-use App\Models\Brand;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
@@ -11,9 +10,6 @@ class Brand_DatabaseTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * Teszteli, hogy létezik-e a brands tábla
-     */
     public function test_brands_table_has_created(): void
     {
         $this->assertTrue(
@@ -21,10 +17,6 @@ class Brand_DatabaseTest extends TestCase
             'A brands tábla nem található az adatbázisban'
         );
     }
-
-    /**
-     * Teszteli az egyes oszlopok meglétét külön-külön
-     */
     public function test_brands_table_has_id_column(): void
     {
         $this->assertTrue(
