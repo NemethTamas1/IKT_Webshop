@@ -138,4 +138,61 @@ class CategoryControllerTest extends TestCase
 
         $this->assertCount(2, $category->products);
     }
+    public function test_category_have_many_products_and_Oneproduct_is_exists_in_database()
+    {
+        $brand = Brand::create([
+            "name" => "Base Brand",
+            "slug" => "base_slug_testing",
+            "description" => "Base_Updated Description",
+            "logo_path" => "Base_Logo_path_testing",
+        ]);
+
+        $category = Category::create([
+            "name" => "Base Category",
+            "slug" => "base_category_slug",
+            "description" => "Base Category Description",
+        ]);
+
+
+        $product1 = Product::create([
+            "name" => "Product 1",
+            "brand_id" => $brand->id,
+            "category_id" => $category->id,
+            "slug" => "product_1_slug",
+        ]);
+
+        $this->assertTrue($category->products->contains($product1));
+    }
+    public function test_category_have_many_products_and_both_child_data_exist_in_database()
+    {
+        $brand = Brand::create([
+            "name" => "Base Brand",
+            "slug" => "base_slug_testing",
+            "description" => "Base_Updated Description",
+            "logo_path" => "Base_Logo_path_testing",
+        ]);
+
+        $category = Category::create([
+            "name" => "Base Category",
+            "slug" => "base_category_slug",
+            "description" => "Base Category Description",
+        ]);
+
+        $product1 = Product::create([
+            "name" => "Product 1",
+            "brand_id" => $brand->id,
+            "category_id" => $category->id,
+            "slug" => "product_1_slug",
+        ]);
+
+        $product2 = Product::create([
+            "name" => "Product 2",
+            "category_id" => $category->id,
+            "brand_id" => $brand->id,
+            "slug" => "product_2_slug",
+        ]);
+
+        $this->assertTrue($category->products->contains($product1));
+        $this->assertTrue($category->products->contains($product2));
+    }
 }

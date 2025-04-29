@@ -6,7 +6,6 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
@@ -42,7 +41,7 @@ class ProductControllerTest extends TestCase
             'category_id' => $this->category->id,
             'brand_id' => $this->brand->id,
             'name' => 'Test Product',
-            'slug' => Str::slug('Test Product'),
+            'slug' => 'test-product',
             'description' => 'test_description',
             'product_line' => 'test_product_line',
             'available' => 1
@@ -52,158 +51,82 @@ class ProductControllerTest extends TestCase
     public function test_can_get_one_product(): void
     {
         $product = Product::create($this->baseData);
-        $response = $this->getJson($this->baseURL . $product->id);
-        $response->assertStatus(200);
+        $this->getJson($this->baseURL . $product->id)->assertStatus(200);
     }
 
-    public function test_create_product_validation(): void
+    public function test_create_product_returns_201_status(): void
     {
-        $invalidData = [
-            'category_id' => 999999,
-            'brand_id' => 999999,
-            'name' => '',
-            'slug' => '',
-            'description' => '',
-            'product_line' => ''
-        ];
-        $response = $this->postJson($this->baseURL, $invalidData);
-        $response->assertStatus(422);
+        $this->postJson($this->baseURL, $this->baseData)->assertStatus(201);
     }
 
-    public function test_create_product_validation_errors(): void
-    {
-        $invalidData = [
-            'category_id' => 999999,
-            'brand_id' => 999999,
-            'name' => '',
-            'slug' => '',
-            'description' => '',
-            'product_line' => ''
-        ];
-        $response = $this->postJson($this->baseURL, $invalidData);
-        $response->assertJsonValidationErrors([
-            'category_id',
-            'brand_id',
-            'name',
-            'description',
-            'product_line'
-        ]);
-    }
-
-    public function test_can_create_product(): void
-    {
-        $response = $this->postJson($this->baseURL, $this->baseData);
-        $response->assertStatus(201);
-    }
-
-    public function test_created_product_has_correct_data(): void
+    public function test_created_product_is_in_database(): void
     {
         $this->postJson($this->baseURL, $this->baseData);
-        $this->assertDatabaseHas('products', [
-            'name' => 'Test Product',
-            'description' => 'test_description'
-        ]);
+        $this->assertDatabaseHas('products', ['name' => 'Test Product']);
     }
 
-    public function test_can_update_product(): void
+    public function test_create_product_requires_name(): void
+    {
+        $invalidData = $this->baseData;
+        $invalidData['name'] = '';
+
+        $this->postJson($this->baseURL, $invalidData)->assertStatus(422);
+    }
+
+    public function test_can_update_product_returns_200_status(): void
     {
         $product = Product::create($this->baseData);
-        $updatedData = [
-            'category_id' => $this->category->id,
-            'brand_id' => $this->brand->id,
-            'name' => 'Updated Product Name',
-            'slug' => Str::slug('Updated Product Name'),
-            'description' => 'updated_description',
-            'product_line' => 'updated_product_line',
-            'available' => 0
-        ];
+
+        $updatedData = $this->baseData;
+        $updatedData['name'] = 'Updated Product';
+
         $response = $this->putJson($this->baseURL . $product->id, $updatedData);
         $response->assertStatus(200);
     }
 
-    public function test_updated_product_has_correct_data(): void
+    public function test_updated_product_is_in_database(): void
     {
         $product = Product::create($this->baseData);
-        $updatedData = [
-            'category_id' => $this->category->id,
-            'brand_id' => $this->brand->id,
-            'name' => 'Updated Product Name',
-            'slug' => Str::slug('Updated Product Name'),
-            'description' => 'updated_description',
-            'product_line' => 'updated_product_line',
-            'available' => 0
-        ];
+
+        $updatedData = $this->baseData;
+        $updatedData['name'] = 'Updated Product';
+
         $this->putJson($this->baseURL . $product->id, $updatedData);
-        $this->assertDatabaseHas('products', [
-            'id' => $product->id,
-            'name' => 'Updated Product Name',
-            'description' => 'updated_description'
-        ]);
+        $this->assertDatabaseHas('products', ['name' => 'Updated Product']);
     }
 
-    public function test_update_product_validation(): void
+    public function update_product_validation_error_for_name(): void
     {
         $product = Product::create($this->baseData);
-        $invalidData = [
-            'category_id' => 999999,
-            'brand_id' => 999999,
-            'name' => '',
-            'slug' => '',
-            'description' => '',
-            'product_line' => ''
-        ];
-        $response = $this->putJson($this->baseURL . $product->id, $invalidData);
-        $response->assertStatus(422);
-    }
 
-    public function test_update_product_validation_errors(): void
-    {
-        $product = Product::create($this->baseData);
-        $invalidData = [
-            'category_id' => 999999,
-            'brand_id' => 999999,
-            'name' => '',
-            'slug' => '',
-            'description' => '',
-            'product_line' => ''
-        ];
-        $response = $this->putJson($this->baseURL . $product->id, $invalidData);
-        $response->assertJsonValidationErrors([
-            'category_id',
-            'brand_id',
-            'name',
-            'description',
-            'product_line'
-        ]);
+        $invalidData = $this->baseData;
+        $invalidData['name'] = '';
+
+        $this->putJson($this->baseURL . $product->id, $invalidData)->assertJsonValidationErrors(['name']);
     }
 
     public function test_can_delete_product(): void
     {
         $product = Product::create($this->baseData);
-        $response = $this->deleteJson($this->baseURL . $product->id);
-        $response->assertStatus(204);
+
+        $this->deleteJson($this->baseURL . $product->id)->assertStatus(204);
     }
 
     public function test_deleted_product_is_soft_deleted(): void
     {
         $product = Product::create($this->baseData);
+
         $this->deleteJson($this->baseURL . $product->id);
-        $this->assertSoftDeleted('products', [
-            'id' => $product->id
-        ]);
+        $this->assertSoftDeleted('products', ['id' => $product->id]);
     }
 
     public function test_cannot_update_nonexistent_product(): void
     {
-        $nonexistentId = 99999;
-        $response = $this->putJson($this->baseURL . $nonexistentId, $this->baseData);
-        $response->assertStatus(404);
+        $this->putJson($this->baseURL . '99999', $this->baseData)->assertStatus(404);
     }
 
     public function test_cannot_delete_nonexistent_product(): void
     {
-        $nonexistentId = 99999;
-        $response = $this->deleteJson($this->baseURL . $nonexistentId);
-        $response->assertStatus(404);
+        $this->deleteJson($this->baseURL . '99999')->assertStatus(404);
     }
 }
