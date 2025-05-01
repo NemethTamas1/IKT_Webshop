@@ -95,7 +95,6 @@ const multivitaminProducts = computed(() => {
 
     const descriptionKeywords = [
         'multivitamin',
-        'kálcium',
         'komplex multivitamin',
     ];
 
@@ -107,8 +106,8 @@ const multivitaminProducts = computed(() => {
         'dailyhealt',
     ];
 
-    const categoryNameMatch = ['multivitamin', 'vitamin'];
-    const categoryDescKeywords = ['vitaminok', 'multivitaminok'];
+    const categoryNameMatch = ['multivitamin'];
+    const categoryDescKeywords = ['multivitaminok'];
 
     return productStore.products.filter(product => {
         if (product.available !== 1) return false;

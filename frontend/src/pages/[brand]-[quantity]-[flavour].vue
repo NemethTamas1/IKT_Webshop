@@ -100,6 +100,8 @@ const currentVariant = ref(null);
 const selectedFlavour = ref('');
 const selectedSize = ref('');
 
+
+
 const isMegaDailyProduct = computed(() => {
   return baseProduct.value?.name === 'Mega Daily One' || baseProduct.value?.product_line === 'Mega Daily';
 });
