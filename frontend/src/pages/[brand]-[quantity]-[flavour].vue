@@ -69,7 +69,7 @@
       <div>
 
         <ProductDetailsInformations :brand="baseProduct?.brand?.name" :product="baseProduct?.name"
-          :description="currentVariant?.flavour" :isJumbo="isJumboProduct" :isMegaDaily = "isMegaDailyProduct"/>
+          :description="currentVariant?.flavour" :isMultiProPlus="isMultiProPlus" :isProNutritionDailyHealthComplex="isProNutritionDailyHealthComplex" :isVitaproPack="isVitaproPack" :isJumbo="isJumboProduct" :isVitaDay="isBuilderVitaDay" :isMegaDaily = "isMegaDailyProduct"/>
       </div>
     </div>
 
@@ -100,10 +100,24 @@ const currentVariant = ref(null);
 const selectedFlavour = ref('');
 const selectedSize = ref('');
 
+const isMultiProPlus = computed(() => {
+  return baseProduct.value?.name === 'Multi Pro Plus';
+});
 
+const isProNutritionDailyHealthComplex = computed(() => {
+ return baseProduct.value?.name === 'Daily Health - Komplex';
+});
+
+const isVitaproPack = computed(() => {
+  return baseProduct.value?.name === 'Vitapro Pack';
+});
 
 const isMegaDailyProduct = computed(() => {
   return baseProduct.value?.name === 'Mega Daily One' || baseProduct.value?.product_line === 'Mega Daily';
+});
+
+const isBuilderVitaDay = computed(() => {
+  return baseProduct.value?.name === 'Vitaday';
 });
 
 const availableSizes = computed(() => {
