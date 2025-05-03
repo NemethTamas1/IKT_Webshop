@@ -22,7 +22,7 @@ class ProductVariantSeeder extends Seeder
         $vitaDay = Product::where('name', 'Vitaday')->first();
         $vitaProPack = Product::where('name', 'Vitapro Pack')->first();
         $proWhey = Product::where('name', 'Pro Whey')->first();
-        $dailyHealthComplex = Product::where('name', 'Daily Health - Komplex')->first();
+        $dailyHealthComplex = Product::where('name', 'Daily Health Komplex')->first();
         $dailyHealthCvitamin = Product::where('name', 'Dealy Health - C Vitamin')->first();
         $dailyHealthKalciumMagnesium = Product::where('name', 'Dealy Health - Kalcium Magnezium')->first();
 

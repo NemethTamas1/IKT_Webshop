@@ -83,52 +83,34 @@ const router = useRouter();
 
 
 const multivitaminProducts = computed(() => {
-
-    //slug
-    const nameKeywords = [
-        'mega-daily-one',
-        'multi-pro-plus',
-        'vitaday',
-        'vitapropack',
-        'dailyhealt',
-    ];
-
-    const descriptionKeywords = [
-        'multivitamin',
-        'komplex multivitamin',
-    ];
-
-    const productLineKeywords = [
-        'megadailyone',
-        'multiproplus',
-        'vitaday',
-        'vitapropack',
-        'dailyhealt',
-    ];
-
-    const categoryNameMatch = ['multivitamin'];
-    const categoryDescKeywords = ['multivitaminok'];
-
-    return productStore.products.filter(product => {
-        if (product.available !== 1) return false;
-
-        const name = product.name?.toLowerCase() || '';
-        const description = product.description?.toLowerCase() || '';
-        const productLine = product.product_line?.toLowerCase() || '';
-        const categoryName = product.category?.name?.toLowerCase() || '';
-        const categoryDescription = product.category?.description?.toLowerCase() || '';
-
-        return (
-            categoryNameMatch.includes(categoryName) ||
-            categoryDescKeywords.some(keyword => categoryDescription.includes(keyword)) ||
-            nameKeywords.some(keyword => name.includes(keyword)) ||
-            descriptionKeywords.some(keyword => description.includes(keyword)) ||
-            productLineKeywords.some(keyword => productLine.includes(keyword))
-        );
-    });
+  const nameKeywords = [
+    'mega-daily-one',
+    'multi-pro-plus',
+    'vitaday',
+    'vitapropack',
+    'dailyhealt',
+  ];
+  
+  return productStore.products.filter(product => {
+    if (product.available !== 1) return false;
+    
+    // Pontos név egyezés ellenőrzése
+    const exactNameMatch = nameKeywords.some(keyword => 
+      product.name?.toLowerCase() === keyword
+    );
+    
+    if (exactNameMatch) return true;
+    
+    // Kategória alapján szűrés
+    if (product.category?.name?.toLowerCase() === 'multivitamin') return true;
+    
+    return false;
+  });
 });
+const generateProductUrl = (variant) => {
+  return `/${variant.product_name}-${variant.quantity}${variant.unit}-${variant.flavour}`;
+};
 
-// Minden variáns egy lapos listában
 const allVariants = computed(() => {
     const variants = [];    
 
@@ -174,13 +156,7 @@ const allVariants = computed(() => {
 
     return variants;
 });
-const generateProductUrl = (variant) => {
-  // Ha a termék neve Jumbo!, akkor azt használjuk az URL-ben
-  const urlName = variant.product_name === 'Jumbo!' ? 'Jumbo!' : variant.brand_name;
-  return `/${urlName}-${variant.quantity}gr-${variant.flavour}`;
-};
-
-// Szűrt variánsok márka alapján
+// Szűrt variánsok Márka! alapján
 const filteredVariants = computed(() => {
     if (selectedBrand === null) {
         return allVariants.value.filter(variant => variant.brand_id != null)
@@ -189,7 +165,7 @@ const filteredVariants = computed(() => {
     return allVariants.value.filter(variant => variant.brand_id === selectedBrand.value);
 });
 
-// Egyedi márkák
+// Egyedi (szelektált) márkák
 const uniqueBrands = computed(() => {
     const brandsMap = new Map();
 
@@ -202,7 +178,7 @@ const uniqueBrands = computed(() => {
     return Array.from(brandsMap.values());
 });
 
-// Márka szűrő váltás
+// Márka "szűrő" váltása
 const toggleBrandFilter = (brandId) => {
     selectedBrand.value = brandId;
 };
@@ -212,44 +188,64 @@ const formatPrice = (price) => {
     return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "0";
 };
 
-const loadProducts = async () => {
+const loadProducts = async (searchName, quantity, flavour) => {
+  try {
     loading.value = true;
-    error.value = false;
-    errorMessage.value = '';
-
-    try {
-        await productStore.getProducts();
-
-
-        if (multivitaminProducts.value.length === 0) {
-            errorMessage.value = "Nem található fehérje termék";
-            error.value = true;
-        } else if (allVariants.value.length === 0) {
-            errorMessage.value = "A fehérje termékekhez nem találhatók variánsok";
-            error.value = true;
-        } else {
-        }
-    } catch (err) {
-        console.error("Hiba a termékek lekérdezésekor:", err);
-        error.value = true;
-        errorMessage.value = `Hiba történt: ${err.message || 'Ismeretlen hiba'}`;
-    } finally {
-        loading.value = false;
+    
+    if (productStore.products.length === 0) {
+      await productStore.getProducts();
     }
-};
 
+    // Először keressük meg a terméket név alapján
+    let product = productStore.products.find(p => p.name === searchName);
+
+    // Ha nincs találat név alapján, próbáljuk brand alapján
+    if (!product) {
+      product = productStore.products.find(p => {
+        return p.brand?.name === searchName &&
+          p.productvariants?.some(v => {
+            // Tisztítsuk meg a mennyiséget az egységtől
+            const cleanQuantity = String(quantity).replace(/[a-zA-Z]/g, '').trim();
+            return String(v.quantity) === cleanQuantity;
+          });
+      });
+    }
+
+    if (!product) {
+      console.error('Nem található termék:', { searchName, quantity });
+      loading.value = false;
+      return;
+    }
+
+    // Variáns keresése
+    const variant = product.productvariants?.find(v => {
+      // Tisztítsuk meg a mennyiséget az egységtől
+      const cleanInputQuantity = String(quantity).replace(/[a-zA-Z]/g, '').trim();
+      const quantityMatch = String(v.quantity) === cleanInputQuantity;
+      const flavourMatch = !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
+      
+      return quantityMatch && flavourMatch;
+    });
+
+    if (!variant) {
+      console.error('Nem található variáns:', { quantity, flavour });
+      loading.value = false;
+      return;
+    }
+
+    baseProduct.value = product;
+    currentVariant.value = variant;
+    selectedFlavour.value = variant.flavour || '';
+    selectedSize.value = variant.quantity;
+
+  } catch (error) {
+    console.error('Hiba a termék betöltése során:', error);
+  } finally {
+    loading.value = false;
+  }
+};
 onMounted(async () => {
     await loadProducts();
 });
-const navigateToProductDetails = (variant) => {
-    router.push({
-        name: 'ProductDetails',
-        params: {
-            brand: variant.brand_name,
-            quantity: variant.quantity,
-            flavour: variant.flavour
-        }
-    });
-};
 </script>
 

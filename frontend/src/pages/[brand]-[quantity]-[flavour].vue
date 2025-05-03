@@ -25,7 +25,7 @@
 
             <!-- Ár -->
             <p class="my-2 font-bold sm:text-lg md:text-xl lg:text-4xl">
-              {{ (currentVariant?.price) }} Ft
+              {{ productStore.formatToOneThousandPrice((currentVariant?.price)) }} Ft
             </p>
 
             <!-- Kg ár -->
@@ -43,7 +43,7 @@
             </p>
 
             <!-- Kiszerelés options -->
-            <div class="select-container" v-if="availableSizes.length">
+            <div class="select-container" v-if="showSizesSelect">
               <label class="block text-lg font-medium">Kiszerelés:</label>
               <select v-model="selectedSize" @change="handleSizeChange"
                 class="my-2 block min-w-fit py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
@@ -54,7 +54,7 @@
             </div>
 
             <!-- Ízesítés options -->
-            <div class="select-container mt-6" v-if="availableFlavours.length && currentVariant.unit=='gr'">
+            <div class="select-container mt-6" v-if="availableFlavours.length && currentVariant.unit == 'gr'">
               <label class="block text-lg font-medium">Ízesítés:</label>
               <select v-model="selectedFlavour" @change="handleFlavourChange"
                 class="mt-1 block max-w-fit py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
@@ -69,7 +69,15 @@
       <div>
 
         <ProductDetailsInformations :brand="baseProduct?.brand?.name" :product="baseProduct?.name"
-          :description="currentVariant?.flavour" :isMultiProPlus="isMultiProPlus" :isProNutritionDailyHealthComplex="isProNutritionDailyHealthComplex" :isVitaproPack="isVitaproPack" :isJumbo="isJumboProduct" :isVitaDay="isBuilderVitaDay" :isMegaDaily = "isMegaDailyProduct"/>
+          :description="currentVariant?.flavour" :isMultiProPlus="isMultiProPlus"
+          :isProNutritionDailyHealthComplex="isProNutritionDailyHealthComplex"
+          :isVitaproPack="isVitaproPack"
+          :isJumbo="isJumboProduct" 
+          :isVitaDay="isBuilderVitaDay"
+          :isMegaDaily="isMegaDailyProduct"
+          :isBuilderCvitamin="isBuilderCvitaminProduct" 
+          :categoryName="baseProduct.category.name"
+          />
       </div>
     </div>
 
@@ -92,8 +100,6 @@ const route = useRoute();
 const router = useRouter();
 const productStore = useProductStore();
 
-const isJumbo = ref(false);
-
 const isLoading = ref(true);
 const baseProduct = ref(null);
 const currentVariant = ref(null);
@@ -105,7 +111,7 @@ const isMultiProPlus = computed(() => {
 });
 
 const isProNutritionDailyHealthComplex = computed(() => {
- return baseProduct.value?.name === 'Daily Health - Komplex';
+  return baseProduct.value?.name === 'Daily Health Komplex';
 });
 
 const isVitaproPack = computed(() => {
@@ -113,19 +119,50 @@ const isVitaproPack = computed(() => {
 });
 
 const isMegaDailyProduct = computed(() => {
-  return baseProduct.value?.name === 'Mega Daily One' || baseProduct.value?.product_line === 'Mega Daily';
+  return baseProduct.value?.name === 'Mega Daily One' ||
+    baseProduct.value?.product_line === 'MegaDaily';
 });
 
 const isBuilderVitaDay = computed(() => {
   return baseProduct.value?.name === 'Vitaday';
 });
+const isBuilderCvitaminProduct = computed(() => {
+  return baseProduct.value.name === 'C vitamin' 
+});
 
+const isJumboProduct = computed(() => {
+  return baseProduct.value?.slug === 'Jumbo!' ||
+    baseProduct.value?.name?.includes('Jumbo') ||
+    baseProduct.value?.product_line === 'Jumbo!';
+});
+const showSizesSelect = computed(() => {
+  return availableSizes.value && availableSizes.value.length > 0;
+});
 const availableSizes = computed(() => {
-  if (!baseProduct.value?.productvariants) return [];
+  // Ellenőrizzük, hogy van-e alaptermék és vannak-e variánsai
+  if (!baseProduct.value || !baseProduct.value.productvariants) {
+    return [];
+  }
 
-  // Csak az egyedi méreteket gyűjtjük ki
-  const sizes = new Set(baseProduct.value.productvariants.map(v => v.quantity));
-  return Array.from(sizes).sort((a, b) => a - b); // Rendezzük növekvő sorrendbe
+  try {
+    // Ellenőrizzük, hogy a productvariants tömb-e
+    const variants = Array.isArray(baseProduct.value.productvariants)
+      ? baseProduct.value.productvariants
+      : [baseProduct.value.productvariants];
+
+    // Gyűjtsük ki az egyedi méreteket
+    const sizes = new Set(
+      variants
+        .filter(v => v && v.quantity) // Csak az érvényes variánsokat vesszük figyelembe
+        .map(v => v.quantity)
+    );
+
+    // Konvertáljuk tömbbé és rendezzük
+    return Array.from(sizes).sort((a, b) => a - b);
+  } catch (error) {
+    console.error('Hiba a méretek feldolgozása során:', error);
+    return [];
+  }
 });
 
 const availableFlavours = computed(() => {
@@ -135,12 +172,6 @@ const availableFlavours = computed(() => {
   return baseProduct.value.productvariants
     .filter(v => v.quantity === Number(selectedSize.value))
     .map(v => v.flavour);
-});
-
-const isJumboProduct = computed(() => {
-  return baseProduct.value?.name === 'Jumbo!' ||
-    baseProduct.value?.name?.includes('Jumbo') ||
-    baseProduct.value?.product_line === 'Jumbo!';
 });
 
 const calculatePricePerKg = computed(() => {
@@ -190,34 +221,26 @@ const handleFlavourChange = async () => {
 
 const loadProduct = async (searchName, quantity, flavour) => {
   try {
-    console.log('Termék betöltése kezdődik:', { searchName, quantity, flavour });
     isLoading.value = true;
 
     if (productStore.products.length === 0) {
       await productStore.getProducts();
     }
 
-    let product = null;
 
-    // Jumbo! termék keresése
-    if (searchName === 'Jumbo!') {
+    // Keressük meg a terméket pontos név egyezéssel először
+    let product = productStore.products.find(p => p.name === searchName);
+
+    // Ha nincs találat név alapján, próbáljuk brand alapján
+    if (!product) {
       product = productStore.products.find(p =>
-        p.brand?.name === 'Scitec' &&
-        (p.name === 'Jumbo!' || p.name?.includes('Jumbo'))
+        p.brand?.name === searchName &&
+        p.productvariants?.some(v =>
+          String(v.quantity) === String(quantity).replace(/gr|tab/gi, '').trim()
+        )
       );
-    } else {
-      // Egyéb termékek keresése
-      const brandProducts = productStore.products.filter(p => p.brand?.name === searchName);
-      product = brandProducts.find(p => {
-        if (!Array.isArray(p.productvariants)) return false;
-        return p.productvariants.some(v => {
-          const variantQuantity = String(v.quantity);
-          const searchQuantity = String(quantity).replace(/gr|tab/gi, '').trim();
-          isLoading.value = false;
-          return variantQuantity === searchQuantity;
-        });
-      });
     }
+
 
     if (!product) {
       console.error('Nem található termék:', { searchName, quantity });
@@ -225,42 +248,14 @@ const loadProduct = async (searchName, quantity, flavour) => {
       return;
     }
 
-    // Debug log hozzáadása
-    console.log('Termék találat:', {
-      brand: product.brand?.name,
-      name: product.name,
-      isJumbo: product.name === 'Jumbo!' || product.name?.includes('Jumbo')
-    });
 
     // Variáns keresése
-    let variant = null;
-    if (Array.isArray(product.productvariants)) {
-      variant = product.productvariants.find(v => {
-        const variantQuantity = String(v.quantity);
-        const searchQuantity = String(quantity).replace(/gr|tab/gi, '').trim();
-        const variantFlavour = v.flavour?.toLowerCase();
-        const searchFlavour = flavour?.toLowerCase();
-        isLoading.value = false
-        return variantQuantity === searchQuantity && variantFlavour === searchFlavour;
-      });
+    const variant = product.productvariants?.find(v => {
+      const quantityMatch = String(v.quantity) === String(quantity).replace(/gr|tab/gi, '').trim();
+      const flavourMatch = !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
+      return quantityMatch && flavourMatch;
+    });
 
-      if (!variant) {
-        variant = product.productvariants.find(v =>
-          String(v.quantity) === String(quantity).replace(/gr|tab/gi, '').trim()
-        );
-      }
-    }
-
-    if (!variant && product.productvariants?.length > 0) {
-      variant = product.productvariants[0];
-      if (variant) {
-        const newUrl = product.name === 'Jumbo!'
-          ? `/Jumbo!-${variant.quantity}${variant.unit}-${variant.flavour}`
-          : `/${product.brand.name}-${variant.quantity}${variant.unit}-${variant.flavour}`;
-        isLoading.value = false
-        await router.replace(newUrl);
-      }
-    }
 
     if (!variant) {
       console.error('Nem található variáns:', { quantity, flavour });
@@ -268,10 +263,12 @@ const loadProduct = async (searchName, quantity, flavour) => {
       return;
     }
 
+
     baseProduct.value = product;
     currentVariant.value = variant;
     selectedFlavour.value = variant.flavour;
     selectedSize.value = variant.quantity;
+
 
   } catch (error) {
     console.error('Hiba a termék betöltése során:', error);
@@ -280,19 +277,16 @@ const loadProduct = async (searchName, quantity, flavour) => {
   }
 };
 
+
 onMounted(async () => {
   const searchName = route.params.brand;
   const quantity = route.params.quantity;
   const flavour = route.params.flavour;
   await loadProduct(searchName, quantity, flavour);
 });
-
-watch(() => route.params, async (newParams) => {
-  const searchName = newParams.brand;
-  const quantity = newParams.quantity;
-  const flavour = newParams.flavour;
-
-  console.log('Route változás:', { searchName, quantity, flavour });
-  await loadProduct(searchName, quantity, flavour);
-});
+watch(() => currentVariant.value, (newVariant) => {
+  if (newVariant && newVariant.quantity) {
+    selectedSize.value = newVariant.quantity;
+  }
+}, { immediate: true });
 </script>

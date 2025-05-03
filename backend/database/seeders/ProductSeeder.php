@@ -55,7 +55,7 @@ class ProductSeeder extends Seeder
                 'category_id' => $multivitaminsCategory->id,
                 'name' => 'Multi Pro Plus',
                 'slug' => 'multi-pro-plus',
-                'description' => 'Komplex multivitamin formula',
+                'description' => 'Komplex napi vitamin-adag formula',
                 'product_line' => 'multiproplus'
             ],
             [
@@ -113,7 +113,7 @@ class ProductSeeder extends Seeder
             [
                 'brand_id' => $proNutritionBrand->id,
                 'category_id' => $multivitaminsCategory->id,
-                'name' => 'Daily Health - Komplex',
+                'name' => 'Daily Health Komplex',
                 'slug' => 'dailyhealth',
                 'description' => 'Komplex teljes napi vitaminbevitel fedezésére.',
                 'product_line' => 'dailyhealth'

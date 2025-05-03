@@ -1,43 +1,22 @@
 <template>
+    <div class="w-full mb-40">
+        <!-- Vitaminok & Multivitaminokat itt kezeljük (átadott értékek alapján) -->
+        <ScitecMegaDailyOne v-if="isMegaDaily && categoryName === 'multivitamin'" />
+        <BuilderVitaDay v-else-if="isVitaDay && categoryName === 'multivitamin'" />
+        <BuilderCVitamin v-else-if="isBuilderCvitamin && categoryName === 'vitamin'" />
+        <BuilderVitaproPack v-else-if="isVitaproPack && categoryName === 'multivitamin'" />
+        <ProNutritionDailyHealth v-else-if="isProNutritionDailyHealthComplex && categoryName === 'multivitamin'" />
+        <ScitecMultiProPlus v-else-if="isMultiProPlus && categoryName === 'multivitamin'" />
 
-<div v-if="isMegaDaily" class="w-full mb-40">
-    <ScitecMegaDailyOne />
-</div>
-
-<div v-else-if="isVitaDay" class="w-full mb-40">
-    <BuilderVitaDay />
-</div>
-
-<div v-else-if="isVitaproPack" class="w-full mb-40">
-    <BuilderVitaproPack />
-</div>
-
-<div v-else-if="ProNutritionDailyHealth" class="w-full mb-40">
-    <ProNutritionDailyHealth />
-</div>
-
-<div v-else-if="isMultiProPlus" class="w-full mb-40">
-    
-</div>
-
-<div v-else-if="isJumbo" class="w-full mb-40">
-    <ScitecJumbo />
-</div>
-
-<div v-else-if="brand == 'Scitec'" class="w-full mb-40">
-    <ScitecWpp />
-</div>
-
-<div v-else-if="brand == 'Builder'" class="w-full mb-40">
-    <BuilderWhey />
-</div>
-
-<div v-else-if="brand == 'Pro Nutrition'" class="w-full mb-40">
-    <ProNutritionProWhey />
-</div>
-
+        <!-- Protein-eknél szintúgy ugyanez -->
+        <ScitecJumbo v-else-if="isJumbo" />
+        <template v-else>
+            <ScitecWpp v-if="brand === 'Scitec' && categoryName === 'protein'" />
+            <BuilderWhey v-else-if="brand === 'Builder' && categoryName === 'protein'" />
+            <ProNutritionProWhey v-else-if="brand === 'Pro Nutrition' && categoryName === 'protein'" />
+        </template>
+    </div>
 </template>
-
 
 <script setup>
 import ScitecWpp from '@layouts/productdetails/ScitecWpp.vue'
@@ -48,44 +27,53 @@ import ScitecMegaDailyOne from '@layouts/productdetails/ScitecMegaDailyOne.vue'
 import BuilderVitaDay from '@layouts/productdetails/BuilderVitaDay.vue'
 import BuilderVitaproPack from '@layouts/productdetails/BuilderVitaproPack.vue'
 import ProNutritionDailyHealth from '@layouts/productdetails/ProNutritionDailyHealth.vue'
+import ScitecMultiProPlus from '@layouts/productdetails/ScitecMultiProPlus.vue'
+import BuilderCVitamin from '@layouts/productdetails/BuilderCVitamin.vue'
 
 const props = defineProps({
     brand: {
         type: String,
         required: true
     },
-    description: {
+    product: {
         type: String,
         required: true
     },
-    product: {
+    description: {
         type: String,
-        required: true,
+        default: ''
     },
     isJumbo: {
         type: Boolean,
-        required: true,
+        default: false
     },
     isMegaDaily: {
         type: Boolean,
-        required: true
+        default: false
     },
     isVitaDay: {
         type: Boolean,
-        required: true
+        default: false
     },
     isVitaproPack: {
         type: Boolean,
-        required: true
+        default: false
+    },
+    isBuilderCvitamin: {
+        type: Boolean,
+        default: false
     },
     isMultiProPlus: {
         type: Boolean,
-        required: true
+        default: false
     },
     isProNutritionDailyHealthComplex: {
         type: Boolean,
+        default: false
+    },
+    categoryName: {
+        type: String,
         required: true
-    }
-})
-
+    },
+});
 </script>

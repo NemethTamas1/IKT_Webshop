@@ -66,17 +66,11 @@ const getProductImage = (imagePath) => {
 
 // URL generáló függvény
 const generateProductUrl = (product) => {
-  // Ha nincs termék vagy hiányoznak az adatok, visszatérünk a főoldalra
   if (!product || !product.brand || !product.productvariants) return '/';
-
-  // A termék nevét vagy a brand nevét használjuk az URL-ben
-  const urlName = product.name === 'Jumbo!' ? 'Jumbo!' : product.brand.name;
-
-  // Első variáns adatainak használata
   const quantity = product.productvariants.quantity;
   const flavour = product.productvariants.flavour;
 
-  return `/${urlName}-${quantity}-${flavour}`;
+  return `/${product.name}-${quantity}-${flavour}`;
 };
 
 // Meghagyom, hogy egyszerübben lássuk, DE KI KELL VENNI MAJD!

@@ -11,7 +11,6 @@ export const useProductStore = defineStore("products", () => {
   const currentFlavour = ref(null);
   const selectedFlavour = ref(null);
   const availableFlavours = ref([]);
-  const filteredProteinVariants = ref([]);
 
   // Fehérje termékek adatai - előre inicializálva
   const proteinProducts = ref([]);
@@ -177,45 +176,95 @@ export const useProductStore = defineStore("products", () => {
 
   const sortProductsByBrand = async (brandName) => {
     try {
+      // 1. Brand alapján szűrjük a termékeket
       const brandFiltered = products.value.filter(
         (product) =>
-          product.brand &&
-          product.brand.name &&
-          product.brand.name.toLowerCase() === brandName.toLowerCase() &&
+          product.brand?.name?.toLowerCase() === brandName.toLowerCase() &&
           product.available === 1
       );
 
-      const weightGroups = {};
+      // 2. Termékek feldolgozása
+      const processedProducts = [];
+      const processedItems = new Set(); // Követjük a már feldolgozott termék-mennyiség párokat
 
       brandFiltered.forEach((product) => {
-        if (product.productvariants && product.productvariants.length > 0) {
-          if (Array.isArray(product.productvariants)) {
-            product.productvariants.forEach((variant) => {
-              if (variant.quantity !== undefined && variant.quantity !== null) {
-                const quantityKey = String(variant.quantity);
-                if (!weightGroups[quantityKey]) {
-                  weightGroups[quantityKey] = {
-                    id: product.id,
-                    variant_id: variant.id,
-                    name: product.name,
-                    description: product.description || "",
-                    quantity: variant.quantity,
-                    price: variant.price,
-                    image_path: variant.image_path || "",
-                    brand: product.brand,
-                    available: product.available,
-                    category: product.category,
-                    flavour: variant.flavour || "",
-                    productvariants: variant,
-                  };
-                }
-              }
-            });
-          }
+        if (Array.isArray(product.productvariants)) {
+          product.productvariants.forEach((variant) => {
+            // Egyedi azonosító a termék-mennyiség párhoz
+            const itemKey = `${product.name}-${variant.quantity}`;
+
+            if (!processedItems.has(itemKey)) {
+              processedItems.add(itemKey);
+
+              processedProducts.push({
+                id: `${product.id}-${variant.id}`,
+                name: product.name,
+                description: product.description || "",
+                brand: product.brand,
+                category: product.category,
+                price: variant.price,
+                image_path: variant.image_path || "",
+                available: product.available,
+                product_line: product.product_line,
+                productvariants: {
+                  id: variant.id,
+                  quantity: variant.quantity,
+                  unit: variant.unit,
+                  flavour: variant.flavour || null,
+                  price: variant.price,
+                  available: variant.available,
+                },
+                // Az összes elérhető variáns ehhez a termékhez és mennyiséghez
+                allVariants: product.productvariants
+                  .filter((v) => v.quantity === variant.quantity)
+                  .map((v) => ({
+                    id: v.id,
+                    flavour: v.flavour,
+                    price: v.price,
+                  })),
+              });
+            }
+          });
+        } else if (product.productvariants) {
+          // Ha csak egy variáns van (pl. tablettás termékek)
+          const variant = product.productvariants;
+          processedProducts.push({
+            id: `${product.id}-${variant.id}`,
+            name: product.name,
+            description: product.description || "",
+            brand: product.brand,
+            category: product.category,
+            price: variant.price,
+            image_path: variant.image_path || "",
+            available: product.available,
+            product_line: product.product_line,
+            productvariants: {
+              id: variant.id,
+              quantity: variant.quantity,
+              unit: variant.unit,
+              flavour: null,
+              price: variant.price,
+              available: variant.available,
+            },
+          });
         }
       });
 
-      filtered.value = Object.values(weightGroups);
+      // 3. Rendezés név és mennyiség szerint
+      processedProducts.sort((a, b) => {
+        // Először név szerint
+        const nameCompare = a.name.localeCompare(b.name, "hu", {
+          sensitivity: "base",
+        });
+        if (nameCompare !== 0) return nameCompare;
+
+        // Aztán mennyiség szerint
+        const quantityA = parseInt(a.productvariants.quantity);
+        const quantityB = parseInt(b.productvariants.quantity);
+        return quantityA - quantityB;
+      });
+
+      filtered.value = processedProducts;
       return filtered.value;
     } catch (error) {
       console.error("Hiba a szűrésnél:", error);
@@ -432,7 +481,58 @@ export const useProductStore = defineStore("products", () => {
   };
 
   const formatToOneThousandPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    try {
+      if (!price && price !== 0) return "0";
+      const numPrice = Number(price);
+      if (isNaN(numPrice)) return "0";
+      return numPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    } catch (error) {
+      console.error("Hiba az ár formázása során:", error);
+      return "0";
+    }
+  };
+  const findProduct = (searchName, quantity, flavour) => {
+    // Jumbo! speciális kezelése
+    if (searchName === "Jumbo!") {
+      return products.value.find(
+        (p) =>
+          p.brand?.name === "Scitec" &&
+          (p.name === "Jumbo!" || p.name?.includes("Jumbo"))
+      );
+    }
+
+    return products.value.find((p) => {
+      const nameMatch = p.name === searchName;
+      // Ha van pontos név egyezés, ellenőrizzük a variánsokat
+      if (nameMatch && Array.isArray(p.productvariants)) {
+        return p.productvariants.some((v) => {
+          const quantityMatch =
+            String(v.quantity) ===
+            String(quantity)
+              .replace(/gr|tab/gi, "")
+              .trim();
+          const flavourMatch =
+            !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
+          return quantityMatch && flavourMatch;
+        });
+      }
+
+      // Ha nincs pontos név egyezés, próbáljuk a brand alapján
+      if (p.brand?.name === searchName && Array.isArray(p.productvariants)) {
+        return p.productvariants.some((v) => {
+          const quantityMatch =
+            String(v.quantity) ===
+            String(quantity)
+              .replace(/gr|tab/gi, "")
+              .trim();
+          const flavourMatch =
+            !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
+          return quantityMatch && flavourMatch;
+        });
+      }
+
+      return false;
+    });
   };
 
   return {
@@ -483,5 +583,6 @@ export const useProductStore = defineStore("products", () => {
     groupProteinProductsByCategory,
     extractProteinBrands,
     formatToOneThousandPrice,
+    findProduct,
   };
 });
