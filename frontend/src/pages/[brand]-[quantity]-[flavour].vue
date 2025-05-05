@@ -230,6 +230,7 @@ const loadProduct = async (searchName, quantity, flavour) => {
 
     // Keressük meg a terméket pontos név egyezéssel először
     let product = productStore.products.find(p => p.name === searchName);
+    console.log('első lépés név egyezés: ', product)
 
     // Ha nincs találat név alapján, próbáljuk brand alapján
     if (!product) {
@@ -251,7 +252,10 @@ const loadProduct = async (searchName, quantity, flavour) => {
 
     // Variáns keresése
     const variant = product.productvariants?.find(v => {
-      const quantityMatch = String(v.quantity) === String(quantity).replace(/gr|tab/gi, '').trim();
+      const quantityMatch = String(v.quantity) === extractNumericQuantity(quantity);
+      console.log('adott product quantity-je: ', v.quantity)
+      console.log('quantity: ', quantity)
+      console.log('van prodtct. quantityMatch: ', quantityMatch)
       const flavourMatch = !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
       return quantityMatch && flavourMatch;
     });
@@ -275,6 +279,11 @@ const loadProduct = async (searchName, quantity, flavour) => {
   } finally {
     isLoading.value = false;
   }
+};
+
+const extractNumericQuantity = (q) => {
+  const match = String(q).match(/\d+/);
+  return match ? match[0] : '';
 };
 
 
