@@ -148,6 +148,6 @@ class ProductSeeder extends Seeder
                 ]);
             }
         }
-        $this->command->info('Alap termékek sikeresen létrehozva!');
+        $this->command->info("Gyártók termékeinek adat-szinkronizációja sikeresen megtörtént!");
     }
 }
