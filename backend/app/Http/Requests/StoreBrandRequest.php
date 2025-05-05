@@ -15,8 +15,6 @@ class StoreBrandRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'unique:brands', 'max:50'],
-            'slug' => ['string', 'max:50', 'unique:brands'],
-            'logo_path' => ['string', 'max:255', 'unique:brands'],
             'description' => ['required', 'string', 'max:255'],
         ];
     }

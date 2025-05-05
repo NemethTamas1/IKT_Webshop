@@ -15,7 +15,6 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => ['required', 'unique:categories,name', 'string', 'max:35'],
-            'slug' => ['required', 'string', 'max:255', 'unique:categories,slug'],
             'description' => ['string', 'max:255'],
         ];
     }

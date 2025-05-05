@@ -15,7 +15,7 @@ class Brand extends Model
     protected $keyType = 'int';
     public $incrementing = true;
 
-    protected $fillable = ['id', 'name', 'slug', 'logo_path', 'description', 'created_at', 'updated_at', 'deleted_at'];
+    protected $fillable = ['id', 'name', 'description', 'created_at', 'updated_at', 'deleted_at'];
 
     public function categories(): BelongsToMany
     {

@@ -14,8 +14,6 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', 'unique:brands'],
-            'slug' => ['required', 'string', 'max:255', 'unique:brands',],
-            'logo_path' => ['string', 'max:255','unique:brands'],
             'description' => ['string', 'max:255'],
         ];
     }
