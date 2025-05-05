@@ -260,7 +260,7 @@ class ProductVariantSeeder extends Seeder
             }
         }
 
-        $this->command->info('Termék variánsok sikeresen létrehozva!');
+        $this->command->info("Gyártónkénti termékvariánsok szinkronizációja sikeresen megtörtént!");
     }
 
     private function generateImagePath($brand, $productLine, $quantity, $flavour)
