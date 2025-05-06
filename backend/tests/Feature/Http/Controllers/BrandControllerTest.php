@@ -23,9 +23,7 @@ class BrandControllerTest extends TestCase
         $this->testData = [
             "id" => 666,
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ];
     }
 
@@ -40,7 +38,6 @@ class BrandControllerTest extends TestCase
         $brandData = [
             'name' => 'Test Brand',
             'description' => 'Test Brand Description',
-            'logo_path' => 'path/to/logo.jpg'
         ];
 
         $this->post($this->baseURL, $brandData);
@@ -58,7 +55,6 @@ class BrandControllerTest extends TestCase
         $this->testData = [
             'name' => 'Test Brand',
             'description' => 'Test Brand Description',
-            'logo_path' => 'path/to/logo.jpg'
         ];
         $response = $this->post($this->baseURL, $this->testData);
         $response = $this->post($this->baseURL, $this->testData); // Direkt 2x ugyanazt!
@@ -69,16 +65,12 @@ class BrandControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $updatedData = [
             "name" => "Updated Brand",
-            "slug" => "slug_testing",
             "description" => "Updated Description",
-            "logo_path" => "Logo_path_testing",
         ];
 
         $this->putJson($this->baseURL . $brand->id, $updatedData)->assertStatus(200);
@@ -97,9 +89,7 @@ class BrandControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
         $this->delete($this->baseURL . $brand->id)->assertStatus(204);
     }
@@ -108,9 +98,7 @@ class BrandControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $this->delete($this->baseURL . $brand->id);
@@ -124,9 +112,7 @@ class BrandControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $category = Category::create([
@@ -137,14 +123,15 @@ class BrandControllerTest extends TestCase
             'name' => 'Product 1',
             'brand_id' => $brand->id,
             'category_id' => $category->id,
-            "slug" => "A_Test_slug",
+            'slug' => 'product_test_slug',
         ]);
 
         Product::create([
             'name' => 'Product 2',
             'brand_id' => $brand->id,
             'category_id' => $category->id,
-            "slug" => "B_Test_slug",
+            'slug' => 'product_test_slug_2',
+
 
         ]);
         $this->assertCount(2, $brand->products);
@@ -153,9 +140,7 @@ class BrandControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $category = Category::create([
@@ -166,7 +151,8 @@ class BrandControllerTest extends TestCase
             'name' => 'Product 1',
             'brand_id' => $brand->id,
             'category_id' => $category->id,
-            "slug" => "A_Test_slug",
+            'slug' => 'product_test_slug_3',
+
         ]);
         $this->assertTrue($brand->products->contains($product1));
     }
@@ -174,9 +160,7 @@ class BrandControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $category = Category::create([
@@ -187,15 +171,14 @@ class BrandControllerTest extends TestCase
             'name' => 'Product 1',
             'brand_id' => $brand->id,
             'category_id' => $category->id,
-            "slug" => "A_Test_slug",
+            'slug' => 'product_test_slug_4',
         ]);
 
         $product2 = Product::create([
             'name' => 'Product 2',
             'brand_id' => $brand->id,
             'category_id' => $category->id,
-            "slug" => "B_Test_slug",
-
+            'slug' => 'product_test_slug_5',
         ]);
         $this->assertTrue($brand->products->contains($product1), $brand->products->contains($product2), 'Some data is missing');
     }

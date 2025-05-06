@@ -33,22 +33,6 @@ class Brand_DatabaseTest extends TestCase
         );
     }
 
-    public function test_brands_table_has_slug_column(): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn('brands', 'slug'),
-            'A slug mező nem létezik a brands táblában'
-        );
-    }
-
-    public function test_brands_table_has_logo_path_column(): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn('brands', 'logo_path'),
-            'A logo_path mező nem létezik a brands táblában'
-        );
-    }
-
     public function test_brands_table_has_description_column(): void
     {
         $this->assertTrue(
@@ -86,8 +70,6 @@ class Brand_DatabaseTest extends TestCase
             Schema::hasColumns('brands', [
                 'id',
                 'name',
-                'slug',
-                'logo_path',
                 'description',
                 'created_at',
                 'updated_at',

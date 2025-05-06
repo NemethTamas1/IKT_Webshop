@@ -81,11 +81,10 @@ class CategoryControllerTest extends TestCase
         $response = $this->delete($this->baseURL . $id);
         $response->assertStatus(204);
     }
-    public function test_a_category_can_be_soft_deleted_and_still_works()
+    public function test_category_can_be_soft_deleted_and_still_works()
     {
         $category = Category::create([
             "name" => "Base Category",
-            "slug" => "base_category_slug",
             "description" => "Base Category Description",
         ]);
 
@@ -95,7 +94,6 @@ class CategoryControllerTest extends TestCase
     {
         $category = Category::create([
             "name" => "Base Category",
-            "slug" => "base_category_slug",
             "description" => "Base Category Description",
         ]);
 
@@ -110,14 +108,11 @@ class CategoryControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $category = Category::create([
             "name" => "Base Category",
-            "slug" => "base_category_slug",
             "description" => "Base Category Description",
         ]);
 
@@ -142,14 +137,11 @@ class CategoryControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $category = Category::create([
             "name" => "Base Category",
-            "slug" => "base_category_slug",
             "description" => "Base Category Description",
         ]);
 
@@ -167,14 +159,11 @@ class CategoryControllerTest extends TestCase
     {
         $brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base_slug_testing",
             "description" => "Base_Updated Description",
-            "logo_path" => "Base_Logo_path_testing",
         ]);
 
         $category = Category::create([
             "name" => "Base Category",
-            "slug" => "base_category_slug",
             "description" => "Base Category Description",
         ]);
 

@@ -32,14 +32,11 @@ class ProductVariantControllerTest extends TestCase
 
         $this->brand = Brand::create([
             "name" => "Base Brand",
-            "slug" => "base-brand-slug",
             "description" => "Base brand description",
-            "logo_path" => "base_logo.png",
         ]);
 
         $this->category = Category::create([
             "name" => "Base Category",
-            "slug" => "base-category-slug",
             "description" => "Base category description",
         ]);
 

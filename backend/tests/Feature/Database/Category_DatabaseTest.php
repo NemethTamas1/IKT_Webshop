@@ -35,14 +35,6 @@ class Category_DatabaseTest extends TestCase
         );
     }
 
-    public function test_categories_table_has_slug_column(): void
-    {
-        $this->assertTrue(
-            Schema::hasColumn('categories', 'slug'),
-            'A slug mező nem létezik a categories táblában'
-        );
-    }
-
     public function test_categories_table_has_description_column(): void
     {
         $this->assertTrue(
@@ -81,7 +73,6 @@ class Category_DatabaseTest extends TestCase
             Schema::hasColumns('categories', [
                 'id',
                 'name',
-                'slug',
                 'description',
                 'created_at',
                 'updated_at',
