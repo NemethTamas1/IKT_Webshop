@@ -4,7 +4,10 @@
             <div>
                 <p class="text-3xl font-bold text-center my-4" style="font-family:'Nunito'">Multivitaminok</p>
                 <p class="font-2xl font-semibold text-center" style="font-family:'Nunito'">
-                    A szervezetbe kerülő vitaminok egymáshoz viszonyított aránya rendkívül fontos, ezért érdemes a komplex multivitamin készítményeket előnyben részesíteni a különálló vitamin készítményekkel szemben. Mint minden esetben, itt is elsősorban a helyes táplálkozásra kell törekedni, és ezt kiegészíteni - és nem helyettesíteni - a megfelelő multivitamin készítmények fogyasztásával.
+                    A szervezetbe kerülő vitaminok egymáshoz viszonyított aránya rendkívül fontos, ezért érdemes a
+                    komplex multivitamin készítményeket előnyben részesíteni a különálló vitamin készítményekkel
+                    szemben. Mint minden esetben, itt is elsősorban a helyes táplálkozásra kell törekedni, és ezt
+                    kiegészíteni - és nem helyettesíteni - a megfelelő multivitamin készítmények fogyasztásával.
                 </p>
             </div>
 
@@ -45,16 +48,18 @@
                             <p v-if="variant.brand_name" class="text-lg text-gray-600 mt-1">{{ variant.brand_name }}</p>
                             <h3 class="text-lg font-semibold">{{ variant.product_name }}</h3>
                             <!-- <p v-if="variant.flavour" class="italic text-gray-600"> {{ variant.flavour }}</p> -->
-                            <p v-if="variant.quantity" class="text-gray-600">{{ variant.quantity }} {{ variant.unit}}.</p>
-                            <div class="mt-4 flex justify-between items-center">
-                                <p class="text-lg font-bold">
-                                    {{ formatPrice(variant.price) }} Ft
-                                </p>
-                                <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                    Kosárba
-                                </button>
-                            </div>
+                            <p v-if="variant.quantity" class="text-gray-600">{{ variant.quantity }} {{ variant.unit }}.
+                            </p>
                         </router-link>
+                        <div class="mt-4 flex justify-between items-center">
+                            <p class="text-lg font-bold">
+                                {{ formatPrice(variant.price) }} Ft
+                            </p>
+                            <button @click="addVariantToCart(variant)"
+                                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                Kosárba
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -72,9 +77,13 @@ import { ref, computed, onMounted } from 'vue';
 import BaseLayout from '@layouts/BaseLayout.vue';
 import { useProductStore } from '@stores/ProductStore';
 import { RouterLink, useRouter } from 'vue-router';
+import { useCartStore } from '@stores/CartStore';
+import { ToastService } from '@stores/ToastService';
 
 
 const productStore = useProductStore();
+const cartStore = useCartStore();
+
 const loading = ref(true);
 const error = ref(false);
 const errorMessage = ref('');
@@ -83,36 +92,36 @@ const router = useRouter();
 
 
 const multivitaminProducts = computed(() => {
-  const nameKeywords = [
-    'mega-daily-one',
-    'multi-pro-plus',
-    'vitaday',
-    'vitapropack',
-    'dailyhealt',
-  ];
-  
-  return productStore.products.filter(product => {
-    if (product.available !== 1) return false;
-    
-    // Pontos név egyezés ellenőrzése
-    const exactNameMatch = nameKeywords.some(keyword => 
-      product.name?.toLowerCase() === keyword
-    );
-    
-    if (exactNameMatch) return true;
-    
-    // Kategória alapján szűrés
-    if (product.category?.name?.toLowerCase() === 'multivitamin') return true;
-    
-    return false;
-  });
+    const nameKeywords = [
+        'mega-daily-one',
+        'multi-pro-plus',
+        'vitaday',
+        'vitapropack',
+        'dailyhealt',
+    ];
+
+    return productStore.products.filter(product => {
+        if (product.available !== 1) return false;
+
+        // Pontos név egyezés ellenőrzése
+        const exactNameMatch = nameKeywords.some(keyword =>
+            product.name?.toLowerCase() === keyword
+        );
+
+        if (exactNameMatch) return true;
+
+        // Kategória alapján szűrés
+        if (product.category?.name?.toLowerCase() === 'multivitamin') return true;
+
+        return false;
+    });
 });
 const generateProductUrl = (variant) => {
-  return `/${variant.product_name}-${variant.quantity}${variant.unit}-${variant.flavour}`;
+    return `/${variant.product_name}-${variant.quantity}${variant.unit}-${variant.flavour}`;
 };
 
 const allVariants = computed(() => {
-    const variants = [];    
+    const variants = [];
 
     multivitaminProducts.value.forEach(product => {
         if (product.productvariants) {
@@ -156,6 +165,24 @@ const allVariants = computed(() => {
 
     return variants;
 });
+
+const addVariantToCart = (variant) => {
+    const product = {
+        id: variant.id,
+        name: variant.product_name,
+        price: variant.price,
+        image: variant.image_path,
+        flavour: variant.flavour,
+        quantity: variant.quantity,
+        unit: variant.unit,
+        brand: variant.brand_name
+    }
+
+    cartStore.addToCart(product);
+    ToastService.showSuccess("Termék sikeresen hozzáadva a kosárhoz!");
+}
+
+
 // Szűrt variánsok Márka! alapján
 const filteredVariants = computed(() => {
     if (selectedBrand === null) {
@@ -189,63 +216,62 @@ const formatPrice = (price) => {
 };
 
 const loadProducts = async (searchName, quantity, flavour) => {
-  try {
-    loading.value = true;
-    
-    if (productStore.products.length === 0) {
-      await productStore.getProducts();
-    }
+    try {
+        loading.value = true;
 
-    // Először keressük meg a terméket név alapján
-    let product = productStore.products.find(p => p.name === searchName);
+        if (productStore.products.length === 0) {
+            await productStore.getProducts();
+        }
 
-    // Ha nincs találat név alapján, próbáljuk brand alapján
-    if (!product) {
-      product = productStore.products.find(p => {
-        return p.brand?.name === searchName &&
-          p.productvariants?.some(v => {
+        // Először keressük meg a terméket név alapján
+        let product = productStore.products.find(p => p.name === searchName);
+
+        // Ha nincs találat név alapján, próbáljuk brand alapján
+        if (!product) {
+            product = productStore.products.find(p => {
+                return p.brand?.name === searchName &&
+                    p.productvariants?.some(v => {
+                        // Tisztítsuk meg a mennyiséget az egységtől
+                        const cleanQuantity = String(quantity).replace(/[a-zA-Z]/g, '').trim();
+                        return String(v.quantity) === cleanQuantity;
+                    });
+            });
+        }
+
+        if (!product) {
+            console.error('Nem található termék:', { searchName, quantity });
+            loading.value = false;
+            return;
+        }
+
+        // Variáns keresése
+        const variant = product.productvariants?.find(v => {
             // Tisztítsuk meg a mennyiséget az egységtől
-            const cleanQuantity = String(quantity).replace(/[a-zA-Z]/g, '').trim();
-            return String(v.quantity) === cleanQuantity;
-          });
-      });
+            const cleanInputQuantity = String(quantity).replace(/[a-zA-Z]/g, '').trim();
+            const quantityMatch = String(v.quantity) === cleanInputQuantity;
+            const flavourMatch = !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
+
+            return quantityMatch && flavourMatch;
+        });
+
+        if (!variant) {
+            console.error('Nem található variáns:', { quantity, flavour });
+            loading.value = false;
+            return;
+        }
+
+        baseProduct.value = product;
+        currentVariant.value = variant;
+        selectedFlavour.value = variant.flavour || '';
+        selectedSize.value = variant.quantity;
+
+    } catch (error) {
+        console.error('Hiba a termék betöltése során:', error);
+    } finally {
+        loading.value = false;
     }
-
-    if (!product) {
-      console.error('Nem található termék:', { searchName, quantity });
-      loading.value = false;
-      return;
-    }
-
-    // Variáns keresése
-    const variant = product.productvariants?.find(v => {
-      // Tisztítsuk meg a mennyiséget az egységtől
-      const cleanInputQuantity = String(quantity).replace(/[a-zA-Z]/g, '').trim();
-      const quantityMatch = String(v.quantity) === cleanInputQuantity;
-      const flavourMatch = !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
-      
-      return quantityMatch && flavourMatch;
-    });
-
-    if (!variant) {
-      console.error('Nem található variáns:', { quantity, flavour });
-      loading.value = false;
-      return;
-    }
-
-    baseProduct.value = product;
-    currentVariant.value = variant;
-    selectedFlavour.value = variant.flavour || '';
-    selectedSize.value = variant.quantity;
-
-  } catch (error) {
-    console.error('Hiba a termék betöltése során:', error);
-  } finally {
-    loading.value = false;
-  }
 };
 onMounted(async () => {
     await loadProducts();
 });
 </script>
-

@@ -30,7 +30,9 @@
         <!--Kosár-->
         <div class="flex items-center justify-end">
           <button class="text-sky-600">
-            <i class="fa-solid fa-basket-shopping text-2xl"></i>
+            <RouterLink to="/cart">
+              <i class="fa-solid fa-basket-shopping text-2xl"></i>
+            </RouterLink>
           </button>
 
           <!-- menü -->

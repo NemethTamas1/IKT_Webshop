@@ -37,6 +37,7 @@
                     class="grid grid-cols-1 md:grid-cols- lg:grid-cols-4 gap-10 p-4 ">
                     <div v-for="variant in filteredVariants" :key="`${variant.id}`"
                         class="mx-auto mt-12 p-4 w-full rounded-lg bg-gray-100/50 border-b-4 border-r-4 border-sky-700/35 shadow-xl overflow-hidden hover:border-lime-700/55 transition-all duration-500 ease-in-out cursor-pointer">
+
                         <router-link :to="generateProductUrl(variant)">
                             <div class="h-40 flex justify-center items-center mb-4">
                                 <img v-if="variant.image_path" :src="`/src/assets/products_img/${variant.image_path}`"
@@ -47,16 +48,19 @@
                             <p v-if="variant.brand_name" class="text-lg text-gray-600 mt-1">{{ variant.brand_name }}</p>
                             <h3 class="text-lg font-semibold">{{ variant.product_name }}</h3>
                             <p v-if="variant.flavour" class="italic text-gray-600"> {{ variant.flavour }}</p>
-                            <p v-if="variant.quantity" class="text-gray-600">{{ variant.quantity }} {{ variant.unit}}.</p>
-                            <div class="mt-4 flex justify-between items-center">
-                                <p class="text-lg font-bold">
-                                    {{ formatPrice(variant.price) }} Ft
-                                </p>
-                                <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                    Kosárba
-                                </button>
-                            </div>
+                            <p v-if="variant.quantity" class="text-gray-600">{{ variant.quantity }} {{ variant.unit }}.
+                            </p>
                         </router-link>
+
+                        <div class="mt-4 flex justify-between items-center">
+                            <p class="text-lg font-bold">
+                                {{ formatPrice(variant.price) }} Ft
+                            </p>
+                            <button @click="addVariantToCart(variant)"
+                                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                Kosárba
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -74,9 +78,12 @@ import { ref, computed, onMounted } from 'vue';
 import BaseLayout from '@layouts/BaseLayout.vue';
 import { useProductStore } from '@stores/ProductStore';
 import { RouterLink, useRouter } from 'vue-router';
+import { useCartStore } from '@stores/CartStore';
+import { ToastService } from '@stores/ToastService.js';
 
 
 const productStore = useProductStore();
+const cartStore = useCartStore();
 const loading = ref(true);
 const error = ref(false);
 const errorMessage = ref('');
@@ -156,9 +163,9 @@ const allVariants = computed(() => {
     return variants;
 });
 const generateProductUrl = (variant) => {
-  // Ha a termék neve Jumbo!, akkor azt használjuk az URL-ben
-  const urlName = variant.product_name === 'Jumbo!' ? 'Jumbo!' : variant.brand_name;
-  return `/${urlName}-${variant.quantity}gr-${variant.flavour}`;
+    // Ha a termék neve Jumbo!, akkor azt használjuk az URL-ben
+    const urlName = variant.product_name === 'Jumbo!' ? 'Jumbo!' : variant.brand_name;
+    return `/${urlName}-${variant.quantity}gr-${variant.flavour}`;
 };
 
 // Szűrt variánsok márka alapján
@@ -218,6 +225,22 @@ const loadProducts = async () => {
         loading.value = false;
     }
 };
+
+const addVariantToCart = (variant) => {
+    const product = {
+        id: variant.id,
+        name: variant.product_name,
+        price: variant.price,
+        image: variant.image_path,
+        flavour: variant.flavour,
+        quantity: variant.quantity,
+        unit: variant.unit,
+        brand: variant.brand_name
+    }
+
+    cartStore.addToCart(product);
+    ToastService.showSuccess("Termék sikeresen hozzáadva a kosárhoz!");
+}
 
 onMounted(async () => {
     await loadProducts();
