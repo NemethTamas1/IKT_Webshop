@@ -27,7 +27,8 @@
 
 
       <div class="flex justify-between items-center p-3">
-        <!--Kosár-->
+
+        <!-- Kosár -->
         <div class="flex items-center justify-end">
           <button class="text-sky-600">
             <RouterLink to="/cart">
@@ -35,7 +36,7 @@
             </RouterLink>
           </button>
 
-          <!-- menü -->
+          <!-- Menü -->
           <button class="block lg:hidden text-sky-800" @click="toggleMenu">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -53,7 +54,7 @@
           <!-- Bejelentkezés -->
           <li
             class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
-            <RouterLink to="#" class="flex-grow"><i class="md:fa-solid md:fa-user"></i>Bejelentkezés</RouterLink>
+            <RouterLink to="/login" class="flex-grow"><i class="md:fa-solid md:fa-user"></i>Bejelentkezés</RouterLink>
           </li>
 
           <!-- Minden gyártó -->
