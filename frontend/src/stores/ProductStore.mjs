@@ -252,38 +252,6 @@ export const useProductStore = defineStore("products", () => {
       console.error("Hiba az ízesítés frissítése során:", error);
     }
   };
-  // Storage kezelés
-  const STORAGE_KEYS = {
-    PRODUCT: "current-product",
-    FLAVOUR: "current-flavour",
-    AVAILABLE_FLAVOURS: "available-flavours",
-  };
-
-  const saveProductsToLocalStorage = () => {
-    try {
-      if (products.value.length > 0) {
-        localStorage.setItem("stored-products", JSON.stringify(products.value));
-      }
-    } catch (error) {
-      console.error("Hiba a termékek tárolása során:", error);
-    }
-  };
-
-  const restoreProductsFromLocalStorage = async () => {
-    try {
-      const savedProducts = JSON.parse(localStorage.getItem("stored-products"));
-      if (Array.isArray(savedProducts) && savedProducts.length > 0) {
-        products.value = savedProducts;
-        console.log("Termékek sikeresen visszaállítva a helyi tárolóból.");
-        return;
-      }
-      // Ha nem található, töltsük le az adatokat
-      await getProducts();
-    } catch (error) {
-      console.error("Hiba a termékek visszaállítása során:", error);
-    }
-  };
-
 
   const formatToOneThousandPrice = (price) => {
     try {
@@ -302,42 +270,6 @@ export const useProductStore = defineStore("products", () => {
     if (!product || !product.productvariants || !size) return null;
 
     return product.productvariants.find((v) => v.quantity === Number(size));
-  };
-
-  // Termék és variáns keresése a paraméterek alapján
-  const findProductAndVariantByParams = async (
-    searchName,
-    quantity,
-    flavour
-  ) => {
-    // Számszerű mennyiség kinyerése (pl. "500gr" -> "500")
-    const numericQuantity = String(quantity).match(/\d+/)?.[0] || "";
-
-    // 1. Keresés név alapján
-    let product = this.products.find((p) => p.name === searchName);
-
-    // 2. Ha nincs találat név alapján, keresés brand alapján
-    if (!product) {
-      product = this.products.find(
-        (p) =>
-          p.brand?.name === searchName &&
-          p.productvariants?.some((v) => String(v.quantity) === numericQuantity)
-      );
-    }
-
-    if (!product) {
-      return { product: null, variant: null };
-    }
-
-    // Variáns keresése
-    const variant = product.productvariants?.find((v) => {
-      const quantityMatch = String(v.quantity) === numericQuantity;
-      const flavourMatch =
-        !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
-      return quantityMatch && flavourMatch;
-    });
-
-    return { product, variant };
   };
 
   return {
@@ -368,9 +300,6 @@ export const useProductStore = defineStore("products", () => {
     // Szűrés és rendezés
     sortProductsByBrand,
     sortGetOneProduct,
-
-    // Kategória kezelés
-    findProductAndVariantByParams, // Termék és variáns keresése a paraméterek alapján
 
     getFlavoursByDescriptionAndWeight,
     getDefaultVariantForSize,
