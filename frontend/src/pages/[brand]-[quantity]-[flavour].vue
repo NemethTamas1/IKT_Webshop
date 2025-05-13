@@ -76,7 +76,9 @@
           :isVitaDay="isBuilderVitaDay"
           :isMegaDaily="isMegaDailyProduct"
           :isBuilderCvitamin="isBuilderCvitaminProduct" 
-          :categoryName="baseProduct.category.name"
+          :categoryName="baseProduct?.category?.name"
+          :isDailyHealthKalciumMagnezium="isDailyHealthKalciumMagnezium"
+          :isProNutritionDailyHealthCVitamin="isProNutritionDailyHealthCVitamin"
           />
       </div>
     </div>
@@ -106,6 +108,18 @@ const currentVariant = ref(null);
 const selectedFlavour = ref('');
 const selectedSize = ref('');
 
+console.log('searchName paraméter:', route.params.brand);
+console.log('quantity paraméter:', route.params.quantity);
+console.log('flavour paraméter:', route.params.branflavourd);
+
+const isProNutritionDailyHealthCVitamin = computed(() => {
+  return baseProduct.value?.name === 'Daily Health  C Vitamin';
+});
+
+const isDailyHealthKalciumMagnezium = computed(() => {
+  return baseProduct.value?.name === 'Daily Health  Kalcium Magnezium';
+});
+
 const isMultiProPlus = computed(() => {
   return baseProduct.value?.name === 'Multi Pro Plus';
 });
@@ -127,7 +141,7 @@ const isBuilderVitaDay = computed(() => {
   return baseProduct.value?.name === 'Vitaday';
 });
 const isBuilderCvitaminProduct = computed(() => {
-  return baseProduct.value.name === 'C vitamin' 
+  return baseProduct.value?.name === 'C vitamin' 
 });
 
 const isJumboProduct = computed(() => {
