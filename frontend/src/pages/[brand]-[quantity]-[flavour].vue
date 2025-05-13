@@ -7,7 +7,7 @@
           <div class="grid col-span-2 w-full xl:w-10/12 h-full xl:h-3/5">
             <img :src="`/src/assets/products_img/${currentVariant?.image_path}`" :alt="currentVariant?.flavour"
               class="flex justify-center items-center m-auto w-full mx-auto bg-white "
-              :class="isProNutritionDailyHealthComplex || isProNutritionKalciumMagnezium || isProNutritionCVitamin ? 'w-8/12 ' : 'w-full'" />
+              :class="isProNutritionDailyHealthComplex || isDailyHealthKalciumMagnezium || isProNutritionDailyHealthCVitamin ? 'w-8/12 ' : 'w-full'" />
           </div>
           <!-- Termék details -->
           <div class="w-2/3 h-full  ml-6 flex-col justify-center col-span-3
@@ -21,7 +21,7 @@
               {{ baseProduct?.name }}
               <span class="text-gray-600 text-sm md:text-md lg:text-lg italic">({{ currentVariant?.quantity }} {{
                 currentVariant?.unit
-                }}.)</span>
+              }}.)</span>
             </p>
 
             <!-- Ár -->
@@ -70,12 +70,12 @@
       <div>
 
         <ProductDetailsInformations :brand="baseProduct?.brand?.name" :product="baseProduct?.name"
-          :description="currentVariant?.flavour" :isMultiProPlus="isMultiProPlus"
+          :description="currentVariant?.flavour" :isMultiProPlus="isMultiProPlus" :isVitaproPack="isVitaproPack"
+          :isJumbo="isJumboProduct" :isVitaDay="isBuilderVitaDay" :isMegaDaily="isMegaDailyProduct"
+          :isBuilderCvitamin="isBuilderCvitaminProduct" :categoryName="baseProduct?.category?.name"
           :isProNutritionDailyHealthComplex="isProNutritionDailyHealthComplex"
-          :isProNutritionKalciumMagnezium="isProNutritionKalciumMagnezium"
-          :isProNutritionCVitamin="isProNutritionCVitamin" :isVitaproPack="isVitaproPack" :isJumbo="isJumboProduct"
-          :isVitaDay="isBuilderVitaDay" :isMegaDaily="isMegaDailyProduct" :isBuilderCvitamin="isBuilderCvitaminProduct"
-          :categoryName="baseProduct.category.name" />
+          :isDailyHealthKalciumMagnezium="isDailyHealthKalciumMagnezium"
+          :isProNutritionDailyHealthCVitamin="isProNutritionDailyHealthCVitamin" />
       </div>
     </div>
 
@@ -104,19 +104,24 @@ const currentVariant = ref(null);
 const selectedFlavour = ref('');
 const selectedSize = ref('');
 
+console.log('searchName paraméter:', route.params.brand);
+console.log('quantity paraméter:', route.params.quantity);
+console.log('flavour paraméter:', route.params.branflavourd);
+
+const isProNutritionDailyHealthCVitamin = computed(() => {
+  return baseProduct.value?.name === 'Daily Health C Vitamin';
+});
+
+const isDailyHealthKalciumMagnezium = computed(() => {
+  return baseProduct.value?.name === 'Daily Health Kalcium Magnezium';
+});
+
 const isMultiProPlus = computed(() => {
   return baseProduct.value?.name === 'Multi Pro Plus';
 });
 
 const isProNutritionDailyHealthComplex = computed(() => {
   return baseProduct.value?.name === "Daily Health Komplex";
-});
-
-const isProNutritionKalciumMagnezium = computed(() => {
-  return baseProduct.value?.name === "Daily Health Kalcium Magnezium";
-});
-const isProNutritionCVitamin = computed(() => {
-  return baseProduct.value?.name === "Daily Health C Vitamin";
 });
 const isVitaproPack = computed(() => {
   return baseProduct.value?.name === 'Vitapro Pack';
@@ -131,7 +136,7 @@ const isBuilderVitaDay = computed(() => {
   return baseProduct.value?.name === 'Vitaday';
 });
 const isBuilderCvitaminProduct = computed(() => {
-  return baseProduct.value.name === 'C vitamin'
+  return baseProduct.value?.name === 'C vitamin'
 });
 
 const isJumboProduct = computed(() => {

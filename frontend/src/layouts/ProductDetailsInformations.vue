@@ -5,10 +5,10 @@
         <BuilderVitaDay v-else-if="isVitaDay && categoryName === 'multivitamin'" />
         <BuilderCVitamin v-else-if="isBuilderCvitamin && categoryName === 'vitamin'" />
         <BuilderVitaproPack v-else-if="isVitaproPack && categoryName === 'multivitamin'" />
-        <ProNutritionDailyHealth v-else-if="isProNutritionDailyHealthComplex && categoryName === 'multivitamin'" />
-        <ProNutritionKalciumMagnezium v-else-if="isProNutritionKalciumMagnezium && categoryName === 'vitamin'" />
-        <ProNutritionCVitamin v-else-if="isProNutritionCVitamin && categoryName === 'vitamin'" />
         <ScitecMultiProPlus v-else-if="isMultiProPlus && categoryName === 'multivitamin'" />
+        <ProNutritionDailyHealth v-else-if="isProNutritionDailyHealthComplex && categoryName === 'multivitamin'" />
+        <ProNutritionKalcMagn v-else-if="isDailyHealthKalciumMagnezium && categoryName === 'vitamin'" />
+        <ProNutritionDailyHealthCVitamin v-else-if="isProNutritionDailyHealthCVitamin && categoryName === 'vitamin'" />
 
         <!-- Protein-eknél szintúgy ugyanez -->
         <ScitecJumbo v-else-if="isJumbo" />
@@ -31,8 +31,8 @@ import BuilderVitaproPack from '@layouts/productdetails/BuilderVitaproPack.vue'
 import ProNutritionDailyHealth from '@layouts/productdetails/ProNutritionDailyHealth.vue'
 import ScitecMultiProPlus from '@layouts/productdetails/ScitecMultiProPlus.vue'
 import BuilderCVitamin from '@layouts/productdetails/BuilderCVitamin.vue'
-import ProNutritionKalciumMagnezium from '@layouts/productdetails/ProNutritionKalciumMagnezium.vue'
-import ProNutritionCVitamin from '@layouts/productdetails/ProNutritionCVitamin.vue'
+import ProNutritionKalcMagn from '@layouts/productdetails/ProNutritionKalcMagn.vue'
+import ProNutritionDailyHealthCVitamin from '@layouts/productdetails/ProNutritionDailyHealthCVitamin.vue'
 
 const props = defineProps({
     brand: {
@@ -75,13 +75,13 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    isProNutritionKalciumMagnezium: {
+    isDailyHealthKalciumMagnezium: {
         type: Boolean,
-        default: false
+        required: true
     },
-    isProNutritionCVitamin: {
+    isProNutritionDailyHealthCVitamin: {
         type: Boolean,
-        default: false
+        required: true
     },
     categoryName: {
         type: String,

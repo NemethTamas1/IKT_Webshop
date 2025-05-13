@@ -2,7 +2,7 @@
   <BaseHeader />
   <div id="banner" class="w-full mx-auto pl-4 mb-24 md:min-h-svh grid grid-cols-5 bg-right">
     <div class="grid col-span-1 lg:col-span-2 mx-auto md:px-4 w-auto lg:max-w-[700px]">
-      <p class="headerlineOne my-auto max-w-fit h-fit shadow-xl pr-5 pl-2"
+      <p class="headerlineOne my-auto max-w-fit h-fit shadow-xl py-2  pr-5 pl-2"
           style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
         Tavaszi Mega Akció!
       </p>
