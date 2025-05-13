@@ -245,14 +245,4 @@ const addVariantToCart = (variant) => {
 onMounted(async () => {
     await loadProducts();
 });
-const navigateToProductDetails = (variant) => {
-    router.push({
-        name: 'ProductDetails',
-        params: {
-            brand: variant.brand_name,
-            quantity: variant.quantity,
-            flavour: variant.flavour
-        }
-    });
-};
 </script>

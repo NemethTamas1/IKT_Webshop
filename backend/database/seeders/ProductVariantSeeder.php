@@ -22,14 +22,14 @@ class ProductVariantSeeder extends Seeder
         $vitaDay = Product::where('name', 'Vitaday')->first();
         $vitaProPack = Product::where('name', 'Vitapro Pack')->first();
         $proWhey = Product::where('name', 'Pro Whey')->first();
-        $dailyHealthComplex = Product::where('name', 'Daily Health Komplex')->first();
-        $dailyHealthCvitamin = Product::where('name', 'Dealy Health - C Vitamin')->first();
-        $dailyHealthKalciumMagnesium = Product::where('name', 'Dealy Health - Kalcium Magnezium')->first();
+        $dailyHealthComplex = Product::where('slug', 'dailyhealth')->first();
+        $dailyHealthCvitamin = Product::where('slug', 'dailyhealth-c-vitamin')->first();
+        $dailyHealthKalciumMagnesium = Product::where('slug', 'dailyhealth-kalcium-magnezium')->first();
 
         // Variánsok 
         $variants = [
             // Scitec 100% WPP
-            $wppProduct?->id => [
+            $wppProduct->id => [
                 'quantities' => [
                     30 => 490,
                     500 => 5510,
@@ -75,7 +75,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Scitec Jumbo! 
-            $jumboProduct?->id => [
+            $jumboProduct->id => [
                 'quantities' => [
                     1320 => 10490,
                     3520 => 20990,
@@ -92,7 +92,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Calcium Magnesium - nincs íz
-            $calciumMagnesium?->id => [
+            $calciumMagnesium->id => [
                 'quantities' => [
                     90 => 4190,    // 90 tabi
                 ],
@@ -101,7 +101,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Mega Daily One 
-            $megaDailyOne?->id => [
+            $megaDailyOne->id => [
                 'quantities' => [
                     60 => 3890,
                     120 => 6490
@@ -111,7 +111,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Multi Pro Plus 
-            $multiProPlus?->id => [
+            $multiProPlus->id => [
                 'quantities' => [
                     60 => 10490,
                 ],
@@ -120,7 +120,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Builder WheyProtein 
-            $builderWhey?->id => [
+            $builderWhey->id => [
                 'quantities' => [
                     28 => 290,
                     1000 => 7190,
@@ -138,7 +138,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Pro Nutrition - Pro Whey
-            $proWhey?->id => [
+            $proWhey->id => [
                 'quantities' => [
                     900 => 11390,
                     2000 => 22290,
@@ -155,7 +155,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // C vitamin - Builderes
-            $Cvitamin?->id => [
+            $Cvitamin->id => [
                 'quantities' => [
                     100 => 2190,
                     500 => 7690,
@@ -165,7 +165,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Vitaday 
-            $vitaDay?->id => [
+            $vitaDay->id => [
                 'quantities' => [
                     60 => 2550,
                 ],
@@ -174,7 +174,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Vitapro Pack 
-            $vitaProPack?->id => [
+            $vitaProPack->id => [
                 'quantities' => [
                     30 => 7990,
                 ],
@@ -183,7 +183,7 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Daily Health - Komplex 
-            $dailyHealthComplex?->id => [
+            $dailyHealthComplex->id => [
                 'quantities' => [
                     60 => 4490,
                 ],
@@ -192,14 +192,14 @@ class ProductVariantSeeder extends Seeder
             ],
 
             // Daily Health - C Vitamin 
-            $dailyHealthCvitamin?->id => [
+            $dailyHealthCvitamin->id => [
                 'quantities' => [
                     50 => 3290,
                 ],
                 'unit' => 'tab',
                 'no_flavour' => true
             ],
-            $dailyHealthKalciumMagnesium?->id => [
+            $dailyHealthKalciumMagnesium->id => [
                 'quantities' => [
                     60 => 3290,
                 ],

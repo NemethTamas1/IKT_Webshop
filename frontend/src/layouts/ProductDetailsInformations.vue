@@ -6,6 +6,8 @@
         <BuilderCVitamin v-else-if="isBuilderCvitamin && categoryName === 'vitamin'" />
         <BuilderVitaproPack v-else-if="isVitaproPack && categoryName === 'multivitamin'" />
         <ProNutritionDailyHealth v-else-if="isProNutritionDailyHealthComplex && categoryName === 'multivitamin'" />
+        <ProNutritionKalciumMagnezium v-else-if="isProNutritionKalciumMagnezium && categoryName === 'vitamin'" />
+        <ProNutritionCVitamin v-else-if="isProNutritionCVitamin && categoryName === 'vitamin'" />
         <ScitecMultiProPlus v-else-if="isMultiProPlus && categoryName === 'multivitamin'" />
 
         <!-- Protein-eknél szintúgy ugyanez -->
@@ -29,6 +31,8 @@ import BuilderVitaproPack from '@layouts/productdetails/BuilderVitaproPack.vue'
 import ProNutritionDailyHealth from '@layouts/productdetails/ProNutritionDailyHealth.vue'
 import ScitecMultiProPlus from '@layouts/productdetails/ScitecMultiProPlus.vue'
 import BuilderCVitamin from '@layouts/productdetails/BuilderCVitamin.vue'
+import ProNutritionKalciumMagnezium from '@layouts/productdetails/ProNutritionKalciumMagnezium.vue'
+import ProNutritionCVitamin from '@layouts/productdetails/ProNutritionCVitamin.vue'
 
 const props = defineProps({
     brand: {
@@ -68,6 +72,14 @@ const props = defineProps({
         default: false
     },
     isProNutritionDailyHealthComplex: {
+        type: Boolean,
+        default: false
+    },
+    isProNutritionKalciumMagnezium: {
+        type: Boolean,
+        default: false
+    },
+    isProNutritionCVitamin: {
         type: Boolean,
         default: false
     },
