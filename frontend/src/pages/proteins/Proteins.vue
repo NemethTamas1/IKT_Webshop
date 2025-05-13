@@ -54,7 +54,7 @@
 
                         <div class="mt-4 flex justify-between items-center">
                             <p class="text-lg font-bold">
-                                {{ formatPrice(variant.price) }} Ft
+                                {{ productStore.formatToOneThousandPrice(variant.price) }} Ft
                             </p>
                             <button @click="addVariantToCart(variant)"
                                 class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
@@ -193,11 +193,6 @@ const uniqueBrands = computed(() => {
 // Márka szűrő váltás
 const toggleBrandFilter = (brandId) => {
     selectedBrand.value = brandId;
-};
-
-// Árak formázása
-const formatPrice = (price) => {
-    return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "0";
 };
 
 const loadProducts = async () => {

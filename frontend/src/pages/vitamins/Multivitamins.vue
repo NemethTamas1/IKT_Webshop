@@ -53,7 +53,7 @@
                         </router-link>
                         <div class="mt-4 flex justify-between items-center">
                             <p class="text-lg font-bold">
-                                {{ formatPrice(variant.price) }} Ft
+                                {{ productStore.formatToOneThousandPrice(variant.price) }} Ft
                             </p>
                             <button @click="addVariantToCart(variant)"
                                 class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
@@ -85,11 +85,7 @@ const productStore = useProductStore();
 const cartStore = useCartStore();
 
 const loading = ref(true);
-const error = ref(false);
-const errorMessage = ref('');
 const selectedBrand = ref(null);
-const router = useRouter();
-
 
 const multivitaminProducts = computed(() => {
     const nameKeywords = [
@@ -208,11 +204,6 @@ const uniqueBrands = computed(() => {
 // Márka "szűrő" váltása
 const toggleBrandFilter = (brandId) => {
     selectedBrand.value = brandId;
-};
-
-// Árak formázása
-const formatPrice = (price) => {
-    return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "0";
 };
 
 const loadProducts = async (searchName, quantity, flavour) => {

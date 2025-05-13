@@ -21,7 +21,7 @@
               {{ baseProduct?.name }}
               <span class="text-gray-600 text-sm md:text-md lg:text-lg italic">({{ currentVariant?.quantity }} {{
                 currentVariant?.unit
-              }}.)</span>
+                }}.)</span>
             </p>
 
             <!-- Ár -->
@@ -32,7 +32,7 @@
             <!-- Kg ár -->
             <p v-if="currentVariant?.price && currentVariant?.quantity && currentVariant.unit == 'gr'"
               class="my-2 font-semibold italic text-gray-500 text-xl">
-              {{ (calculatePricePerKg) }} Ft/kg
+              {{ productStore.formatToOneThousandPrice(calculatePricePerKg) }} Ft/kg
             </p>
 
             <!-- Készlet státusza -->
