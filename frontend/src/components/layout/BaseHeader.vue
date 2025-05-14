@@ -5,10 +5,8 @@
         <span class="self-center text-2xl font-semibold">Buzz<i class="fa-solid fa-bolt text-sky-500"></i>Shop</span>
       </RouterLink>
 
-      <!-- Keresés mező -->
       <form class="w-1/2 lg:w-2/5 xl:w-1/5">
-        <label for="default-search"
-          class="mb-2 text-sm font-medium sr-only text-white">Keresés</label>
+        <label for="default-search" class="mb-2 text-sm font-medium sr-only text-white">Keresés</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -28,13 +26,16 @@
 
 
       <div class="flex justify-between items-center p-3">
-        <!--Kosár-->
+
+        <!-- Kosár -->
         <div class="flex items-center justify-end">
           <button class="text-sky-600">
-            <i class="fa-solid fa-basket-shopping text-2xl"></i>
+            <RouterLink to="/cart">
+              <i class="fa-solid fa-basket-shopping text-2xl"></i>
+            </RouterLink>
           </button>
 
-          <!-- Hamburger menü -->
+          <!-- Menü -->
           <button class="block lg:hidden text-sky-800" @click="toggleMenu">
             <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -52,12 +53,12 @@
           <!-- Bejelentkezés -->
           <li
             class="text-lg flex justify-between items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:hover:text-white">
-            <RouterLink to="#" class="flex-grow"><i class="md:fa-solid md:fa-user"></i>Bejelentkezés</RouterLink>
+            <RouterLink to="/login" class="flex-grow"><i class="md:fa-solid md:fa-user"></i>Bejelentkezés</RouterLink>
           </li>
 
           <!-- Minden gyártó -->
           <li class="text-lg relative">
-            <div @click="toggleDropdown('minden-gyarto')"
+            <div @click="toggleDropDown('minden-gyarto')"
               class="text-lg flex justify-between cursor-pointer items-center px-2 text-sky-500 font-medium hover:bg-sky-400 hover:text-white rounded p-2 has-[.active]:font-semibold has-[.active]:text-white">
               <span class="flex-grow font-medium">Minden gyártó</span>
               <i class="fa-solid w-6 text-center " :class="showBrandsMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
@@ -72,7 +73,7 @@
 
           <!-- Táplálékkiegészítők -->
           <li class="text-lg relative">
-            <div @click="toggleDropdown('taplalekkiegeszitok')"
+            <div @click="toggleDropDown('taplalekkiegeszitok')"
               class="text-lg flex justify-between cursor-pointer items-center p-2 text-sky-500 font-medium hover:text-white hover:bg-sky-400 rounded ">
               <span class="font-medium">Táplálékkiegészítők</span>
               <i class="fa-solid w-6 text-center" :class="showTapkiegMenu ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
@@ -82,8 +83,9 @@
             <ul v-if="activeDropdown === 'taplalekkiegeszitok'"
               class="no-transform md:absolute md:top-full md:left-0 md:bg-white md:shadow-lg md:rounded md:py-2 md:w-48 md:z-10 pl-4 md:pl-0 mt-1">
               <BaseMobileNavBarDrop linkText="/proteins/Proteins" menuOption="Fehérjék" class="no-transform" />
-              <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Multivitaminok" class="no-transform" />
-              <BaseMobileNavBarDrop linkText="/vitamin" menuOption="Vitaminok" class="no-transform" />
+              <BaseMobileNavBarDrop linkText="/vitamins/Multivitamins" menuOption="Multivitaminok"
+                class="no-transform" />
+              <BaseMobileNavBarDrop linkText="/vitamins/Vitamins" menuOption="Vitaminok" class="no-transform" />
               <BaseMobileNavBarDrop linkText="/controll-formulas" menuOption="Testsúly-kontroll formulák"
                 class="no-transform" />
             </ul>
@@ -118,28 +120,25 @@
 
 <script setup>
 import BaseMobileNavBarDrop from './BaseMobileNavBarDrop.vue';
-import { useRouter} from 'vue-router';
+import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue'
 
 const menuOpen = ref(false);
-const navMenuRef = ref(null);
 const route = useRouter();
+const navMenuRef = ref(null);
 const activeDropdown = ref(null);
 
-const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value;
-};
-
-// Itt állítjuk be, hogy mi legyen az activeDropDown értéke.
-// Ha egyezik, marad, ha más, beállítja arra.
-// A DOM pedig attól függően változik, milyen értéket tárol a változó.
-const toggleDropdown = (type) => {
-  if(activeDropdown.value === type) {
+const toggleDropDown = (type) => {
+  if (activeDropdown.value === type) {
     activeDropdown.value = null;
   } else {
     activeDropdown.value = type;
   }
 }
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value;
+};
 
 // ki-be csukogatás
 const showTapkiegMenu = ref(false);
@@ -154,9 +153,8 @@ const mobileToggleBrands = () => {
 }
 
 //Elkattintáshoz megírt függvény, és a hozzá tartozó eseményfigyelő.
-//Már mobil nézeten is.
-const handleClickAway= (evt) => {
-  if(navMenuRef.value && !navMenuRef.value.contains(evt.target)){
+const handleClickAway = (evt) => {
+  if (navMenuRef.value && !navMenuRef.value.contains(evt.target)) {
     showBrandsMenu.value = false;
     showTapkiegMenu.value = false;
     menuOpen.value = false;
@@ -164,11 +162,9 @@ const handleClickAway= (evt) => {
   }
 }
 
-onMounted(()=>{
+onMounted(() => {
   document.addEventListener('click', handleClickAway);
-  //document.addEventListener('touchstart', toggleMenu);
-
-  route.afterEach(()=>{
+  route.afterEach(() => {
     showBrandsMenu.value = false;
     showTapkiegMenu.value = false;
   })

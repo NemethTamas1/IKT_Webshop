@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::with(['products',])->get();
+        $categories = Category::with(['products'])->get();
         return CategoryResource::collection($categories);
     }
 

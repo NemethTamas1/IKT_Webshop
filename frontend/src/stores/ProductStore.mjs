@@ -3,38 +3,57 @@ import { ref } from "vue";
 import { http } from "@utils/http.mjs";
 
 export const useProductStore = defineStore("products", () => {
-  // Alap termék adatok
   const products = ref([]);
-  const oneProduct = ref([]);
   const product = ref(null);
-  const filteredProducts = ref();
   const filtered = ref([]);
-
-  // Új perzisztens állapotok
-  const currentProduct = ref(null);
-  const currentFlavour = ref("");
-  const selectedFlavour = ref("");
-  const availableFlavours = ref([]);
   const loading = ref(false);
+  const currentProduct = ref(null);
+  const currentFlavour = ref(null);
+  const selectedFlavour = ref(null);
+  const availableFlavours = ref([]);
 
-  // Meglévő funkciók
-  async function getProducts() {
+  // Fehérje termékek adatai - előre inicializálva
+  const proteinProducts = ref([]);
+  const proteinVariants = ref([]);
+  const proteinBrands = ref([]);
+
+  // Előre inicializáljuk a stats objektumot, hogy soha ne legyen undefined
+  const proteinStats = ref({
+    totalProducts: 0,
+    totalVariants: 0,
+    totalBrands: 0,
+  });
+
+  // Kategória kezelések
+  const groupedProductsByCategory = ref({});
+  const categoriesFetched = ref(false);
+
+  // Alap termék lekérés
+  const getProducts = async () => {
     try {
+      if (products.value.length > 0) {
+        console.log("Adatok már betöltésre kerültek."); //később kivenni!
+        return products.value;
+      }
       loading.value = true;
       const resp = await http.get("/products");
       products.value = resp.data.data;
+      return products.value;
     } catch (error) {
       console.error("Hiba a termékek lekérése során:", error);
+      return [];
     } finally {
       loading.value = false;
     }
-  }
+  };
 
   async function getProduct(id) {
     try {
       loading.value = true;
       const resp = await http.get(`/products/${id}`);
       product.value = resp.data.data;
+      console.log('product.value: ', product.value)
+      return resp.data.data
     } catch (error) {
       console.error("Hiba a termék lekérése során:", error);
     } finally {
@@ -42,46 +61,161 @@ export const useProductStore = defineStore("products", () => {
     }
   }
 
-  // Új kiegészítő funkciók
-  // Képek útvonalának meghatározása átkerült ide a | brand-weight-flavour komponensből |
-  const getImagePath = (brand, weight, flavour, description) => {
-    if (!brand || !weight || !flavour) return "/default-image.webp";
+  const sortProductsByBrand = async (brandName) => {
+    try {
+      // 1. Brand alapján szűrjük a termékeket
+      const brandFiltered = products.value.filter(
+        (product) =>
+          product.brand?.name?.toLowerCase() === brandName.toLowerCase() &&
+          product.available === 1
+      );
 
-    const getProductLine = (brand, description) => {
-      if (brand === "Scitec") {
-        return description?.includes("Jumbo") ? "Jumbo!" : "wpp";
-      }
-      const brandLines = { "Pro Nutrition": "Pro Whey", Builder: "WheyProtein" };
-      return brandLines[brand] || "";
-    };
+      // 2. Termékek feldolgozása
+      const processedProducts = [];
+      const processedItems = new Set(); // Követjük a már feldolgozott termék-mennyiség párokat
 
-    const images = import.meta.glob("@/assets/products_img/**/*.webp", { eager: true });
-    const subfolder = getProductLine(brand, description);
-    const pattern = `products_img/${brand}/${subfolder}/${weight}/${weight}_${flavour}.webp`;
+      brandFiltered.forEach((product) => {
+        if (Array.isArray(product.productvariants)) {
+          product.productvariants.forEach((variant) => {
+            // Egyedi azonosító a termék-mennyiség párhoz
+            const itemKey = `${product.name}-${variant.quantity}`;
 
-    const key = Object.keys(images).find((path) => path.toLowerCase().includes(pattern.toLowerCase()));
-    
-    return key ? images[key].default : "/default-image.webp";
+            if (!processedItems.has(itemKey)) {
+              processedItems.add(itemKey);
+
+              processedProducts.push({
+                id: `${product.id}-${variant.id}`,
+                name: product.name,
+                description: product.description || "",
+                brand: product.brand,
+                category: product.category,
+                price: variant.price,
+                image_path: variant.image_path || "",
+                available: product.available,
+                product_line: product.product_line,
+                productvariants: {
+                  id: variant.id,
+                  quantity: variant.quantity,
+                  unit: variant.unit,
+                  flavour: variant.flavour || null,
+                  price: variant.price,
+                  available: variant.available,
+                },
+                // Az összes elérhető variáns ehhez a termékhez és mennyiséghez
+                allVariants: product.productvariants
+                  .filter((v) => v.quantity === variant.quantity)
+                  .map((v) => ({
+                    id: v.id,
+                    flavour: v.flavour,
+                    price: v.price,
+                  })),
+              });
+            }
+          });
+        } else if (product.productvariants) {
+          // Ha csak egy variáns van (pl. tablettás termékek)
+          const variant = product.productvariants;
+          processedProducts.push({
+            id: `${product.id}-${variant.id}`,
+            name: product.name,
+            description: product.description || "",
+            brand: product.brand,
+            category: product.category,
+            price: variant.price,
+            image_path: variant.image_path || "",
+            available: product.available,
+            product_line: product.product_line,
+            productvariants: {
+              id: variant.id,
+              quantity: variant.quantity,
+              unit: variant.unit,
+              flavour: null,
+              price: variant.price,
+              available: variant.available,
+            },
+          });
+        }
+      });
+
+      // 3. Rendezés név és mennyiség szerint
+      processedProducts.sort((a, b) => {
+        // Először név szerint
+        const nameCompare = a.name.localeCompare(b.name, "hu", {
+          sensitivity: "base",
+        });
+        if (nameCompare !== 0) return nameCompare;
+
+        // Aztán mennyiség szerint
+        const quantityA = parseInt(a.productvariants.quantity);
+        const quantityB = parseInt(b.productvariants.quantity);
+        return quantityA - quantityB;
+      });
+
+      filtered.value = processedProducts;
+      return filtered.value;
+    } catch (error) {
+      console.error("Hiba a szűrésnél:", error);
+      throw error;
+    }
+  };
+  // EGYBEN ////////////////////////////////////////////////////////
+  const getFlavoursByDescriptionAndWeight = async (description, quantity) => {
+    try {
+      const flavours = [];
+      products.value.forEach((product) => {
+        if (
+          product.description === description &&
+          product.quantity === quantity
+        ) {
+          flavours.push(product.flavour);
+        }
+      });
+      return flavours;
+    } catch (error) {
+      console.error("Hiba az ízesítések lekérése során:", error);
+      return [];
+    }
   };
 
-  // Egy adott terméknek a részletes betöltése + állapottal kezelése és megőrzése
-  // (majd később kosárhoz és az összesítőhöz jó lehet.)
-  const loadProductDetails = async (brand, weight, flavour) => {
+  const sortGetOneProduct = async (brandName, quantity, flavour) => {
+    try {
+      const threeFiltered = [];
+      products.value.forEach((product) => {
+        const productWeight = Number(product.quantity);
+        if (
+          product.brand.name.toLowerCase() === brandName.toLowerCase() &&
+          productWeight === quantity &&
+          product.flavour.toLowerCase() === flavour.toLowerCase()
+        ) {
+          threeFiltered.push(product);
+        }
+      });
+      return threeFiltered;
+    } catch (err) {
+      console.error("Hiba a termék lekérdezése során:", err);
+      throw err;
+    }
+  };
+
+  const loadProductDetails = async (brand, quantity, flavour) => {
     try {
       loading.value = true;
-
-      if (!brand || !weight || !flavour) {
+      if (!brand || !quantity || !flavour) {
         console.error("loadProductDetails: Hiányzó paraméterek!");
         return;
       }
 
-      const weightNumber = weight.toString().replace("gr", "");
-      const productData = await sortGetOneProduct(brand, Number(weightNumber), flavour);
+      const weightNumber = quantity.replace("gr", "");
+      const productData = await sortGetOneProduct(
+        brand,
+        Number(weightNumber),
+        flavour
+      );
 
       if (productData?.length > 0) {
-        currentProduct.value = productData[0]; // Termék adatok frissítése
-        currentFlavour.value = flavour; // Aktuális íz frissítése
-        selectedFlavour.value = flavour; // Select frissítése
+        currentProduct.value = productData[0];
+        currentFlavour.value = flavour;
+        selectedFlavour.value = flavour;
 
         const flavours = await getFlavoursByDescriptionAndWeight(
           currentProduct.value.description,
@@ -95,22 +229,20 @@ export const useProductStore = defineStore("products", () => {
         }
       }
     } catch (error) {
+      console.error("Hiba a részletek betöltése során:", error);
     } finally {
       loading.value = false;
     }
   };
+  // EGYBEN VÉGE ////////////////////////////////////////////////////////
 
-  // Amikor az ÍZESÍTÉST megváltoztatja a felh. az "állapotot"
-  // frissíteni kell, így nem kell route változtatás.
   const updateSelectedFlavour = (flavour) => {
     try {
       if (!flavour) {
         console.warn("updateSelectedFlavour: Hiányzó ízesítés.");
         return;
       }
-
       selectedFlavour.value = flavour;
-
       if (currentProduct.value) {
         currentProduct.value = {
           ...currentProduct.value,
@@ -123,129 +255,57 @@ export const useProductStore = defineStore("products", () => {
     }
   };
 
-
-  // F5-ös frissítés után >> az adatok megőrizve maradjanak + ell.
-  const restoreStateFromLocalStorage = async () => {
+  const formatToOneThousandPrice = (price) => {
     try {
-      loading.value = true;
-
-      const savedProduct = JSON.parse(localStorage.getItem('current-product'));
-      const savedFlavour = localStorage.getItem('current-flavour');
-      const savedAvailableFlavours = JSON.parse(localStorage.getItem('available-flavours') ?? "[]");
-
-      if (savedProduct) currentProduct.value = savedProduct;
-      if (savedFlavour) {
-        currentFlavour.value = savedFlavour;
-        selectedFlavour.value = savedFlavour; // Frissítjük a select-ben tárolt értéket
-      }
-      if (Array.isArray(savedAvailableFlavours)) availableFlavours.value = savedAvailableFlavours;
-
+      if (!price && price !== 0) return "0";
+      const numPrice = Number(price);
+      if (isNaN(numPrice)) return "0";
+      return numPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     } catch (error) {
-      console.error("Hiba az állapot visszaállítása során:", error);
-    } finally {
-      loading.value = false;
+      console.error("Hiba az ár formázása során:", error);
+      return "0";
     }
   };
 
-  // Állapot letárolása/frissítése localStorage-ben!!! automatikusan >> amikor változik.
-  const saveStateToLocalStorage = () => {
-    try {
-      if (currentProduct.value) {
-        localStorage.setItem("current-product", JSON.stringify(currentProduct.value));
-      }
-      if (currentFlavour.value) {
-        localStorage.setItem("current-flavour", currentFlavour.value);
-      }
-      if (availableFlavours.value && availableFlavours.value.length > 0) {
-        localStorage.setItem("available-flavours", JSON.stringify(availableFlavours.value));
-      }
-    } catch (error) {
-      console.error("Hiba az állapot mentése során:", error);
-    }
-  };
+  // Alapértelmezett variáns keresése egy adott mérethez
+  const getDefaultVariantForSize = (product, size) => {
+    if (!product || !product.productvariants || !size) return null;
 
-  // Watch-ot is használhatnánk, de ez a store szintaxisban nem része a példának
-  // Exportált metódusok között célszerű meghívni ezt is frissítéskor
-  const sortProductsByBrand = async (brandname) => {
-    try {
-      const brandFiltered = products.value.filter(
-        (product) =>
-          product.categories[0].brand === brandname &&
-          product.categories[0].available === 1
-      );
-      filtered.value = brandFiltered.filter(
-        (product, index, self) =>
-          index === self.findIndex((p) => p.weight === product.weight)
-      );
-      // Debug
-      console.log("Szűrt termékek:", filtered.value);
-      return filtered.value;
-    } catch (error) {
-      console.error("Hiba a szűrésnél:", error);
-      throw error;
-    }
-  };
-
-  const getFlavoursByDescriptionAndWeight = async (description, weight) => {
-    try {
-      const flavours = [];
-      products.value.forEach((product) => {
-        if (product.description === description && product.weight === weight) {
-          flavours.push(product.flavour);
-        }
-      });
-      return flavours;
-    } catch (error) {
-      console.error("Hiba az ízesítések lekérése során:", error);
-      return [];
-    }
-  };
-
-  const sortGetOneProduct = async (brandName, weight, flavour) => {
-    try {
-      const threeFiltered = [];
-      products.value.forEach((product) => {
-        // Ellenőrizzük és biztosítsuk a megfelelő típusú összehasonlítást
-        const productWeight = Number(product.weight); // Konvertálás számra ha szükséges
-        if (
-          product.categories[0].brand.toLowerCase() ===
-            brandName.toLowerCase() &&
-          productWeight === weight &&
-          product.flavour.toLowerCase() === flavour.toLowerCase()
-        ) {
-          threeFiltered.push(product);
-        }
-      });
-      return threeFiltered;
-    } catch (err) {
-      console.error("Hiba a termék lekérdezése során: ", err);
-      throw err;
-    }
+    return product.productvariants.find((v) => v.quantity === Number(size));
   };
 
   return {
     // Reaktívok
     products,
     product,
-    filteredProducts,
     filtered,
-    oneProduct,
+    loading,
     currentProduct,
     selectedFlavour,
     currentFlavour,
     availableFlavours,
-    loading,
+    groupedProductsByCategory,
+    categoriesFetched,
+    proteinProducts,
+    proteinVariants,
+    proteinBrands,
+    proteinStats,
 
-    // Function-ök
+    // Alap műveletek
     getProducts,
     getProduct,
-    sortProductsByBrand,
-    sortGetOneProduct,
-    getFlavoursByDescriptionAndWeight,
-    getImagePath,
+
+    // Termék részletek kezelése
     loadProductDetails,
     updateSelectedFlavour,
-    restoreStateFromLocalStorage,
-    saveStateToLocalStorage,
+
+    // Szűrés és rendezés
+    sortProductsByBrand,
+    sortGetOneProduct,
+
+    getFlavoursByDescriptionAndWeight,
+    getDefaultVariantForSize,
+
+    formatToOneThousandPrice,
   };
 });
