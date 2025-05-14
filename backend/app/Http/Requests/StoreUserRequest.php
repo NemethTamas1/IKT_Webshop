@@ -16,7 +16,7 @@ class StoreUserRequest extends FormRequest
         return [
             "username" => ['required', 'unique:users', 'between:8,50'],
             "password" => ['required'],
-            "email" => ['required', 'unique:users', 'between:20,100'],
+            "email" => ['required', 'email', 'unique:users', 'between:20,100'], 
             "shipping_country" => ['required', 'between:5,60', 'string'],
             "shipping_city" => ['required', 'between:3,40', 'string'],
             "shipping_zip" => ['required', 'string', 'max:10'],

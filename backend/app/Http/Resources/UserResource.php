@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             "email_verified_at" => $this->email_verified_at,
             "created_at" => date_format($this->created_at, 'y.M.d H:m'),
             "updated_at" => date_format($this->updated_at, 'y.M.d H:m'),
-            // "deleted_at" => $this->deleted_at,
+            "deleted_at" => $this->deleted_at,
         ];
     }
 }
