@@ -33,27 +33,27 @@ class Orders_DatabaseTest extends TestCase
         );
     }
 
-    public function test_orders_table_has_order_status_column(): void
+    public function test_orders_table_has_orderstatus_column(): void
     {
         $this->assertTrue(
-            Schema::hasColumn('orders', 'order_status'),
-            'Az order_status mező nem létezik a orders táblában'
+            Schema::hasColumn('orders', 'orderstatus'),
+            'Az orderstatus mező nem létezik a orders táblában'
         );
     }
 
-    public function test_orders_table_has_total_amount_column(): void
+    public function test_orders_table_has_totalamount_column(): void
     {
         $this->assertTrue(
-            Schema::hasColumn('orders', 'total_amount'),
-            'A `total_amount` mező nem létezik a orders táblában'
+            Schema::hasColumn('orders', 'totalamount'),
+            'A `totalamount` mező nem létezik a orders táblában'
         );
     }
 
-    public function test_orders_table_has_total_quantity_column(): void
+    public function test_orders_table_has_totalquantity_column(): void
     {
         $this->assertTrue(
-            Schema::hasColumn('orders', 'total_quantity'),
-            'A total_quantity mező nem létezik a orders táblában'
+            Schema::hasColumn('orders', 'totalquantity'),
+            'A totalquantity mező nem létezik a orders táblában'
         );
     }
     public function test_orders_table_has_created_at_column(): void
@@ -85,9 +85,9 @@ class Orders_DatabaseTest extends TestCase
             Schema::hasColumns('orders', [
                 'id',
                 'user_id',
-                'order_status',
-                'total_amount',
-                'total_quantity',
+                'orderstatus',
+                'totalamount',
+                'totalquantity',
                 'created_at',
                 'updated_at',
                 'deleted_at'

@@ -10,10 +10,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('role', 50)->default('user');
+            $table->string('username', 50); //between 8-50!
             $table->string('password');
+            $table->string('email', 100)->unique(); //between 20-100!
+            $table->string('shipping_country', 60);
+            $table->string('shipping_city', 40);
+            $table->string('shipping_zip', 10); // Azért string, mert "0081" mondjuk, akkor csak 81-et kapunk meg ha integer lenne!
+            $table->string('shipping_street', 60);
+            $table->unsignedInteger('shipping_street_number');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

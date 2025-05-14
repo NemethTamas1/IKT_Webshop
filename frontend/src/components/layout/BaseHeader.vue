@@ -219,7 +219,6 @@ onMounted(() => {
   .dropdown-menu :deep(li) {
     transition: background-color 0.2s ease-in-out;
   }
-
   .dropdown-menu :deep(li:hover) {
     background-color: rgb(96 165 250 / 0.1);
   }
