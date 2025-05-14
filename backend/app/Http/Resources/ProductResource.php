@@ -18,11 +18,12 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'product_line' => $this->product_line,
             'available' => $this->available,
-            'created_at' => $this->created_at,
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
             'category' => $this->whenLoaded('category', function () {
                 return new CategoryResource($this->category);
             }),
-            'brand' => $this->whenLoaded('brand', function() {
+            'brand' => $this->whenLoaded('brand', function () {
                 return new BrandResource($this->brand);
             }),
             'productvariants' => ProductVariantResource::collection($this->whenLoaded('variants')),

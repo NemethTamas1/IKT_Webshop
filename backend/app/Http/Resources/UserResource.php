@@ -20,8 +20,8 @@ class UserResource extends JsonResource
             "shipping_street" => $this->shipping_street,
             "shipping_street_number" => $this->shipping_street_number,
             "email_verified_at" => $this->email_verified_at,
-            "created_at" => date_format($this->created_at, 'y.M.d H:m'),
-            "updated_at" => date_format($this->updated_at, 'y.M.d H:m'),
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
             "deleted_at" => $this->deleted_at,
         ];
     }

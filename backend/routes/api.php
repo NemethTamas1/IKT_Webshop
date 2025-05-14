@@ -3,6 +3,7 @@
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\UserController;
@@ -17,5 +18,6 @@ Route::apiResource('/products', ProductController::class);
 Route::apiResource('/brands', BrandController::class);
 Route::apiResource('/productvariants', ProductVariantController::class);
 Route::apiResource('/orders', OrderController::class);
+Route::apiResource('/orderitems', OrderItemController::class);
 
 Route::apiResource('/users', UserController::class);

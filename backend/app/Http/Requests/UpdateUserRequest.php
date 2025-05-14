@@ -15,19 +15,9 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "username" => [
-                "required",
-                "exists:users",
-                "between:8,50",
-                Rule::unique('users')->ignore($this->route('user'))
-            ],
+            "username" => ["required", "exists:users", "between:8,50", Rule::unique('users')->ignore($this->route('user'))],
             "password" => ['required'],
-            "email" => [
-                "required",
-                "email", // Hiányzott a formátum ellenőrzés
-                "between:20,100",
-                Rule::unique('users')->ignore($this->route('user'))
-            ],
+            "email" => ["required", "email", "between:20,100", Rule::unique('users')->ignore($this->route('user'))],
             "shipping_country" => ['required', 'between:5,60', 'string'],
             "shipping_city" => ['required', 'between:3,40', 'string'],
             "shipping_zip" => ['required', 'string', 'max:10'],
