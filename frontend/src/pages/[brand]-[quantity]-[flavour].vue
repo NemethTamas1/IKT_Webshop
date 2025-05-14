@@ -64,6 +64,14 @@
                 </option>
               </select>
             </div>
+
+            <div class="mt-4 flex justify-between items-center">
+              <button @click="addVariantToCart(currentVariant)"
+                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Kosárba
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
@@ -92,11 +100,14 @@ import { useRoute, useRouter } from 'vue-router';
 import { useProductStore } from '@stores/ProductStore';
 import BaseLayout from '@layouts/BaseLayout.vue';
 import ProductDetailsInformations from '@layouts/ProductDetailsInformations.vue';
+import { ToastService } from '@stores/ToastService.js'
+import { useCartStore } from '@stores/CartStore.js';
 
 
 const route = useRoute();
 const router = useRouter();
 const productStore = useProductStore();
+const cartStore = useCartStore();
 
 const isLoading = ref(true);
 const baseProduct = ref(null);
@@ -107,6 +118,33 @@ const selectedSize = ref('');
 console.log('searchName paraméter:', route.params.brand);
 console.log('quantity paraméter:', route.params.quantity);
 console.log('flavour paraméter:', route.params.branflavourd);
+
+console.log('currentVariant: ', currentVariant)
+
+const addVariantToCart = async (variant) => {
+  const productData = await productStore.getProduct(variant.product_id);
+  console.log('productData.product_id: ', productData.product_id)
+
+  if (!productData) {
+    ToastService.showError("Nem sikerült a terméket betölteni.");
+    return;
+  }
+
+  const product = {
+    id: variant.id,
+    name: productData.name,
+    price: variant.price,
+    image: productData.image_path,
+    flavour: productData.flavour,
+    quantity: productData.quantity,
+    unit: productData.unit,
+    brand: productData.brand_name
+  }
+
+  cartStore.addToCart(product);
+  ToastService.showSuccess("Termék sikeresen hozzáadva a kosárhoz!");
+}
+
 
 const isProNutritionDailyHealthCVitamin = computed(() => {
   return baseProduct.value?.name === 'Daily Health C Vitamin';

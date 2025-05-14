@@ -91,6 +91,7 @@ const selectedBrand = ref(null);
 const router = useRouter();
 
 
+
 const proteinProducts = computed(() => {
     return productStore.products.filter(product =>
         product.available === 1 && (

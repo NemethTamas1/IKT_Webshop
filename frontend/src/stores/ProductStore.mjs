@@ -52,6 +52,8 @@ export const useProductStore = defineStore("products", () => {
       loading.value = true;
       const resp = await http.get(`/products/${id}`);
       product.value = resp.data.data;
+      console.log('product.value: ', product.value)
+      return resp.data.data
     } catch (error) {
       console.error("Hiba a termék lekérése során:", error);
     } finally {
