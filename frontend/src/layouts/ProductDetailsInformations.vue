@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full mb-40">
+    <div class="w-full mb-40 px-12">
         <!-- Vitaminok & Multivitaminokat itt kezeljük (átadott értékek alapján) -->
         <ScitecMegaDailyOne v-if="isMegaDaily && categoryName === 'multivitamin'" />
         <BuilderVitaDay v-else-if="isVitaDay && categoryName === 'multivitamin'" />

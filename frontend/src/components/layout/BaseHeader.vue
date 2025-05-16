@@ -9,7 +9,7 @@
 
       <!-- Menü + Kosár Container -->
       <div class="flex items-center justify-end flex-grow">
-        <RouterLink to="/cart" class="hidden xl:inline-block text-sky-600 hover:text-sky-700 mx-8 relative">
+        <RouterLink to="/cart" class="inline-block text-sky-600 hover:text-sky-700 mx-8 relative">
           <i class="fa-solid fa-basket-shopping text-2xl"></i>
           <span class="absolute -top-3 -right-4 bg-amber-500 text-white text-sm font-semibold 
           rounded-full w-5 h-5 flex items-center justify-center">
@@ -59,9 +59,6 @@
 
         <!-- Kosár + Mobil Menü -->
         <div class="flex items-center space-x-4">
-          <RouterLink to="/cart" class="xl:hidden text-sky-600 hover:text-sky-700">
-            <i class="fa-solid fa-basket-shopping text-2xl"></i>
-          </RouterLink>
           <button class="xl:hidden text-sky-800" @click="toggleMenu">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />

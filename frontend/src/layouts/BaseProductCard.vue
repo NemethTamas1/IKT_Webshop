@@ -32,13 +32,21 @@
       </router-link>
 
       <!-- Kosár gomb külön, a router-link-en kívül! -->
-      <div class="p-6 pt-0">
-        <button
-          @click="addVariantToCart(product)"
+      <div class="p-6 pt-0 hidden xl:flex">
+        <button @click="addVariantToCart(product)"
           class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded w-full">
           Kosárba
         </button>
       </div>
+
+      <router-link :to="generateProductUrl(product)">
+        <div class="p-6 pt-0 xl:hidden">
+          <button @click="addVariantToCart(product)"
+            class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded w-full">
+            Megnézem
+          </button>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -62,18 +70,18 @@ const props = defineProps({
 
 const addVariantToCart = (variant) => {
   const product = {
-        id: variant.id,
-        name: variant.name,
-        price: variant.price,
-        image: variant.image_path,
-        flavour: variant.flavour,
-        quantity: variant.quantity,
-        unit: variant.unit,
-        brand: variant.brand_name
-    }
+    id: variant.id,
+    name: variant.name,
+    price: variant.price,
+    image: variant.image_path,
+    flavour: variant.flavour,
+    quantity: variant.quantity,
+    unit: variant.unit,
+    brand: variant.brand_name
+  }
 
-    cartStore.addToCart(product);
-    ToastService.showSuccess("Termék sikeresen hozzáadva a kosárhoz!");
+  cartStore.addToCart(product);
+  ToastService.showSuccess("Termék sikeresen hozzáadva a kosárhoz!");
 };
 
 // Kép betöltés helper függvény
