@@ -15,13 +15,16 @@ class StoreUserRequest extends FormRequest
     {
         return [
             "username" => ['required', 'unique:users', 'between:8,50'],
+            "name" => ['required', 'string', 'max:100'],
             "password" => ['required'],
-            "email" => ['required', 'email', 'unique:users', 'between:20,100'], 
-            "shipping_country" => ['required', 'between:5,60', 'string'],
-            "shipping_city" => ['required', 'between:3,40', 'string'],
-            "shipping_zip" => ['required', 'string', 'max:10'],
-            "shipping_street" => ['required', 'between:5,60', 'string'],
-            "shipping_street_number" => ['required', 'integer', 'max:200'], // egyelőre 200-zal maxolva az út/tér/utca SZÁMA
+            "email" => ['required', 'email', 'unique:users', 'between:20,100'],
+            "phone" => ['nullable', 'string', 'max:20'],
+            "country" => ['nullable', 'string', 'max:60'],
+            "city" => ['nullable', 'string', 'max:40'],
+            "zip" => ['nullable', 'string', 'max:10'],
+            "street_name" => ['nullable', 'string', 'max:60'],
+            "street_type" => ['nullable', 'string', 'max:60'],
+            "street_number" => ['nullable', 'integer','min:1','max:200'],
         ];
     }
 }

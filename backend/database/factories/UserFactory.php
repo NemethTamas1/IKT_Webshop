@@ -13,17 +13,19 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            "name" => fake()->name(),
             'username' => fake()->userName(),
-            'email' => fake()->unique()->safeEmail(),
-            'role' => "user",
-            'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-            'shipping_country' => 'Hungary',
-            'shipping_city' => fake()->randomElement(['Budapest', 'Győr', 'Békéscsaba', 'Felcsút', 'Csád', 'Ózd']),
-            'shipping_zip' => fake()->numberBetween(1000, 2000),
-            'shipping_street' => fake()->randomElement(['Mészáros utca', 'Felcsút Köz', 'Kastély utca', 'Köztévé tér', 'Szabadsajtó útja', 'Tisza út', 'Áradás tér']),
-            'shipping_street_number' => fake()->numberBetween(1, 200),
+            "city" => fake()->randomElement(['Csád', 'Felcsút', 'Szilvásvárad', 'Festetics', 'Kiskőrös']),
+            "zip" => fake()->regexify('[0-9]{4}'),
+            "phone" => fake()->phoneNumber(),
+            "country" => "Magyarország",
+            'street_name' => fake()->randomElement(['Mészáros utca', 'Felcsút Köz', 'Kastély utca', 'Köztévé tér', 'Szabadsajtó útja', 'Tisza út', 'Áradás tér']),
+            "street_type" => fake()->randomElement(['út', 'utca', 'köz', 'tér', 'park', 'dűlő']),
+            'street_number' => fake()->numberBetween(1, 200),
         ];
     }
     public function unverified(): static

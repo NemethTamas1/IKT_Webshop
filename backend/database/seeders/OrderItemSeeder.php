@@ -11,5 +11,6 @@ class OrderItemSeeder extends Seeder
     public function run(): void
     {
         OrderItem::factory()->count(5)->create();
+        $this->command->info("A rendeléshez tartozó tételek szinkronizációja sikeresen megtörtént!");
     }
 }

@@ -12,5 +12,7 @@ class OrderSeeder extends Seeder
     {
         Order::factory()->count(5)->create();
         // A factory-ben egyszerü, szimpla order-öket gyártok csak le!!! Nincs valid összekötésük!
+
+        $this->command->info("A rendelések szinkronizációja sikeresen megtörtént!");
     }
 }

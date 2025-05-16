@@ -10,7 +10,18 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->string('shipping_email');
+            $table->string('shipping_name');
+
+            $table->string('shipping_phone');
+            $table->string('shipping_country', 60);
+            $table->string('shipping_city', 40);
+            $table->string('shipping_zip', 10);
+            $table->string('shipping_street_name', 60);
+            $table->string('shipping_street_type', 60);
+            $table->unsignedInteger('shipping_street_number');
+
             $table->string('orderstatus', 50)->default('pending');
             $table->unsignedInteger('totalamount');
             $table->unsignedInteger('totalquantity');

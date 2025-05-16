@@ -27,9 +27,10 @@ class UserControllerTest extends TestCase
 
         $this->baseData = [
             'role' => 'user',
-            'username' => 'test_user_' . Str::random(5), 
+            'username' => 'test_user_' . Str::random(5),
+            "name" => "Test Name",
             'password' => 'password123',
-            'email' => 'test_user_' . Str::random(10) . '@example.com', 
+            'email' => 'test_user_' . Str::random(10) . '@example.com',
             'shipping_country' => 'Magyarország',
             'shipping_city' => 'Budapest',
             'shipping_zip' => '1111',

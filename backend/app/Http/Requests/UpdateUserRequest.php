@@ -15,14 +15,17 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "username" => ["required", "exists:users", "between:8,50", Rule::unique('users')->ignore($this->route('user'))],
-            "password" => ['required'],
+            "username" => ["required", "between:8,50", Rule::unique('users')->ignore($this->route('user'))],
+            "name" => ['required', 'string', 'max:100'],
+            "password" => ['nullable'],
             "email" => ["required", "email", "between:20,100", Rule::unique('users')->ignore($this->route('user'))],
-            "shipping_country" => ['required', 'between:5,60', 'string'],
-            "shipping_city" => ['required', 'between:3,40', 'string'],
-            "shipping_zip" => ['required', 'string', 'max:10'],
-            "shipping_street" => ['required', 'between:5,60', 'string'],
-            "shipping_street_number" => ['required', 'integer', 'max:200'],
+            "phone" => ['nullable', 'string', 'max:20'],
+            "country" => ['nullable', 'string', 'max:60'],
+            "city" => ['nullable', 'string', 'max:40'],
+            "zip" => ['nullable', 'string', 'max:10'],
+            "street_name" => ['nullable', 'string', 'max:60'],
+            "street_type" => ['nullable', 'string', 'max:60'],
+            "street_number" => ['nullable', 'integer', 'min:1', 'max:200'],
         ];
     }
 }
