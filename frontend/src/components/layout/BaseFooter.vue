@@ -3,58 +3,53 @@
     <section class="py-8 text-white border-t-4 rounded-t-md shadow-2xl border-sky-700 bg-sky-600 ">
         <div class="mx-auto w-full justify-center align-middle ">
             <div class="grid grid-cols px-4 grid-cols-1 lg:grid-cols-5 ">
-
-                <!-- Contact Info -->
-
-
-                <!-- Info Detail -->
                 <div class="w-4/5 mx-auto justify-center text-center grid col-span-2">
-                    <RouterLink to="/" class="flex items-center justify-center space-x-3">
-                        <span class="text-3xl text-center text-sky-950 font-bold mb-4 self-center">Buzz<i
-                                class="fa-solid fa-bolt text-white"></i>Shop</span>
+                    <RouterLink to="/" class="flex-shrink-0 mb-6">
+                        <span class="text-3xl font-semibold ">Buzz
+                            <i class="fa-solid fa-bolt text-indigo-950 rounded-full"></i>
+                            Shop</span>
                     </RouterLink>
-                    <p
-                        class="w-full border-t-2 text-base 2xl:text-lg border-gray-100 border-dashed border-opacity-70 py-4 italic">
+                    <p class="w-full border-t-2 text-base 2xl:text-lg border-gray-100 border-opacity-10 py-4 italic">
                         Táplálékkiegészítők, kondigépek online vásárlása, rendelése. Kedvező árak, gyors házhozszállítás
                     </p>
 
-                    <div class="w-full flex flex-row text-base 2xl:text-lg py-4 italic">
+                    <div class="w-full flex flex-row text-base 2xl:text-lg py-4 font-semibold">
                         <div class="mx-auto">
                             <a href="/"
-                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Főoldal</a>
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-500 text-center">Főoldal</a>
                         </div>
                         <div class="mx-auto">
                             <a href="/brands"
-                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Gyártók</a>
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-500 text-center">Gyártók</a>
                         </div>
 
                         <div class="mx-auto">
                             <a href="/proteins"
-                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Táplálékkiegészítők</a>
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-500 text-center">Táplálékkiegészítők</a>
 
                         </div>
 
                         <div class="mx-auto"><a href="/delivery"
-                                class="w-sm px-1 mx-auto self-center hover:text-lime-300 text-center">Szállítás</a>
+                                class="w-sm px-1 mx-auto self-center hover:text-lime-500 text-center">Szállítás</a>
                         </div>
 
 
 
                     </div>
-                    <div class="w-full flex flex-row text-base 2xl:text-lg py-4 italic">
+                    <div class="w-full flex flex-row text-base 2xl:text-lg py-4 font-semibold">
                         <div class="mx-auto">
-                            <a href="/login" class="w-fit hover:text-lime-300 text-center">Bejelentkezés</a>
+                            <a href="/login" class="w-fit hover:text-lime-500 text-center">Bejelentkezés</a>
                         </div>
 
                         <div class="mx-auto"><a href="/payment"
-                                class="w-fit hover:text-lime-300 text-center">Fizetés</a>
+                                class="w-fit hover:text-lime-500 text-center">Fizetés</a>
                         </div>
 
                         <div class="mx-auto"> <a href="/clothes"
-                                class="w-fit hover:text-lime-300 text-center">Sportruhák</a></div>
+                                class="w-fit hover:text-lime-500 text-center">Sportruhák</a></div>
 
                         <div class="mx-auto text-center flex justify-center align-middle">
-                            <a href="/contact" class="w-fit hover:text-lime-300 text-center">Kapcsolat</a>
+                            <a href="/contact" class="w-fit hover:text-lime-500 text-center">Kapcsolat</a>
                         </div>
                     </div>
                 </div>
@@ -67,10 +62,11 @@
                         Értesülj elsőkként az újdonságainkról!
                     </h5>
                     <form action="#" class="space-y-3">
-                        <input type="text" placeholder="e-mail cím"
-                            class="w-full p-2 pl-2 text-sky-900 font-semibold border-4 border-sky-700/55 rounded-md" />
+                        <input type="text" placeholder="Az e-mail cím beíráshoz kattintson ide..."
+                            class="w-full p-2 pl-2 text-sky-900 font-semibold border-4 border-sky-700/55 rounded-md" 
+                            />
                         <button type="submit" id="newsletter"
-                            class="w-full bg-lime-500 font-semibold py-2 rounded-md hover:bg-lime-600 hover:border hover:border-white hover:border-opacity-25 hover:text-amber-50">
+                            class="w-full bg-sky-50 font-semibold py-2 rounded-md hover:bg-sky-100 hover:border hover:border-white hover:border-opacity-25 hover:text-white">
                             Hírlevél feliratkozás
                         </button>
                         <div class="w-full italic text-sm lg:text-sm md:text-left xl:px-2 ">*A hírlevélre való
@@ -101,7 +97,7 @@
                     </div>
 
                     <div class="grid grid-cols-4 py-4 w-full justify-center items-center mx-auto align-middle mt-4
-                        border-y-2 border-gray-100 border-dashed border-opacity-70 
+                        border-y-2 border-gray-100 border-opacity-20 
                         ">
                         <a href="" class="text-white text-center transition-all ease-in-out duration-200">
                             <i class="fab fa-facebook fa-2x hover:bg-sky-800 shadow-md rounded-full "
@@ -132,8 +128,7 @@
 <style>
 #newsletter {
     cursor: pointer;
-    color: rgba(3, 77, 151, 0.9) !important;
-    font-quantity: 800;
+    color: rgba(3, 77, 151, 0.9);
     padding: 10px;
     background-size: 200% 200%;
     background-image: linear-gradient(145deg,
@@ -153,9 +148,7 @@
 
 #newsletter:hover {
     background-position: 100% 100%;
-    box-shadow:
-        0 6px 20px rgba(0, 0, 0, 0.15),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+    color: white;
 }
 
 .contact-item {

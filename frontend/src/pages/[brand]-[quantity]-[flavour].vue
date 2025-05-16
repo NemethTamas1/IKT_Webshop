@@ -6,7 +6,7 @@
           <!-- Kép szekció -->
           <div class="grid col-span-2 w-full xl:w-10/12 h-full xl:h-3/5">
             <img :src="`/src/assets/products_img/${currentVariant?.image_path}`" :alt="currentVariant?.flavour"
-              class="flex justify-center items-center m-auto w-full mx-auto bg-white "
+              class="flex justify-center items-center m-auto mx-auto bg-white "
               :class="isProNutritionDailyHealthComplex || isDailyHealthKalciumMagnezium || isProNutritionDailyHealthCVitamin ? 'w-8/12 ' : 'w-full'" />
           </div>
           <!-- Termék details -->

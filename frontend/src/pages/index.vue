@@ -2,8 +2,7 @@
   <BaseHeader />
   <div id="banner" class="w-full mx-auto pl-4 mb-24 md:min-h-svh grid grid-cols-5 bg-right">
     <div class="grid col-span-1 lg:col-span-2 mx-auto md:px-4 w-auto lg:max-w-[700px]">
-      <p class="headerlineOne my-auto max-w-fit h-fit shadow-xl py-2  pr-5 pl-2"
-          style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
+      <p class="headerlineOne my-auto max-w-fit h-fit font-extrabold shadow-xl py-2  pr-5 pl-2">
         Tavaszi Mega Akció!
       </p>
       <div class="headerlineTwo max-w-fit" style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
@@ -15,7 +14,7 @@
           </li>
         </ul>
         <p class="headerlineThree text-base h-fit max-w-fit bg-gray-500/50 p-1 text-amber-50 rounded-md italic"
-            style="font-family:'Montserrat',Arial,Helvetica,sans-serif;">
+          style="font-family:'Montserrat',Arial,Helvetica,sans-serif;">
           *<b>Limitált ajánlat:</b> Május 22-31. között!
         </p>
         <button class="checkitout transition-all ease-in-out duration-200 mt-8">
@@ -100,11 +99,11 @@ onMounted(async () => {
 .headerlineOne {
   font-size: clamp(2.2rem, 2.3vw, 3.5rem);
   font-style: italic;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  color: #041e4e;
-  background-color: rgb(0, 251, 255);
+  text-shadow: 3px 3px 8px rgba(79, 66, 1, 0.5);
+  color: rgb(94, 47, 97);
+  background-color: rgba(255, 255, 255, .9);
   border-radius: 1.5rem;
-  border: 3px solid rgba(255, 255, 0, 0.7);
+  border: 3px solid rgb(94, 47, 97);
   margin-bottom: 2rem;
   text-wrap: nowrap;
 }
@@ -155,8 +154,18 @@ onMounted(async () => {
   padding: 0.5rem 1rem;
 }
 
-@media screen and (min-width:768px) and (max-width: 1024px) {}
+@media screen and (max-width:1536px) {
+  .headerlineOne {
+    font-size: 2.0rem;
+  }
+}
 
+@media screen and (min-width:768px) and (max-width: 1024px) {
+
+  .headerlineOne {
+    font-size: 1.8rem;
+  }
+}
 
 
 @media screen and (min-width:480px) and (max-width: 768px) {
@@ -166,7 +175,7 @@ onMounted(async () => {
   }
 
   .headerlineOne {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     width: max-content;
     padding: 0.4rem 0.7rem 0.4rem 0.3rem;
     margin-bottom: 1.2rem;
@@ -197,7 +206,7 @@ onMounted(async () => {
 @media screen and (max-width: 480px) {
   .headerlineOne {
     min-width: 10rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-wrap: nowrap;
   }
 

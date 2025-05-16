@@ -45,26 +45,6 @@
         <p class="my-4">
             Tárolja szorosan lezárva, hűvös és száraz helyen. Felbontás után a szilikontasakot ne távolítsa el.
         </p>
-        <p class="text-lg font-bold my-4 uppercase italic underline underline-offset-4">
-            összetevők:
-        </p>
-        <p class="max-w-1/4 text-justify bg-slate-100 italic">
-        <div class="ml-4 border-2 border-gray-400 bg-slate-200 w-1/4 ">
-            <ul class="w-full px-3 py-2 text-justify">
-                <li>L-aszkorbinsav,</li>
-                <li>Tömegnövelő szer (cellulózgél),</li>
-                <li>Kukoricakeményítő,</li>
-                <li>Bevonat {stabilizátorok [poli(vinil-alkohol)-poli(etilénglikol) ojtott kopolimer,
-                    polivinil-alkohol],
-                </li>
-                <li>Csomósodást gátló anyagok (talkum, zsírsavak mono- és digliceridjei)},</li>
-                <li>Növényi por készítmény (csipkebogyó por 1,7%, maltodextrin,</li>
-                <li>Bodzavirág por 0,24%),</li>
-                <li>Citromhéj por 2,4%,</li>
-                <li>Csomósodást gátló anyagok (zsírsavak magnéziumsói, szilícium-dioxid).</li>
-            </ul>
-        </div>
-        </p>
         <p class="text-lg my-4 font-normal text-start"> <span class="font-bold uppercase text-xl">
                 forgalmazó:</span> BioTech USA Kft., 1033 Budapest, Huszti út 60., Magyarország.</p>
 
@@ -75,3 +55,24 @@
     </div>
 
 </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hgkj
