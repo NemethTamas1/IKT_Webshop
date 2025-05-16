@@ -35,27 +35,36 @@
 
                 <div v-if="filteredVariants.length > 0"
                     class="grid grid-cols-1 md:grid-cols- lg:grid-cols-4 gap-10 p-4 ">
+
                     <div v-for="variant in filteredVariants" :key="`${variant.id}`"
                         class="mx-auto mt-12 p-4 w-full rounded-lg bg-gray-100/50 border-b-4 border-r-4 border-sky-700/35 shadow-xl overflow-hidden hover:border-lime-700/55 transition-all duration-500 ease-in-out cursor-pointer">
 
                         <router-link :to="generateProductUrl(variant)">
+
                             <div class="h-40 flex justify-center items-center mb-4">
                                 <img v-if="variant.image_path" :src="`/src/assets/products_img/${variant.image_path}`"
                                     :alt="variant.product_name" class="max-h-full max-w-full object-contain">
                                 <div v-else class="bg-gray-200 w-full h-full flex items-center justify-center">Nincs kép
                                 </div>
                             </div>
+
                             <p v-if="variant.brand_name" class="text-lg text-gray-600 mt-1">{{ variant.brand_name }}</p>
+
                             <h3 class="text-lg font-semibold">{{ variant.product_name }}</h3>
+
                             <p v-if="variant.flavour" class="italic text-gray-600"> {{ variant.flavour }}</p>
-                            <p v-if="variant.quantity" class="text-gray-600">{{ variant.quantity }} {{ variant.unit }}.
-                            </p>
+
+                            <p v-if="variant.quantity" class="text-gray-600">{{ variant.quantity }} {{ variant.unit }}.</p>
+
+                            <div class="mt-4 flex justify-between items-center">
+                                <p class="text-lg font-bold">
+                                    {{ productStore.formatToOneThousandPrice(variant.price) }} Ft
+                                </p>
+                            </div>
+
                         </router-link>
 
                         <div class="mt-4 flex justify-between items-center">
-                            <p class="text-lg font-bold">
-                                {{ productStore.formatToOneThousandPrice(variant.price) }} Ft
-                            </p>
                             <button @click="addVariantToCart(variant)"
                                 class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                                 Kosárba

@@ -83,7 +83,8 @@
           :isBuilderCvitamin="isBuilderCvitaminProduct" :categoryName="baseProduct?.category?.name"
           :isProNutritionDailyHealthComplex="isProNutritionDailyHealthComplex"
           :isDailyHealthKalciumMagnezium="isDailyHealthKalciumMagnezium"
-          :isProNutritionDailyHealthCVitamin="isProNutritionDailyHealthCVitamin" />
+          :isProNutritionDailyHealthCVitamin="isProNutritionDailyHealthCVitamin" 
+          :isScitecCalciumMagnesium="isScitecCalciumMagnesium"/>
       </div>
     </div>
 
@@ -145,6 +146,9 @@ const addVariantToCart = async (variant) => {
   ToastService.showSuccess("Termék sikeresen hozzáadva a kosárhoz!");
 }
 
+const isScitecCalciumMagnesium = computed(() => {
+  return baseProduct.value?.name === 'Calcium Magnesium';
+});
 
 const isProNutritionDailyHealthCVitamin = computed(() => {
   return baseProduct.value?.name === 'Daily Health C Vitamin';
