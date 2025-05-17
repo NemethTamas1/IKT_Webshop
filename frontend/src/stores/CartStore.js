@@ -5,7 +5,8 @@ import { ToastService } from "@stores/ToastService.js";
 
 export const useCartStore = defineStore("cart", () => {
   // Változók
-  const cart = ref([]);
+  const storedCart = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const cart = ref(storedCart);
 
   // Függvények
   const addToCart = (product) => {
@@ -16,6 +17,13 @@ export const useCartStore = defineStore("cart", () => {
     } else {
       cart.value.push({ ...product, quantity: 1 });
     }
+
+    saveCartToLocalStorage();
+  };
+
+  // Hogy f5 után ne ürüljön a kosár..
+  const saveCartToLocalStorage = () => {
+    localStorage.setItem('cartItems', JSON.stringify(cart.value));
   };
 
   const confirmAndRemoveFromCart = (productId) => {
@@ -27,10 +35,12 @@ export const useCartStore = defineStore("cart", () => {
 
     cart.value = cart.value.filter((item) => item.id !== productId);
     ToastService.showSuccess("Termék eltávolítva a kosárból.");
+    saveCartToLocalStorage();
   };
 
   const clearCart = () => {
     cart.value = [];
+    saveCartToLocalStorage();
   };
 
   const totalItems = computed(() => {
