@@ -24,7 +24,8 @@ class StoreUserRequest extends FormRequest
             "zip" => ['nullable', 'string', 'max:10'],
             "street_name" => ['nullable', 'string', 'max:60'],
             "street_type" => ['nullable', 'string', 'max:60'],
-            "street_number" => ['nullable', 'integer','min:1','max:200'],
+            "street_number" => ['nullable', 'integer', 'min:1', 'max:200'],
+            "floor" => ['nullable', 'string', 'max:20'],
         ];
     }
 }

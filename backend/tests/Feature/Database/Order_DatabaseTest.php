@@ -102,7 +102,14 @@ class Order_DatabaseTest extends TestCase
     {
         $this->assertTrue(
             Schema::hasColumn('orders', 'shipping_street_number'),
-            'A shipping_street_number mező nem létezik az orders táblában'
+            'A `shipping_street_number` mező nem létezik az orders táblában'
+        );
+    }
+    public function test_orders_table_has_shipping_floor_column(): void
+    {
+        $this->assertTrue(
+            Schema::hasColumn('orders', 'shipping_floor'),
+            'A `shipping_floor` mező nem létezik az orders táblában'
         );
     }
 
@@ -110,7 +117,7 @@ class Order_DatabaseTest extends TestCase
     {
         $this->assertTrue(
             Schema::hasColumn('orders', 'orderstatus'),
-            'Az orderstatus mező nem létezik a orders táblában'
+            'Az `orderstatus` mező nem létezik a orders táblában'
         );
     }
 
@@ -169,6 +176,7 @@ class Order_DatabaseTest extends TestCase
                 'shipping_street_name',
                 'shipping_street_type',
                 'shipping_street_number',
+                "shipping_floor",
                 'orderstatus',
                 'totalamount',
                 'totalquantity',

@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             "street_name" => $this->street_name,
             "street_type" => $this->street_type,
             "street_number" => $this->street_number,
+            "floor" => $this->floor,
             "email_verified_at" => $this->email_verified_at,
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,

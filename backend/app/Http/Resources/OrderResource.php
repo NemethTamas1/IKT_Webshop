@@ -20,6 +20,7 @@ class OrderResource extends JsonResource
             "shipping_street_name" => $this->shipping_street_name,
             "shipping_street_type" => $this->shipping_street_type,
             "shipping_street_number" => $this->shipping_street_number,
+            "shipping_floor" => $this->shipping_floor,
             "orderstatus" => $this->orderstatus,
             "totalamount" => $this->totalamount,
             "totalquantity" => $this->totalquantity,

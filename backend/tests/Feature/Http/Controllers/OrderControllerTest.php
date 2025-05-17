@@ -34,7 +34,8 @@ class OrderControllerTest extends TestCase
             "shipping_zip" => "1234",
             "shipping_street_name" => "Test Street",
             "shipping_street_type" => "Road",
-            "shipping_street_number" => "10"
+            "shipping_street_number" => "10",
+            "shipping_floor" => "1/30"
         ];
     }
 

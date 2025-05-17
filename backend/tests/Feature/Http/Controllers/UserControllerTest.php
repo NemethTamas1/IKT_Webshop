@@ -149,6 +149,7 @@ class UserControllerTest extends TestCase
             'shipping_zip' => '1234',
             'shipping_street' => 'Frissített utca',
             'shipping_street_number' => 25,
+            'floor' => "1/C"
         ];
 
         $this->putJson("$this->baseURL/{$user->id}", $updateData);

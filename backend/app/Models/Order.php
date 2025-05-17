@@ -25,6 +25,7 @@ class Order extends Model
         "shipping_street_name",
         "shipping_street_type",
         "shipping_street_number",
+        "shipping_floor",
         "orderstatus",
         "totalamount",
         "totalquantity",

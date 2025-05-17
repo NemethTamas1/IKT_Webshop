@@ -27,6 +27,7 @@ class User extends Authenticatable
         "street_name",
         "street_type",
         "street_number",
+        "floor",
         "email_verified_at",
         "created_at",
         "updated_at",

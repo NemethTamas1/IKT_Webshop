@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('shipping_street_name', 60);
             $table->string('shipping_street_type', 60);
             $table->unsignedInteger('shipping_street_number');
+            $table->string('shipping_floor', 20)->nullable();
 
             $table->string('orderstatus', 50)->default('pending');
             $table->unsignedInteger('totalamount');

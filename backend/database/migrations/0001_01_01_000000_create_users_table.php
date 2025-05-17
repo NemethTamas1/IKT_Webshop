@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('street_name', 60)->nullable();
             $table->string('street_type', 60)->nullable();
             $table->unsignedInteger('street_number')->nullable();
-            
+            $table->string('floor', 20)->nullable();
+
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->softDeletes();

@@ -24,7 +24,7 @@ class UpdateOrderRequest extends FormRequest
             "shipping_street_name" => ['string', 'max:60'],
             "shipping_street_type" => ['string', 'max:60'],
             "shipping_street_number" => ['integer', 'max:9999'],
-
+            "shipping_floor" => ['nullable', 'string', 'max:20'],
             "user_id" => ['exists:users,id'],
             "orderstatus" => ['string', 'max:50'],
             "totalamount" => ['integer', 'min:0'],

@@ -50,6 +50,7 @@ class User_DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasColumn('users', 'street_name'), 'A `street_name` mező nem található a `users` táblában.');
         $this->assertTrue(Schema::hasColumn('users', 'street_type'), 'A `street_type` mező nem található a `users` táblában.');
         $this->assertTrue(Schema::hasColumn('users', 'street_number'), 'A `street_number` mező nem található a `users` táblában.');
+        $this->assertTrue(Schema::hasColumn('users', 'floor'), 'A `floor` mező nem található a `users` táblában.');
     }
 
     public function test_user_table_has_timestamps(): void
@@ -80,6 +81,7 @@ class User_DatabaseTest extends TestCase
                 'street_name',
                 'street_type',
                 'street_number',
+                'floor',
                 'created_at',
                 'updated_at',
                 'deleted_at'
