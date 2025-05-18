@@ -42,7 +42,7 @@
               class="border p-2 rounded cursor-pointer bg-white">
               {{ selectedCountry || 'Magyarország' }}
             </div>
-            <ul v-if="dropdownOpenCountry" class="absolute left-0 right-0 bg-white border rounded mt-1 z-50 shadow-lg">
+            <ul v-if="dropdownOpenCountry" class="relative left-0 right-0 bg-white border rounded mt-1 z-50 shadow-lg">
               <li v-for="country in countries" :key="country" @click="selectCountry(country)"
                 class="p-2 hover:bg-sky-100 cursor-pointer">
                 {{ country }}
@@ -57,7 +57,7 @@
               class="border p-2 rounded cursor-pointer bg-white z-50">
               {{ selectedShippingType || 'Futárszolgálat' }}
             </div>
-            <ul v-if="dropdownOpenShipping" class="absolute left-0 right-0 bg-white border rounded mt-1 z-10">
+            <ul v-if="dropdownOpenShipping" class="relative left-0 right-0 bg-white border rounded mt-1 z-10">
               <li v-for="type in shippingTypes" :key="type" @click="selectShippingType(type)"
                 class="p-2 hover:bg-sky-100 cursor-pointer">
                 {{ type }}
@@ -71,7 +71,7 @@
             <div @click="toggleDropdownPayment" name="fizetesModja" class="border p-2 rounded cursor-pointer bg-white">
               {{ selectedPaymentMethod || 'Utánvét (fizetés a futárnál)' }}
             </div>
-            <ul v-if="dropdownOpenPayment" class="absolute left-0 right-0 bg-white border rounded mt-1 z-10">
+            <ul v-if="dropdownOpenPayment" class="relative left-0 right-0 bg-white border rounded mt-1 z-10">
               <li v-for="method in paymentMethods" :key="method" @click="selectPaymentType(method)"
                 class="p-2 hover:bg-sky-100 cursor-pointer">
                 {{ method }}
