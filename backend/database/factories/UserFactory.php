@@ -13,10 +13,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            "name" => fake()->name(),
-            'username' => fake()->userName(),
+            "name" => fake()->lastName() . ' ' . fake()->firstName(),
             'password' => static::$password ??= Hash::make('password'),
-            'email' => fake()->unique()->safeEmail(),
+            'email' => fake()->userName() . fake()->randomElement(['@gmail.com', '@freemail.hu', '@yahoo.com']),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             "city" => fake()->randomElement(['Csád', 'Felcsút', 'Szilvásvárad', 'Festetics', 'Kiskőrös']),
@@ -26,6 +25,7 @@ class UserFactory extends Factory
             'street_name' => fake()->randomElement(['Mészáros utca', 'Felcsút Köz', 'Kastély utca', 'Köztévé tér', 'Szabadsajtó útja', 'Tisza út', 'Áradás tér']),
             "street_type" => fake()->randomElement(['út', 'utca', 'köz', 'tér', 'park', 'dűlő']),
             'street_number' => fake()->numberBetween(1, 200),
+            'floor' => fake()->numberBetween(1, 15) .fake()->randomElement(['/A', '/B', '/C', '/D','','','','']),
         ];
     }
     public function unverified(): static

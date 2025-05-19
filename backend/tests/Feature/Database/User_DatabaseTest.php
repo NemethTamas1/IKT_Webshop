@@ -25,11 +25,6 @@ class User_DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasColumn('users', 'role'), 'A `role` mező nem található a `users` táblában.');
     }
 
-    public function test_user_table_has_username_column(): void
-    {
-        $this->assertTrue(Schema::hasColumn('users', 'username'), 'A `username` mező nem található a `users` táblában.');
-    }
-
     public function test_user_table_has_password_column(): void
     {
         $this->assertTrue(Schema::hasColumn('users', 'password'), 'A `password` mező nem található a `users` táblában.');
@@ -70,7 +65,6 @@ class User_DatabaseTest extends TestCase
             Schema::hasColumns('users', [
                 'id',
                 'role',
-                'username',
                 'name',
                 'password',
                 'email',

@@ -27,7 +27,6 @@ class UserControllerTest extends TestCase
 
         $this->baseData = [
             'role' => 'user',
-            'username' => 'test_user_' . Str::random(5),
             "name" => "Test Name",
             'password' => 'password123',
             'email' => 'test_user_' . Str::random(10) . '@example.com',
@@ -55,7 +54,7 @@ class UserControllerTest extends TestCase
 
         $response = $this->getJson($this->baseURL . $user->id);
         $response->assertStatus(200)
-            ->assertJsonFragment(['id' => $user->id, 'username' => $user->username]);
+            ->assertJsonFragment(['id' => $user->id, 'email' => $user->email]);
     }
 
     public function test_create_user_returns_201_status(): void
@@ -69,19 +68,8 @@ class UserControllerTest extends TestCase
         $this->postJson($this->baseURL, $this->baseData);
 
         $this->assertDatabaseHas('users', [
-            'username' => $this->baseData['username'],
             'email' => $this->baseData['email']
         ]);
-    }
-
-    public function test_create_user_requires_username(): void
-    {
-        $data = $this->baseData;
-        unset($data['username']);
-
-        $this->postJson($this->baseURL, $data)
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['username']);
     }
 
     public function test_create_user_requires_email(): void
@@ -120,7 +108,6 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $updateData = [
-            'username' => 'updated_user_' . Str::random(5),
             'email' => 'updated_user_' . Str::random(10) . '@example.com',
             'password' => 'updated_password',
             'shipping_country' => 'Magyarország',
@@ -141,7 +128,6 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         $updateData = [
-            'username' => 'updated_user_' . Str::random(5),
             'email' => 'updated_user_' . Str::random(10) . '@example.com',
             'password' => 'updated_password',
             'shipping_country' => 'Magyarország',
@@ -156,7 +142,6 @@ class UserControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'username' => $updateData['username'],
             'email' => $updateData['email'],
         ]);
     }
