@@ -12,11 +12,13 @@
 
           <div>
             <p class="font-semibold">{{ item.name }}</p>
-            <p class="text-sm text-gray-500">{{ item.price }} Ft × {{ item.quantity }}</p>
+            <p class="text-sm text-gray-500">{{ productStore.formatToOneThousandPrice(item.price) }} Ft × {{
+              item.quantity }}</p>
           </div>
 
           <div class="flex items-center gap-4">
-            <p class="font-bold text-sky-600">{{ item.price * item.quantity }} Ft</p>
+            <p class="font-bold text-sky-600">{{ productStore.formatToOneThousandPrice(item.price * item.quantity) }} Ft
+            </p>
             <button @click="cartStore.confirmAndRemoveFromCart(item.id)" class="text-red-500 hover:text-red-700">
               <i class="fa-solid fa-trash"></i>
             </button>
@@ -24,7 +26,7 @@
 
         </div>
         <p class="text-xl font-bold mt-4">
-          Termékek ára összesen: <span class="text-sky-600">{{ total }} Ft</span>
+          Termékek ára összesen: <span class="text-sky-600">{{ productStore.formatToOneThousandPrice(total) }} Ft</span>
         </p>
         <div class="mt-4 w-full h-full xl:flex xl:flex-col xl:justify-center xl:text-center">
           <p class="text-sm italic"><b><u>Tájékoztatás:</u></b> Karbantartási okok miatt a <span
@@ -40,16 +42,16 @@
         <p
           class="text-xl mx-auto font-semibold uppercase mb-4 bg-sky-600 text-white w-fit rounded-md px-3 py-1 shadow-md shadow-sky-950/85">
           Szállítási adatok</p>
-        <div class="w-11/12 mx-auto rounded-lg border-b-2 border-slate-400/75 mb-4"></div>
+        <div class="w-11/12 mx-auto rounded-lg border-b-2 border-slate-400/75 mb-4 xl:mb-8"></div>
         <form @submit.prevent="submitOrder">
 
-          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-2 xl:mb-8">
+          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-4">
             <!-- Száll. Név -->
-            <FormKit v-model="vnev" type="text" name="lastname" label="Szállítási név" validation="required"
+            <FormKit v-model="shipping_name" type="text" name="lastname" label="Szállítási név" validation="required"
               label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
               placeholder="Kiss András" />
             <!-- Telefonszám -->
-            <FormKit v-model="telefon" type="text" name="phone" label="Telefonszám" validation="required"
+            <FormKit v-model="shipping_phone" type="text" name="phone" label="Telefonszám" validation="required"
               label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
               placeholder="+36 30 123 4567" />
           </div>
@@ -73,7 +75,7 @@
             </div>
             <!-- Város mező -->
             <div>
-              <FormKit v-model="varos" type="text" name="city" label="Város" validation="required"
+              <FormKit v-model="shipping_city" type="text" name="city" label="Város" validation="required"
                 label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 placeholder="Város" />
             </div>
@@ -81,23 +83,23 @@
 
           <!-- Irányítószám és Helység neve -->
           <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-4">
-            <FormKit v-model="irszam" type="text" name="zip" label="Irányítószám" validation="required|number"
+            <FormKit v-model="shipping_zip" type="text" name="zip" label="Irányítószám" validation="required"
               label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
               placeholder="Irányítószám*" />
-            <FormKit v-model="utca" type="text" name="street_name" label="Helység neve" validation="required"
-              label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
-              placeholder="Akácfa, Alkotás, stb." />
+            <FormKit v-model="shipping_street_name" type="text" name="street_name" label="Helység neve"
+              validation="required" label-class="text-sky-600 text-xl"
+              input-class="mt-1 p-3 border border-gray-300 rounded-md w-full" placeholder="Akácfa, Alkotás, stb." />
           </div>
 
           <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-4">
-            <FormKit v-model="utcaTipus" type="text" name="street_type" label="Helység típusa" validation="required"
-              label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
-              placeholder="út/utca/köz/stb." />
-            <FormKit v-model="utcaSzam" type="text" name="street_number" label="Helység Száma" validation="required"
-              label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
-              placeholder="5, 18, 127." />
+            <FormKit v-model="shipping_street_type" type="text" name="street_type" label="Helység típusa"
+              validation="required" label-class="text-sky-600 text-xl"
+              input-class="mt-1 p-3 border border-gray-300 rounded-md w-full" placeholder="út/utca/köz/stb." />
+            <FormKit v-model="shipping_street_number" type="text" name="street_number" label="Helység Száma"
+              validation="required|number" label-class="text-sky-600 text-xl"
+              input-class="mt-1 p-3 border border-gray-300 rounded-md w-full" placeholder="5, 18, 127." />
           </div>
-          <FormKit v-model="emelet" type="text" name="floor" label="Emelet, ajtó" validation="required"
+          <FormKit v-model="shipping_floor" type="text" name="floor" label="Emelet, ajtó" validation="required"
             label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
             placeholder="1.em 30., félemelet 4., alagsor 22." />
 
@@ -149,34 +151,30 @@
 
           <!-- Email cím megadási rész -->
           <div class="mb-4">
-            <FormKit v-model="email" type="email" name="email" label="E-mail cím" validation="required|email"
+            <FormKit v-model="shipping_email" type="email" name="email" label="E-mail cím" validation="required|email"
               label-class="text-sky-600 text-xl pl-1" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
               placeholder="E-mail"
               help="Az e-mail címed alapján azonosítunk és erre a címre küldjük a rendeléssel kapcsolatos értesítéseket is."
               help-class="text-gray-500 text-xs italic pt-1 pl-2" />
           </div>
 
-          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-2 xl:mb-8">
-            <!-- Ország megadási rész -->
-            <FormKit v-model="orszag" type="text" name="country" label="Ország" validation="required"
-              label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              placeholder="Ország*" />
-            <!-- Város megadása -->
-            <FormKit v-model="varos" type="text" name="city" label="Város" validation="required"
-              label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
-              placeholder="Város" />
+          <div class="w-full mx-auto rounded-lg border-b-4 border-slate-400/75 mt-6 lg:mt-8"></div>
+
+          <div>
+            <p class="text-xl font-semibold italic mt-4 mb-1">
+              <span class="text-slate-800/75 ">Szállítási díj:</span> <span class="text-sky-600">{{
+                productStore.formatToOneThousandPrice(shippingCost) }}
+                Ft</span>
+            </p>
+
+            <p class="text-xl font-bold">
+              Fizetendő összesen: <span class="text-sky-700">{{ productStore.formatToOneThousandPrice(totalWithShipping)
+              }} Ft</span>
+            </p>
           </div>
 
-
-          <p class="text-xl font-bold mt-2">
-            Szállítási díj: <span class="text-sky-600">{{ shippingCost }} Ft</span>
-          </p>
-
-          <p class="text-xl font-bold mt-2">
-            Fizetendő összesen: <span class="text-sky-700">{{ totalWithShipping }} Ft</span>
-          </p>
-
-          <button type="submit" class="mx-auto w-1/2 font-semibold text-lg flex justify-center items-center  bg-sky-600 hover:bg-sky-500 text-white p-2 
+          <button type="submit"
+            class="mx-auto w-1/2 font-semibold text-lg flex justify-center items-center  bg-sky-600 hover:bg-sky-500 text-white p-2 
           my-6  shadow-lg hover:shadow-lime-900/25 rounded-xl transform transition-all duration-200 border-2 border-lime-600">
             Rendelés véglegesítése
           </button>
@@ -190,9 +188,12 @@
 // Importok
 import BaseLayout from '@layouts/BaseLayout.vue'
 import { useCartStore } from '@stores/CartStore.js'
+import { useProductStore } from '@stores/ProductStore.mjs'
 import { computed, ref, onMounted } from 'vue'
+import { http } from '@utils/http.mjs';
 
-const cartStore = useCartStore()
+const cartStore = useCartStore();
+const productStore = useProductStore();
 
 const dropdownOpenCountry = ref(false);
 const dropdownOpenShipping = ref(false);
@@ -206,7 +207,6 @@ const selectedPaymentMethod = ref('');
 const shipping_email = ref(null);
 const shipping_name = ref(null);
 const shipping_phone = ref(null);
-const shipping_country = ref(null);
 const shipping_city = ref(null);
 const shipping_zip = ref(null);
 const shipping_street_name = ref(null);
@@ -319,11 +319,36 @@ const total = computed(() =>
   cartStore.cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
 )
 
-function submitOrder() {
-  alert(`Rendelés leadva:\nOrszág: ${selectedCountry.value}\nNév: ${shipping.value.name}\nCím: ${shipping.value.address}`)
-  cartStore.clearCart()
-}
+const submitOrder = async (event) => {
+  event.preventDefault();
+  try {
+    const data = {
+      shipping_email: shipping_email.value,
+      shipping_name: shipping_name.value,
+      shipping_phone: shipping_phone.value,
+      shipping_country: selectedCountry.value || "Magyarország",
+      shipping_city: shipping_city.value,
+      shipping_zip: shipping_zip.value.toString(), 
+      shipping_street_name: shipping_street_name.value,
+      shipping_street_type: shipping_street_type.value,
+      shipping_street_number:shipping_street_number.value,
+      shipping_floor: shipping_floor.value,
+      totalamount: totalWithShipping.value,
+      totalquantity: cartStore.cart.length,
+    };
+    console.log('Küldendő adatok:', data);
 
+    const resp = await http.post('/orders', data);
+    if (resp.data) {
+      cartStore.clearCart()
+    }
+  } catch (error) {
+    if (error.response) {
+      console.error('Validációs hibák vannak:', error.response.data);
+    }
+    console.error('Hiba a rendelés beküldésekor:', error);
+  }
+}
 onMounted(() => {
   document.addEventListener('click', handleClickAway);
 

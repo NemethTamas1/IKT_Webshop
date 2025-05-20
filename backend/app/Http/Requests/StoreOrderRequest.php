@@ -23,7 +23,7 @@ class StoreOrderRequest extends FormRequest
             "shipping_street_name" => ['required', 'string', 'max:60'],
             "shipping_street_type" => ['required', 'string', 'max:60'],
             "shipping_street_number" => ['required', 'integer', 'max:9999'],
-            "floor" => ['nullable', 'string', 'max:20'],
+            "shipping_floor" => ['nullable', 'string', 'max:20'],
             "orderstatus" => ['string', 'max:50'],
             "totalamount" => ['required', 'integer', 'min:0'],
             "totalquantity" => ['required', 'integer', 'min:1', 'max:50'],
