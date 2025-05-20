@@ -4,9 +4,9 @@
       <h2 class="text-2xl text-center mt-5">A kosarad üres.</h2>
     </div>
 
-    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6 my-5">
+    <div v-else class="grid grid-cols-1 lg:grid-cols-5 gap-6 my-5 mb-40">
       <!-- Kosár tartalma -->
-      <div class="md:col-span-2 bg-white p-4 rounded shadow">
+      <div class="col-span-1 lg:col-span-3 bg-white p-4 rounded shadow">
         <h2 class="text-2xl font-semibold mb-4">Kosár tartalma: </h2>
         <div v-for="item in cartStore.cart" :key="item.id" class="border-b py-3 flex justify-between items-center">
 
@@ -26,35 +26,91 @@
         <p class="text-xl font-bold mt-4">
           Termékek ára összesen: <span class="text-sky-600">{{ total }} Ft</span>
         </p>
-
-
+        <div class="mt-4 w-full h-full xl:flex xl:flex-col xl:justify-center xl:text-center">
+          <p class="text-sm italic"><b><u>Tájékoztatás:</u></b> Karbantartási okok miatt a <span
+              class="text-lime-700 font-bold">SimplePay&copy</span>-en keresztüli fizetési lehetőség átmenetileg
+            <span class="font-bold italic underline underline-offset-2 text-orange-700">szünetel!</span>
+          </p>
+          <p class="text-sm italic"> Megértésüket és türelmüket köszönjük!</p>
+        </div>
       </div>
 
       <!-- Szállítás -->
-      <div ref="szallitasRef" class="bg-white p-4 rounded shadow">
-        <h2 class="text-2xl font-semibold mb-4">Szállítási és fizetés</h2>
+      <div ref="szallitasRef" class="lg:col-span-2 bg-white p-4 rounded shadow">
+        <p
+          class="text-xl mx-auto font-semibold uppercase mb-4 bg-sky-600 text-white w-fit rounded-md px-3 py-1 shadow-md shadow-sky-950/85">
+          Szállítási adatok</p>
+        <div class="w-11/12 mx-auto rounded-lg border-b-2 border-slate-400/75 mb-4"></div>
         <form @submit.prevent="submitOrder">
 
-          <!-- Ország kiválasztása -->
-          <div class="mb-4">
-            <label for="orszagValaszto">Ország</label>
-            <div @click="toggleDropdownCountry" name="orszagValaszto"
-              class="border p-2 rounded cursor-pointer bg-white">
-              {{ selectedCountry || 'Magyarország' }}
-            </div>
-            <ul v-if="dropdownOpenCountry" class="relative left-0 right-0 bg-white border rounded mt-1 z-50 shadow-lg">
-              <li v-for="country in countries" :key="country" @click="selectCountry(country)"
-                class="p-2 hover:bg-sky-100 cursor-pointer">
-                {{ country }}
-              </li>
-            </ul>
+          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-2 xl:mb-8">
+            <!-- Száll. Név -->
+            <FormKit v-model="vnev" type="text" name="lastname" label="Szállítási név" validation="required"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              placeholder="Kiss András" />
+            <!-- Telefonszám -->
+            <FormKit v-model="telefon" type="text" name="phone" label="Telefonszám" validation="required"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              placeholder="+36 30 123 4567" />
           </div>
 
+          <!-- Ország kiválasztása -->
+          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-4">
+            <div>
+              <label for="orszagValaszto" class="text-sky-600 text-xl pl-1">Ország</label>
+              <div @click="toggleDropdownCountry" name="orszagValaszto"
+                class="border p-2 mt-1 rounded cursor-pointer bg-white flex justify-between">
+                {{ selectedCountry || 'Magyarország' }}
+                <i class="fa-solid fa-sort-down text-sky-800 text-xl"></i>
+              </div>
+              <ul v-if="dropdownOpenCountry"
+                class="relative left-0 right-0 bg-white border rounded mt-1 z-50 shadow-lg">
+                <li v-for="country in countries" :key="country" @click="selectCountry(country)"
+                  class="p-2 hover:bg-sky-100 cursor-pointer">
+                  {{ country }}
+                </li>
+              </ul>
+            </div>
+            <!-- Város mező -->
+            <div>
+              <FormKit v-model="varos" type="text" name="city" label="Város" validation="required"
+                label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                placeholder="Város" />
+            </div>
+          </div>
+
+          <!-- Irányítószám és Helység neve -->
+          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-4">
+            <FormKit v-model="irszam" type="text" name="zip" label="Irányítószám" validation="required|number"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
+              placeholder="Irányítószám*" />
+            <FormKit v-model="utca" type="text" name="street_name" label="Helység neve" validation="required"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
+              placeholder="Akácfa, Alkotás, stb." />
+          </div>
+
+          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-4">
+            <FormKit v-model="utcaTipus" type="text" name="street_type" label="Helység típusa" validation="required"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
+              placeholder="út/utca/köz/stb." />
+            <FormKit v-model="utcaSzam" type="text" name="street_number" label="Helység Száma" validation="required"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
+              placeholder="5, 18, 127." />
+          </div>
+          <FormKit v-model="emelet" type="text" name="floor" label="Emelet, ajtó" validation="required"
+            label-class="text-sky-600 text-xl" input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
+            placeholder="1.em 30., félemelet 4., alagsor 22." />
+
           <!-- Szállítás kiválasztása -->
+          <p
+            class="text-xl mx-auto font-semibold uppercase mb-4 mt-12 bg-sky-600 text-white w-fit rounded-md px-3 py-1 shadow-md shadow-sky-950/85">
+            Fizetési Adatok</p>
+          <div class="w-11/12 mx-auto rounded-lg border-b-2 border-slate-400/75 mb-4"></div>
           <div class="mb-4">
-            <label for="szallitas">Szállítás</label>
+
+            <label for="szallitas" class="text-sky-600 text-xl pl-1">Szállítás</label>
             <div @click="toggleDropdownShipping" name="szallitas"
-              class="border p-2 rounded cursor-pointer bg-white z-50">
+              class="mt-1 border p-2 rounded cursor-pointer bg-white z-50">
               {{ selectedShippingType || 'Futárszolgálat' }}
             </div>
             <ul v-if="dropdownOpenShipping" class="relative left-0 right-0 bg-white border rounded mt-1 z-10">
@@ -67,23 +123,49 @@
 
           <!-- Fizetésmód kiválasztása -->
           <div class="mb-4">
-            <label for="fizetesModja">Fizetés módja</label>
-            <div @click="toggleDropdownPayment" name="fizetesModja" class="border p-2 rounded cursor-pointer bg-white">
+            <label for="fizetesModja" class="text-sky-600 text-xl pl-1 ">Fizetés módja</label>
+            <div @click="toggleDropdownPayment" name="fizetesModja"
+              class="mt-1 border p-2 rounded cursor-pointer bg-white">
               {{ selectedPaymentMethod || 'Utánvét (fizetés a futárnál)' }}
             </div>
             <ul v-if="dropdownOpenPayment" class="relative left-0 right-0 bg-white border rounded mt-1 z-10">
-              <li v-for="method in paymentMethods" :key="method" @click="selectPaymentType(method)"
-                class="p-2 hover:bg-sky-100 cursor-pointer">
-                {{ method }}
+              <li v-for="method in paymentMethods" :key="method"
+                @click="method !== 'SimplePay bankkártyás fizetés' && selectPaymentType(method)"
+                class="p-2 hover:bg-sky-100" :class="{
+                  'cursor-not-allowed bg-slate-300 opacity-70': method === 'SimplePay bankkártyás fizetés',
+                  'cursor-pointer': method !== 'SimplePay bankkártyás fizetés',
+                  'hover:bg-sky-100': method !== 'SimplePay bankkártyás fizetés',
+                  'hover:bg-slate-300': method === 'SimplePay bankkártyás fizetés'
+                }">
+                <div class="flex items-center">
+                  {{ method }}
+                  <span v-if="method === 'SimplePay bankkártyás fizetés'" class="ml-2 text-sm text-red-500">
+                    (Átmenetileg nem elérhető)
+                  </span>
+                </div>
               </li>
             </ul>
           </div>
 
+          <!-- Email cím megadási rész -->
           <div class="mb-4">
-            <FormKit type="text" name="Email" label="E-mail" placeholder="E-mail *" validation="required"
-              input-class="border border-gray-800 p-2 rounded-lg w-full" />
+            <FormKit v-model="email" type="email" name="email" label="E-mail cím" validation="required|email"
+              label-class="text-sky-600 text-xl pl-1" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              placeholder="E-mail"
+              help="Az e-mail címed alapján azonosítunk és erre a címre küldjük a rendeléssel kapcsolatos értesítéseket is."
+              help-class="text-gray-500 text-xs italic pt-1 pl-2" />
           </div>
 
+          <div class="mx-auto w-full grid grid-cols-2 space-x-4 mb-2 xl:mb-8">
+            <!-- Ország megadási rész -->
+            <FormKit v-model="orszag" type="text" name="country" label="Ország" validation="required"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              placeholder="Ország*" />
+            <!-- Város megadása -->
+            <FormKit v-model="varos" type="text" name="city" label="Város" validation="required"
+              label-class="text-sky-600 text-xl" input-class="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              placeholder="Város" />
+          </div>
 
 
           <p class="text-xl font-bold mt-2">
@@ -94,8 +176,9 @@
             Fizetendő összesen: <span class="text-sky-700">{{ totalWithShipping }} Ft</span>
           </p>
 
-          <button type="submit" class="w-full bg-sky-600 hover:bg-sky-700 text-white p-2 rounded mt-2">
-            Tovább a rendelésre
+          <button type="submit" class="mx-auto w-1/2 font-semibold text-lg flex justify-center items-center  bg-sky-600 hover:bg-sky-500 text-white p-2 
+          my-6  shadow-lg hover:shadow-lime-900/25 rounded-xl transform transition-all duration-200 border-2 border-lime-600">
+            Rendelés véglegesítése
           </button>
         </form>
       </div>
@@ -119,6 +202,22 @@ const szallitasRef = ref(null);
 const selectedCountry = ref('');
 const selectedShippingType = ref('');
 const selectedPaymentMethod = ref('');
+
+const shipping_email = ref(null);
+const shipping_name = ref(null);
+const shipping_phone = ref(null);
+const shipping_country = ref(null);
+const shipping_city = ref(null);
+const shipping_zip = ref(null);
+const shipping_street_name = ref(null);
+const shipping_street_type = ref(null);
+const shipping_street_number = ref(null);
+const shipping_floor = ref(null);
+// Order status 'pending' lesz alapból
+// totalamount = totalWithShipping
+// totalquantity = item.quantity
+
+
 
 const countries = ['Magyarország', 'Németország', 'Ausztria', 'Románia', 'Szlovákia'];
 const shippingTypes = ['Futárszolgálat', 'Magyar Posta Logisztikai szállítás', 'FOXPOST'];
