@@ -124,8 +124,9 @@
 
 <script setup>
 import BaseMobileNavBarDrop from './BaseMobileNavBarDrop.vue';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useCartStore } from '@stores/CartStore';
+import {router} from '@/router/index.js';
 
 const cartStore = useCartStore();
 const menuOpen = ref(false);
@@ -145,19 +146,23 @@ const toggleDropdown = (dropdownType) => {
 };
 
 const handleClickAway = (e) => {
-  if (!navMenuRef.value.contains(e.target)) {
+  if (!navMenuRef?.value?.contains(e.target)) {
     menuOpen.value = false;
     activeDropdown.value = null;
   }
 };
 
+
 onMounted(() => {
   document.addEventListener('click', handleClickAway);
+
+  router.afterEach(()=>{
+    activeDropdown.value = null;
+    menuOpen.value = false;
+  });
 });
 
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickAway);
-});
+
 
 </script>
 
