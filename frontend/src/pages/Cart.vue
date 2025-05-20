@@ -307,14 +307,6 @@ const shippingCost = computed(() => {
 
 const totalWithShipping = computed(() => total.value + shippingCost.value);
 
-
-
-const shipping = ref({
-  name: '',
-  address: '',
-  phone: '',
-})
-
 const total = computed(() =>
   cartStore.cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
 )
@@ -334,7 +326,7 @@ const submitOrder = async (event) => {
       shipping_street_number:shipping_street_number.value,
       shipping_floor: shipping_floor.value,
       totalamount: totalWithShipping.value,
-      totalquantity: cartStore.cart.length,
+      totalquantity: cartStore.totalItems,
     };
     console.log('Küldendő adatok:', data);
 
