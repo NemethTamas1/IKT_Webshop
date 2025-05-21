@@ -6,9 +6,16 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Services\OrderService;
 
 class OrderController extends Controller
 {
+    protected $orderService;
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     public function index()
     {
         $order = Order::with(['user'])->get();
@@ -19,6 +26,9 @@ class OrderController extends Controller
     {
         $data = $request->validated();
         $order = Order::create($data);
+        // Nah ITT küldjük el az e-mailt, ha létrejött a rendelés!
+        $this->orderService->sendOrderConfirmationEmail($order); // OrderService-ben lévő sendOrder(kinemírom) osztályát(függvényét) meghívjuk!
+        
         return new OrderResource($order);
     }
 

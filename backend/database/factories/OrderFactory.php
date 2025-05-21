@@ -16,9 +16,10 @@ class OrderFactory extends Factory
             "shipping_country" => "Magyarország",
             "shipping_city" => fake()->randomElement(['Csád', 'Felcsút', 'Szilvásvárad', 'Festetics', 'Kiskőrös']),
             "shipping_zip" => fake()->regexify('[0-9]{4}'),
-            "shipping_street_name" => fake()->word() ,
+            "shipping_street_name" => fake()->word(),
             "shipping_street_type" => fake()->randomElement(['út', 'utca', 'köz', 'tér', 'park', 'dűlő']),
             "shipping_street_number" => fake()->numberBetween(1, 200),
+            "shipping_floor" => fake()->numberBetween(1, 20) . fake()->randomElement(['/A', '/B', '/C', '/D', '', '', '', '']),
             "totalamount" => fake()->numberBetween(290, 24500),
             "totalquantity" => fake()->numberBetween(1, 5),
         ];
