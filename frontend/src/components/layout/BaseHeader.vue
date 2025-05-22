@@ -21,7 +21,8 @@
         <!-- Desktop Menu -->
         <ul class="hidden xl:flex space-x-8 text-lg text-sky-500 font-medium mr-8">
           <li class="hover:text-sky-700">
-            <RouterLink to="/login">Bejelentkezés</RouterLink>
+            <RouterLink v-if="!isUserLoggedIn" to="/login">Bejelentkezés</RouterLink>
+            <button v-if="isUserLoggedIn" @click="handleLogOut">Kijelentkezés</button>
           </li>
           <li class="relative">
             <div @click="toggleDropdown('minden-gyarto')" class="cursor-pointer hover:text-sky-700">
@@ -127,8 +128,12 @@ import BaseMobileNavBarDrop from './BaseMobileNavBarDrop.vue';
 import { ref, onMounted } from 'vue';
 import { useCartStore } from '@stores/CartStore';
 import {router} from '@/router/index.js';
+import { useUserStore } from '@stores/UserStore';
+import { ToastService } from '@stores/ToastService';
 
 const cartStore = useCartStore();
+const userStore = useUserStore();
+
 const menuOpen = ref(false);
 const activeDropdown = ref(null);
 const navMenuRef = ref(null);
@@ -137,12 +142,21 @@ const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };
 
+const isUserLoggedIn = ref(null);
+
 const toggleDropdown = (dropdownType) => {
   if (activeDropdown.value === dropdownType) {
     activeDropdown.value = null;
   } else {
     activeDropdown.value = dropdownType;
   }
+};
+
+const handleLogOut = async () => {
+  await userStore.logout();
+  isUserLoggedIn.value = false;
+
+  ToastService.showSuccess('A felhasználó kijelentkezett!')
 };
 
 const handleClickAway = (e) => {
@@ -153,7 +167,9 @@ const handleClickAway = (e) => {
 };
 
 
-onMounted(() => {
+onMounted(async() => {
+  isUserLoggedIn.value = await userStore.isLoggedIn();
+
   document.addEventListener('click', handleClickAway);
 
   router.afterEach(()=>{
