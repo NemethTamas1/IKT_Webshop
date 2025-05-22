@@ -13,17 +13,17 @@
                     Belépés
                 </h2>
 
-                <FormKit type="form" :actions="false" class="space-y-6">
+                <FormKit type="form" :actions="false" @submit="handleLogin" class="space-y-6">
 
                     <!-- Email input -->
                     <div class="my-2">
-                        <FormKit type="email" label="E-mail" label-class="text-sky-600 text-xl" placeholder="E-mail"
+                        <FormKit ref="email" type="email" label="E-mail" label-class="text-sky-600 text-xl" placeholder="E-mail"
                             input-class="p-3 border border-gray-300 rounded-md w-full" />
                     </div>
 
                     <!-- Jelszó input -->
                     <div class="my-2">
-                        <FormKit type="password" label="Jelszó" label-class="text-sky-600 text-xl" placeholder="Jelszó"
+                        <FormKit ref="password" type="password" label="Jelszó" label-class="text-sky-600 text-xl" placeholder="Jelszó"
                             input-class="p-3 border border-gray-300 rounded-md w-full" />
                     </div>
 
@@ -63,4 +63,21 @@
 
 <script setup>
 import BaseLayout from '@layouts/BaseLayout.vue';
+import { useUserStore } from '@stores/UserStore';
+import { ref } from 'vue';
+import { ToastService } from '@stores/ToastService';
+ 
+const userStore = useUserStore();
+
+const email = ref('');
+const password = ref('');
+
+const handleLogin = () => {
+    data = {
+        email: email.value,
+        password: password.value
+    }
+    userStore.authenticateUser(data);
+    ToastService.showSuccess(`${email.value} sikeresen bejelentkezett!`)
+};
 </script>

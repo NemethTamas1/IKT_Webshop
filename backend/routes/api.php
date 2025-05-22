@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
@@ -19,5 +20,8 @@ Route::apiResource('/brands', BrandController::class);
 Route::apiResource('/productvariants', ProductVariantController::class);
 Route::apiResource('/orders', OrderController::class);
 Route::apiResource('/orderitems', OrderItemController::class);
+
+Route::apiResource("/authenticate", AuthController::class);
+Route::post("/authenticate", [AuthController::class, "authorization"])->name("auth.authenticate");
 
 Route::apiResource('/users', UserController::class);

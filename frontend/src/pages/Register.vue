@@ -88,7 +88,7 @@
                                     input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
                                     placeholder="5, 18, 127." />
                             </div>
-                            <FormKit v-model="emelet" type="text" name="floor" label="Emelet, ajtó" validation="required"
+                            <FormKit v-model="emelet" type="text" name="floor" label="Emelet, ajtó"
                                 label-class="text-sky-600 text-xl"
                                 input-class="mt-1 p-3 border border-gray-300 rounded-md w-full"
                                 placeholder="1.em 30., félemelet 4., alagsor 22." />
