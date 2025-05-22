@@ -1,28 +1,30 @@
 <template>
   <BaseHeader />
-  <div id="banner" class="w-full mx-auto pl-4 mb-24 md:min-h-svh grid grid-cols-5 bg-right">
-    <div class="grid col-span-1 lg:col-span-2 mx-auto md:px-4 w-auto lg:max-w-[700px]">
-      <p class="headerlineOne my-auto max-w-fit h-fit font-extrabold shadow-xl py-2  pr-5 pl-2">
+  <div id="banner" class="w-full mx-auto pl-4 mb-24 md:min-h-svh grid grid-cols-5 bg-right 
+  ">
+    <div class="grid col-span-2 mx-auto md:px-4 w-auto lg:max-w-[700px] ">
+      <p class="headerlineOne my-auto max-w-fit h-fit py-2  lg:pr-5">
         Tavaszi Mega Akció!
       </p>
-      <div class="headerlineTwo max-w-fit" style="font-family:'Tourney',Arial,Helvetica,sans-serif;">
-        <ul class="mb-8">
-          <li class="font-bold"> Minden táplálékkiegészítő és vitamin</li>
-          <li class="font-bold"> Akár 30% kedvezménnyel, és</li>
+      <div class="headerlineTwo max-w-fit">
+        <ul class="mb-8 font-extrabold text-indigo-950">
+          <li> Minden táplálékkiegészítő és vitamin</li>
+          <li> Akár 30% kedvezménnyel, és</li>
           <li class="freeshipping w-fit mt-4 rounded-lg font-semibold p-1 text-sky-50 shadow-xl italic">
             Ingyenes kiszállítással!*
           </li>
+          <div class="headerlineThree rounded">
+            <span class="text-nowrap text-slate-800 font-light">
+              *<b>Limitált ajánlat:</b> Május 22-31. között!
+            </span>
+          </div>
         </ul>
-        <p class="headerlineThree text-base h-fit max-w-fit bg-gray-500/50 p-1 text-amber-50 rounded-md italic"
-          style="font-family:'Montserrat',Arial,Helvetica,sans-serif;">
-          *<b>Limitált ajánlat:</b> Május 22-31. között!
-        </p>
-        <button class="checkitout transition-all ease-in-out duration-200 mt-8">
+        <button class="checkitout transition-all ease-in-out duration-200 xl:mt-8">
           Megnézem
         </button>
       </div>
     </div>
-    <div class="grid col-span-4 lg:col-span-3 m-auto w-1/2 lg:w-full">
+    <div class="grid md:col-span-3 m-auto w-1/2 lg:w-full">
       <!-- Ez a másik, jobboldali col. Üresen marad a kép miatt -->
     </div>
   </div>
@@ -89,32 +91,29 @@ onMounted(async () => {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-
-  @media screen and (max-width: 1024px) {
-    min-height: 75vh;
-  }
+  padding: 7.5rem 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
 }
 
 
 .headerlineOne {
-  font-size: clamp(2.2rem, 2.3vw, 3.5rem);
-  font-style: italic;
-  text-shadow: 3px 3px 8px rgba(79, 66, 1, 0.5);
-  color: rgb(94, 47, 97);
-  background-color: rgba(255, 255, 255, .9);
-  border-radius: 1.5rem;
-  border: 3px solid rgb(94, 47, 97);
-  margin-bottom: 2rem;
+  font-size: clamp(2.2rem, 2.3vw, 3.7rem);
+  text-shadow: 3px 4px 12px rgba(83, 4, 71, 0.9);
+  color: White;
+  letter-spacing: .1rem;
+  font-weight: 700;
+  margin-bottom: 1.6rem;
   text-wrap: nowrap;
 }
 
 .headerlineTwo {
-  font-size: clamp(1rem, 2vw, 2rem);
-  font-style: italic;
+  font-size: clamp(1rem, 2vw, 2.6rem);
+  font-family: 'Nunito';
 
   @media screen and (max-width: 1024px) {
     min-width: 16rem;
-    font-size: 1rem;
     text-wrap: wrap;
   }
 
@@ -123,96 +122,193 @@ onMounted(async () => {
 .freeshipping {
   background-color: rgb(159, 80, 159);
   padding: 0.2rem 0.6rem;
-
-
+  margin-bottom: 1rem;
 }
 
 .headerlineThree {
-  font-size: clamp(0.5rem, 1vw, 1.6rem);
-  font-style: italic;
+  font-size: clamp(0.75rem, 1vw, 1.8rem);
 }
 
 .checkitout {
   font-size: clamp(1rem, 2vw, 1.4rem);
-  font-style: italic;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  color: #041e4e;
-  background-color: rgb(0, 251, 255);
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: white;
+  background-color: rgba(10, 159, 154, 0.834);
   border-radius: .5rem;
-  border: 3px solid rgba(255, 255, 255, .8);
   padding: 0.5rem 1rem;
+  box-shadow: 5px 0px 25px 3px rgba(33, 1, 33, 0.2);
+  border: 2px solid rgb(255, 255, 255, 70%);
 }
 
 .checkitout:hover {
   font-size: clamp(1rem, 2vw, 1.4rem);
-  font-style: italic;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  color: rgb(230, 255, 255);
-  background-color: #486aa9;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: white;
+  background-color: rgba(14, 192, 186, 0.834);
   border-radius: .5rem;
-  border: 3px solid rgb(157, 255, 245);
   padding: 0.5rem 1rem;
+  box-shadow: 5px 0px 25px 3px rgba(33, 1, 33, 0.2);
+  border: 2px solid rgb(255, 255, 255, 70%);
 }
 
-@media screen and (max-width:1536px) {
-  .headerlineOne {
-    font-size: 2.0rem;
-  }
-}
-
-@media screen and (min-width:768px) and (max-width: 1024px) {
-
-  .headerlineOne {
-    font-size: 1.8rem;
-  }
-}
-
-
-@media screen and (min-width:480px) and (max-width: 768px) {
+@media screen and (min-width:1024px) and (max-width:1536px) {
   #banner {
-    background-position: calc(100%) right;
-    background-image: url('../assets/banners/banner.png');
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding-top: 4rem;
+    min-height: 100vh;
+    background-position-x: 30%;
+    background-position-y: top -3.5rem;
   }
 
   .headerlineOne {
-    font-size: 1.2rem;
+    font-size: 2.5rem;
     width: max-content;
-    padding: 0.4rem 0.7rem 0.4rem 0.3rem;
     margin-bottom: 1.2rem;
   }
 
   .headerlineTwo {
     min-width: 5rem;
-    max-width: 10rem;
-    font-size: 1rem;
-    text-wrap: wrap;
-    padding-right: 0.2rem;
+    font-size: 1.7rem;
+    line-height: 2.6rem;
   }
 
   .headerlineThree {
-    font-size: 0.45rem;
-    padding: 0 0.5rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+    font-style: italic;
   }
 
   .freeshipping {
     min-width: 10rem;
-    font-size: 0.8rem;
-    text-wrap: nowrap;
+    font-size: 1.2rem;
+    margin-top: .8rem;
+  }
+
+  .checkitout {
+    margin-top: 1.2rem;
+  }
+}
+
+@media screen and (min-width:768px) and (max-width: 1024px) {
+  #banner {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding-top: 4rem;
+    min-height: 100vh;
+    background-position-x: 30%;
+    background-position-y: top -3.5rem;
+  }
+
+  .headerlineOne {
+    font-size: 1.8rem;
+    width: max-content;
+    margin-bottom: 1.2rem;
+  }
+
+  .headerlineTwo {
+    min-width: 5rem;
+    font-size: 1.3rem;
+    line-height: 2rem;
+  }
+
+  .headerlineThree {
+    font-size: 1rem;
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  .freeshipping {
+    min-width: 10rem;
+    font-size: 1.2rem;
+    margin-top: .8rem;
+  }
+
+  .checkitout {
+    margin-top: 1.2rem;
   }
 
 }
 
 
+@media screen and (min-width:480px) and (max-width: 768px) {
+  #banner {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding-top: 4rem;
+    min-height: 100vh;
+    background-position-x: 30%;
+    background-position-y: top -3.5rem;
+  }
+
+  .headerlineOne {
+    font-size: 1.8rem;
+    width: max-content;
+    margin-bottom: 1.2rem;
+  }
+
+  .headerlineTwo {
+    min-width: 5rem;
+    font-size: 1.3rem;
+    line-height: 2rem;
+  }
+
+  .headerlineThree {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  .freeshipping {
+    min-width: 10rem;
+    font-size: 1.2rem;
+    margin-top: .8rem;
+  }
+
+  .checkitout {
+    margin-top: 1.2rem;
+  }
+
+}
+
 @media screen and (max-width: 480px) {
   .headerlineOne {
+    font-size: 1.7rem;
+    width: max-content;
+    margin-bottom: 1.2rem;
+  }
+
+  .headerlineTwo {
+    min-width: 5rem;
+    font-size: 1.3rem;
+  }
+
+  .headerlineThree {
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  .freeshipping {
     min-width: 10rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     text-wrap: nowrap;
   }
 
   #banner {
-    background-position: calc(100% + 28rem) center;
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding-top: 4rem;
+    min-height: 100vh;
     background-image: url('../assets/banners/banner.png');
+    background-position-x: 25%;
+    background-position-y: top -3.5rem;
   }
 }
 </style>
