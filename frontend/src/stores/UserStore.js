@@ -11,11 +11,13 @@ export const useUserStore = defineStore('users', {
             return response.data.data;
         },
 
-        async authenticateUser(data) {
-            console.log(data)
-            const response = await http.post('/authenticate', data);
+        async authenticateUser(email, password) {
+            console.log('email a store-ban: ',email)
+            console.log('password a store-ban: ',password)
+            const response = await http.post('/authenticate', {email, password});
             
-            this.token = response.data.data;
+            console.log('response.data.data: ',response.data.data)
+            this.token = response.data.data.token;
 
             sessionStorage.setItem('token', this.token)
         }

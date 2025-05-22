@@ -17,13 +17,13 @@
 
                     <!-- Email input -->
                     <div class="my-2">
-                        <FormKit ref="email" type="email" label="E-mail" label-class="text-sky-600 text-xl" placeholder="E-mail"
+                        <FormKit v-model="email" type="email" label="E-mail" label-class="text-sky-600 text-xl" placeholder="E-mail"
                             input-class="p-3 border border-gray-300 rounded-md w-full" />
                     </div>
 
                     <!-- Jelszó input -->
                     <div class="my-2">
-                        <FormKit ref="password" type="password" label="Jelszó" label-class="text-sky-600 text-xl" placeholder="Jelszó"
+                        <FormKit v-model="password" type="password" label="Jelszó" label-class="text-sky-600 text-xl" placeholder="Jelszó"
                             input-class="p-3 border border-gray-300 rounded-md w-full" />
                     </div>
 
@@ -72,12 +72,11 @@ const userStore = useUserStore();
 const email = ref('');
 const password = ref('');
 
-const handleLogin = () => {
-    data = {
-        email: email.value,
-        password: password.value
-    }
-    userStore.authenticateUser(data);
+const handleLogin = async () => {
+    console.log('email: ', email.value);
+    console.log('password: ', password.value);
+
+    await userStore.authenticateUser(email.value, password.value);
     ToastService.showSuccess(`${email.value} sikeresen bejelentkezett!`)
 };
 </script>
