@@ -191,8 +191,10 @@ import { useCartStore } from '@stores/CartStore.js'
 import { useProductStore } from '@stores/ProductStore.mjs'
 import { computed, ref, onMounted } from 'vue'
 import { http } from '@utils/http.mjs';
+import { useUserStore } from '@stores/UserStore';
 
 const cartStore = useCartStore();
+const userStore = useUserStore();
 const productStore = useProductStore();
 
 const dropdownOpenCountry = ref(false);
@@ -213,6 +215,7 @@ const shipping_street_name = ref(null);
 const shipping_street_type = ref(null);
 const shipping_street_number = ref(null);
 const shipping_floor = ref(null);
+const chosenCountry = ref('');
 // Order status 'pending' lesz alapból
 // totalamount = totalWithShipping
 // totalquantity = item.quantity
@@ -343,6 +346,19 @@ const submitOrder = async (event) => {
 }
 onMounted(() => {
   document.addEventListener('click', handleClickAway);
+  console.log('Felhasználó:', userStore.user)
+  if(userStore.user){
+    shipping_name.value = userStore.user.name,
+    shipping_phone.value = userStore.user.phone,
+    chosenCountry.value = userStore.user.country,
+    shipping_city.value = userStore.user.city,
+    shipping_zip.value = userStore.user.zip,
+    shipping_street_name.value = userStore.user.street_name,
+    shipping_street_type.value = userStore.user.street_type,
+    shipping_street_number.value = userStore.user.street_number,
+    shipping_floor.value = userStore.user.floor,
+    shipping_email.value = userStore.user.email
+  }
 
 })
 </script>

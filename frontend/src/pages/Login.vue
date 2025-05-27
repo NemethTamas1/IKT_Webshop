@@ -66,17 +66,20 @@ import BaseLayout from '@layouts/BaseLayout.vue';
 import { useUserStore } from '@stores/UserStore';
 import { ref } from 'vue';
 import { ToastService } from '@stores/ToastService';
+import { useRouter } from 'vue-router';
  
 const userStore = useUserStore();
 
 const email = ref('');
 const password = ref('');
+const router = useRouter();
 
 const handleLogin = async () => {
     console.log('email: ', email.value);
     console.log('password: ', password.value);
 
     await userStore.authenticateUser(email.value, password.value);
+    router.push('/')
     ToastService.showSuccess(`${email.value} sikeresen bejelentkezett!`)
 };
 </script>

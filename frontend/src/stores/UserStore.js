@@ -3,9 +3,12 @@ import { http } from '@utils/http';
 
 export const useUserStore = defineStore('users', {
     state: () => ({
-        token: null,
-        loggedIn:false
+        token: sessionStorage.getItem('token') || null,
+        user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null
     }),
+    getters:{
+        isLoggedIn: (state) => !!state.token,
+    },
     actions:{
         async RegisterUser(data){
             const response = await http.post('/users', data)
@@ -17,21 +20,20 @@ export const useUserStore = defineStore('users', {
             console.log('password a store-ban: ',password)
             const response = await http.post('/authenticate', {email, password});
             
-            console.log('response.data.data: ',response.data.data)
+            console.log('UserStore response.data.data: ',response.data.data);
+
+            this.user = response.data.data.user;
             this.token = response.data.data.token;
 
             sessionStorage.setItem('token', this.token)
-        },
-
-        async isLoggedIn(){
-            this.loggedIn = true;
-            return sessionStorage.getItem('token') !== null;
+            sessionStorage.setItem('user', JSON.stringify(this.user))
         },
 
         logout(){
             this.token = null;
 
             sessionStorage.removeItem('token');
+            sessionStorage.removeItem('user');
             
             console.log('Token törölve. Kijelentkezett a felhasználó.')
         }

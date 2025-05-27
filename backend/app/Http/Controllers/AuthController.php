@@ -9,13 +9,15 @@ class AuthController extends Controller
 {
     public function authorization(AuthenticateRequest $request) {
         $credentials = $request->validated();
-
+        
         if(Auth::attempt($credentials)) {
+            $user = $request->user();
             $token = $request->user()->createToken('UserToken');
 
             return response()->json([
                 'data' => [
-                    'token' => $token->plainTextToken
+                    'token' => $token->plainTextToken,
+                    'user' => $user
                 ]
             ]);
         } else {

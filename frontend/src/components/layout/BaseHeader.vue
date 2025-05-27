@@ -22,7 +22,6 @@
         <ul class="hidden xl:flex space-x-8 text-lg text-sky-500 font-medium mr-8">
           <li class="hover:text-sky-700">
             <RouterLink v-if="!isUserLoggedIn" to="/login">Bejelentkezés</RouterLink>
-            <button v-if="isUserLoggedIn" @click="handleLogOut">Kijelentkezés</button>
           </li>
           <li class="relative">
             <div @click="toggleDropdown('minden-gyarto')" class="cursor-pointer hover:text-sky-700">
@@ -60,6 +59,21 @@
           <li class="hover:text-sky-700">
             <RouterLink to="/shipping">Szállítás és fizetés</RouterLink>
           </li>
+
+          <div v-if="isUserLoggedIn" class="relative ml-4 cursor-pointer hidden xl:block"
+            @click="toggleDropdown('userProfile')">
+            <i class="fa-solid fa-user text-2xl text-sky-500 hover:text-sky-700"></i>
+            <ul v-if="activeDropdown === 'userProfile'"
+              class="absolute top-full right-0 mt-2 bg-white shadow-lg rounded py-2 w-48 z-50">
+              <li>
+                <RouterLink to="/myProfile" class="block px-4 py-2 hover:bg-sky-100">Saját profilom</RouterLink>
+              </li>
+              <li>
+                <button @click="handleLogOut"
+                  class="block w-full text-left px-4 py-2 hover:bg-sky-100">Kijelentkezés</button>
+              </li>
+            </ul>
+          </div>
         </ul>
 
         <!-- Mobile Menu Icon -->
@@ -118,6 +132,16 @@
         <li class="text-lg px-2 hover:bg-sky-400 hover:text-white rounded p-2 text-sky-500 font-medium">
           <RouterLink to="/shipping">Szállítás és fizetés</RouterLink>
         </li>
+
+        <!-- Dropdown: Bejelentkezett User esetén (Mobil) -->
+        <li v-if="isUserLoggedIn"
+          class="text-lg px-2 hover:bg-sky-400 hover:text-white rounded p-2 text-sky-500 font-medium">
+          <RouterLink to="/myProfile">Saját profilom</RouterLink>
+        </li>
+        <li v-if="isUserLoggedIn"
+          class="text-lg px-2 hover:bg-sky-400 hover:text-white rounded p-2 text-sky-500 font-medium">
+          <button @click="handleLogOut" class="w-full text-left">Kijelentkezés</button>
+        </li>
       </ul>
     </div>
   </nav>
@@ -125,9 +149,9 @@
 
 <script setup>
 import BaseMobileNavBarDrop from './BaseMobileNavBarDrop.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useCartStore } from '@stores/CartStore';
-import {router} from '@/router/index.js';
+import { router } from '@/router/index.js';
 import { useUserStore } from '@stores/UserStore';
 import { ToastService } from '@stores/ToastService';
 
@@ -142,7 +166,7 @@ const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };
 
-const isUserLoggedIn = ref(null);
+const isUserLoggedIn = computed(() => userStore.isLoggedIn);
 
 const toggleDropdown = (dropdownType) => {
   if (activeDropdown.value === dropdownType) {
@@ -154,8 +178,6 @@ const toggleDropdown = (dropdownType) => {
 
 const handleLogOut = async () => {
   await userStore.logout();
-  isUserLoggedIn.value = false;
-
   ToastService.showSuccess('A felhasználó kijelentkezett!')
 };
 
@@ -167,12 +189,10 @@ const handleClickAway = (e) => {
 };
 
 
-onMounted(async() => {
-  isUserLoggedIn.value = await userStore.isLoggedIn();
-
+onMounted(async () => {
   document.addEventListener('click', handleClickAway);
 
-  router.afterEach(()=>{
+  router.afterEach(() => {
     activeDropdown.value = null;
     menuOpen.value = false;
   });
