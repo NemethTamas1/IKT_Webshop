@@ -66,7 +66,7 @@
             <ul v-if="activeDropdown === 'userProfile'"
               class="absolute top-full right-0 mt-2 bg-white shadow-lg rounded py-2 w-48 z-50">
               <li>
-                <RouterLink to="/myProfile" class="block px-4 py-2 hover:bg-sky-100">Saját profilom</RouterLink>
+                <RouterLink :to="'/UserProfile'" class="block px-4 py-2 hover:bg-sky-100">Saját profilom</RouterLink>
               </li>
               <li>
                 <button @click="handleLogOut"
