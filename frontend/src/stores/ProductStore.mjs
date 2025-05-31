@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { http } from "@utils/http.mjs";
 
 export const useProductStore = defineStore("products", () => {
@@ -11,6 +11,8 @@ export const useProductStore = defineStore("products", () => {
   const currentFlavour = ref(null);
   const selectedFlavour = ref(null);
   const availableFlavours = ref([]);
+  const categoryTypes = ref([]);
+  const brandTypes = ref([]);
 
   // Fehérje termékek adatai - előre inicializálva
   const proteinProducts = ref([]);
@@ -274,6 +276,71 @@ export const useProductStore = defineStore("products", () => {
     return product.productvariants.find((v) => v.quantity === Number(size));
   };
 
+  const getCategories = async () => {
+    const response = await http.get('/categories');
+    categoryTypes.value = response.data.data;
+  };
+
+  const getBrands = async () => {
+    const response = await http.get('/brands');
+    brandTypes.value = response.data.data;
+  };
+
+  const categoryOptions = computed(() => {
+    const options = {};
+  
+    if (Array.isArray(categoryTypes.value)) {
+      for (const category of categoryTypes.value) {
+        options[category.id] = category.name;
+      }
+    }
+  
+    return options;
+  });
+
+  const brandOptions = computed(() => {
+    const options = {};
+  
+    if (Array.isArray(brandTypes.value)) {
+      for (const brand of brandTypes.value) {
+        options[brand.id] = brand.name;
+      }
+    }
+  
+    return options;
+  });
+
+  const productLines = [
+    'wpp',
+    'Jumbo!',
+    'megadailyone',
+    'multiproplus',
+    'calciummagnesium',
+    'WheyProtein',
+    'Cvitamin',
+    'vitaday',
+    'vitapropack',
+    'Pro Whey',
+    'dailyhealth',
+    'dailyhealth-c-vitamin',
+    'dailyhealth-kalcium-magnezium'
+  ];
+
+  const productLineOptions = computed(() => {
+    return productLines;
+  });
+
+  const availabilityOptions = [
+    { label: 'Igen', value: 1 },
+    { label: 'Nem', value: 0 }
+  ];
+
+  const createProduct = async (data) => {
+    const response = await http.post('/products', data);
+    return response.data.data;
+  }
+  
+
   return {
     // Reaktívok
     products,
@@ -290,10 +357,16 @@ export const useProductStore = defineStore("products", () => {
     proteinVariants,
     proteinBrands,
     proteinStats,
+    categoryTypes,
+    categoryOptions,
+    brandTypes,
+    productLines,
 
     // Alap műveletek
     getProducts,
     getProduct,
+    getCategories,
+    getBrands,
 
     // Termék részletek kezelése
     loadProductDetails,
@@ -305,7 +378,12 @@ export const useProductStore = defineStore("products", () => {
 
     getFlavoursByDescriptionAndWeight,
     getDefaultVariantForSize,
+    categoryOptions,
+    brandOptions,
+    productLineOptions,
+    availabilityOptions,
 
     formatToOneThousandPrice,
+    createProduct,
   };
 });
