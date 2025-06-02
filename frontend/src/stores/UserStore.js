@@ -4,7 +4,8 @@ import { http } from '@utils/http';
 export const useUserStore = defineStore('users', {
     state: () => ({
         token: sessionStorage.getItem('token') || null,
-        user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null
+        user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null,
+        tokenType: sessionStorage.getItem('tokenType') ?? null
     }),
     getters: {
         isLoggedIn: (state) => !!state.token,
@@ -24,8 +25,10 @@ export const useUserStore = defineStore('users', {
 
             this.user = response.data.data.user;
             this.token = response.data.data.token;
+            this.tokenType = response.data.data.tokenType;
 
             sessionStorage.setItem('token', this.token)
+            sessionStorage.setItem('tokenType', this.tokenType)
             sessionStorage.setItem('user', JSON.stringify(this.user))
         },
 
@@ -46,6 +49,7 @@ export const useUserStore = defineStore('users', {
 
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('user');
+            sessionStorage.removeItem('tokenType');
 
             console.log('Token törölve. Kijelentkezett a felhasználó.')
         }

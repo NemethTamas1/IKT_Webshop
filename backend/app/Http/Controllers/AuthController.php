@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthenticateRequest;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Pail\ValueObjects\Origin\Console;
 
 class AuthController extends Controller
 {
@@ -12,14 +13,20 @@ class AuthController extends Controller
         
         if(Auth::attempt($credentials)) {
             $user = $request->user();
-            $token = $request->user()->createToken('UserToken');
 
+            $tokenName = $user->role === 'admin' ? 'AdminToken' : 'UserToken';
+
+            $token = $request->user()->createToken($tokenName);
+            
             return response()->json([
                 'data' => [
                     'token' => $token->plainTextToken,
+                    'tokenType' => $tokenName,
                     'user' => $user
                 ]
             ]);
+
+
         } else {
             return response()->json([
                 'data' => [

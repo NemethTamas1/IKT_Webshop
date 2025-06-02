@@ -130,7 +130,6 @@ const userStore = useUserStore();
 
 const Register = async () => {
     const data = {
-        username: 'username',
         name: `${vnev.value} ${knev.value}`,
         password: jelszo.value,
         email: email.value,
