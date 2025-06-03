@@ -206,15 +206,15 @@ const selectedCountry = ref('');
 const selectedShippingType = ref('');
 const selectedPaymentMethod = ref('');
 
-const shipping_email = ref(null);
-const shipping_name = ref(null);
-const shipping_phone = ref(null);
-const shipping_city = ref(null);
-const shipping_zip = ref(null);
-const shipping_street_name = ref(null);
-const shipping_street_type = ref(null);
-const shipping_street_number = ref(null);
-const shipping_floor = ref(null);
+const shipping_email = ref('');
+const shipping_name = ref('');
+const shipping_phone = ref('');
+const shipping_city = ref('');
+const shipping_zip = ref('');
+const shipping_street_name = ref('');
+const shipping_street_type = ref('');
+const shipping_street_number = ref('');
+const shipping_floor = ref('');
 const chosenCountry = ref('');
 // Order status 'pending' lesz alapból
 // totalamount = totalWithShipping
@@ -346,18 +346,20 @@ const submitOrder = async (event) => {
 }
 onMounted(() => {
   document.addEventListener('click', handleClickAway);
-  console.log('Felhasználó:', userStore.user)
-  if(userStore.user){
-    shipping_name.value = userStore.user.name,
-    shipping_phone.value = userStore.user.phone,
-    chosenCountry.value = userStore.user.country,
-    shipping_city.value = userStore.user.city,
-    shipping_zip.value = userStore.user.zip,
-    shipping_street_name.value = userStore.user.street_name,
-    shipping_street_type.value = userStore.user.street_type,
-    shipping_street_number.value = userStore.user.street_number,
-    shipping_floor.value = userStore.user.floor,
-    shipping_email.value = userStore.user.email
+  console.log('Felhasználó:', userStore.userData)
+  console.log('cartgenyó: ', userStore.userData.name)
+
+  if(userStore.userData){
+    shipping_name.value = userStore.userData.name;
+    shipping_phone.value = userStore.userData.phone;
+    chosenCountry.value = userStore.userData.country;
+    shipping_city.value = userStore.userData.city;
+    shipping_zip.value = userStore.userData.zip;
+    shipping_street_name.value = userStore.userData.street_name;
+    shipping_street_type.value = userStore.userData.street_type;
+    shipping_street_number.value = userStore.userData.street_number;
+    shipping_floor.value = userStore.userData.floor;
+    shipping_email.value = userStore.userData.emai;
   }
 
 })

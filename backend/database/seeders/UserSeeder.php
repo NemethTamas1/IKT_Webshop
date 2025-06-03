@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
     {
         User::factory()->count(30)->create();
 
-        DB::table('users')->insert([
+        FacadesDB::table('users')->insert([
             "role" => "admin",
             "name" => "Admin",
             "password" => Hash::make("Admin123456"),

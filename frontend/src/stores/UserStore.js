@@ -4,8 +4,7 @@ import { http } from '@utils/http';
 export const useUserStore = defineStore('users', {
     state: () => ({
         token: sessionStorage.getItem('token') || null,
-        user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null,
-        tokenType: sessionStorage.getItem('tokenType') ?? null
+        userData: JSON.parse(sessionStorage.getItem('userData')) || {},
     }),
     getters: {
         isLoggedIn: (state) => !!state.token,
@@ -17,20 +16,37 @@ export const useUserStore = defineStore('users', {
         },
 
         async authenticateUser(email, password) {
-            console.log('email a store-ban: ', email)
-            console.log('password a store-ban: ', password)
-            const response = await http.post('/authenticate', { email, password });
-
-            console.log('UserStore response.data.data: ', response.data.data);
-
-            this.user = response.data.data.user;
-            this.token = response.data.data.token;
-            this.tokenType = response.data.data.tokenType;
-
-            sessionStorage.setItem('token', this.token)
-            sessionStorage.setItem('tokenType', this.tokenType)
-            sessionStorage.setItem('user', JSON.stringify(this.user))
+            try {
+                console.log('email a store-ban: ', email)
+                console.log('password a store-ban: ', password)
+                
+                const response = await http.post('/authenticate', { email, password });
+        
+                console.log('UserStore response.data.data.user.name: ', response.data.data.user.name);
+                console.log('UserStore response.data.data: ', response.data.data);
+        
+                this.token = response.data.data.token;
+        
+                this.userData = {
+                    name: response.data.data.user.name,
+                    email: response.data.data.user.email,
+                    phone: response.data.data.user.phone,
+                    country: response.data.data.user.country,
+                    city: response.data.data.user.city,
+                    zip: response.data.data.user.zip,
+                    street_name: response.data.data.user.street_name,
+                    street_type: response.data.data.user.street_type,
+                    street_number: response.data.data.user.street_number,
+                    floor: response.data.data.user.floor
+                }
+        
+                sessionStorage.setItem('token', this.token);
+                sessionStorage.setItem('userData', JSON.stringify(this.userData));
+            } catch (error) {
+                console.error('Hiba az authenticateUser-ben:', error);
+            }
         },
+        
 
         async modifyUserData(data) {
             try {
@@ -46,10 +62,10 @@ export const useUserStore = defineStore('users', {
 
         logout() {
             this.token = null;
+            this.userData = {};
 
             sessionStorage.removeItem('token');
-            sessionStorage.removeItem('user');
-            sessionStorage.removeItem('tokenType');
+            sessionStorage.removeItem('userData');
 
             console.log('Token törölve. Kijelentkezett a felhasználó.')
         }
