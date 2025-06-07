@@ -8,14 +8,16 @@ use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+Route::get('/user', function (Request $request) {
+    return $request->user()->id;
+})->middleware('auth:sanctum');
+
+Route::apiResource('/products', ProductController::class);
 
 Route::apiResource('/categories', CategoryController::class);
-Route::apiResource('/products', ProductController::class);
 Route::apiResource('/brands', BrandController::class);
 Route::apiResource('/productvariants', ProductVariantController::class);
 Route::apiResource('/orders', OrderController::class);

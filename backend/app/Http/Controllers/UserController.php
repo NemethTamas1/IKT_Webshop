@@ -23,9 +23,13 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function show(User $user)
+    public function show($id)
     {
-        return new UserResource($user);
+        $user = User::findOrFail($id);
+
+        return response()->json([
+            'data' => $user->only(['role', 'name', 'phone', 'country', 'city', 'zip', 'street_name', 'street_type', 'street_number', 'floor', 'email', 'role']) // csak ezek
+        ]);
     }
     public function update(UpdateUserRequest $request, User $user)
     {

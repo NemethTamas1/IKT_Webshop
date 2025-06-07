@@ -17,7 +17,7 @@ class UpdateUserRequest extends FormRequest
         return [
             "name" => ['required', 'string', 'max:100'],
             "password" => ['nullable'],
-            "email" => ["required", "email", "between:15,100", Rule::unique('users')->ignore($this->route('user'))],
+            "email" => ["required", "email", "between:10,100", Rule::unique('users')->ignore($this->route('user'))],
             "phone" => ['nullable', 'string', 'max:20'],
             "country" => ['nullable', 'string', 'max:60'],
             "city" => ['nullable', 'string', 'max:40'],

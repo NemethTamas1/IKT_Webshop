@@ -9,9 +9,7 @@ use Illuminate\Auth\Access\Response;
 class UserPolicy extends BasePolicy
 {
     // Users can check their own orders 
-    public function viewOrders(User $user, Order $order){
-        return $this->isAdmin($user) || $user->id == $order->user_id
-            ? Response::allow()
-            : Response::deny();
+    public function modifyData(User $user){
+        //
     }
 }

@@ -1,14 +1,17 @@
 import { defineStore } from 'pinia';
 import { http } from '@utils/http';
+import { computed } from 'vue';
 
 export const useUserStore = defineStore('users', {
     state: () => ({
         token: sessionStorage.getItem('token') || null,
-        user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null,
-        tokenType: sessionStorage.getItem('tokenType') ?? null
+        tokenType: sessionStorage.getItem('tokenType') ?? null,
+        userData: {},
+        userID: null,
     }),
     getters: {
         isLoggedIn: (state) => !!state.token,
+        isAdmin: (state) => state.userData?.role === 'admin',
     },
     actions: {
         async RegisterUser(data) {
@@ -17,32 +20,44 @@ export const useUserStore = defineStore('users', {
         },
 
         async authenticateUser(email, password) {
-            console.log('email a store-ban: ', email)
-            console.log('password a store-ban: ', password)
+            console.log('email a store-ban: ', email);
+            console.log('password a store-ban: ', password);
+
             const response = await http.post('/authenticate', { email, password });
 
-            console.log('UserStore response.data.data: ', response.data.data);
-
-            this.user = response.data.data.user;
             this.token = response.data.data.token;
-            this.tokenType = response.data.data.tokenType;
-
-            sessionStorage.setItem('token', this.token)
-            sessionStorage.setItem('tokenType', this.tokenType)
-            sessionStorage.setItem('user', JSON.stringify(this.user))
+            sessionStorage.setItem('token', this.token);
         },
 
-        async modifyUserData(data) {
+        async modifyUserData(id, data) {
             try {
-                const response = await http.put(`/users/${this.user.id}`, data);
-                this.user = response.data.data;
-                sessionStorage.setItem('user', JSON.stringify(this.user));
+                console.log("modifyUserData ID: ", id)
+                const response = await http.put(`/users/${id}`, data);
+                this.userData = response.data.data;
+                console.log("UserData: ", this.userData)
                 console.log('Felhasználói adatok sikeresen frissítve.');
             } catch (error) {
                 console.error('Hiba történt a felhasználói adatok módosításakor:', error);
                 throw error;
             }
         },
+
+        async getUser() {
+            const token = sessionStorage.getItem('token');
+            const response = await http.get('http://backend.vm1.test/api/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            this.userID = response.data;
+
+            const userResponse = await http.get(`/users/${this.userID}`);
+            this.userData = userResponse.data.data;
+
+            return response.data;
+        },
+
 
         logout() {
             this.token = null;

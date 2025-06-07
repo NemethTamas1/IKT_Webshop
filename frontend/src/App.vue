@@ -4,6 +4,7 @@
 
 <script>
 import { onMounted } from 'vue';
+
 onMounted(async () => {
   await productStore.getProducts();
 });

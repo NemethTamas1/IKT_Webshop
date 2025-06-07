@@ -216,11 +216,33 @@ const shipping_street_type = ref(null);
 const shipping_street_number = ref(null);
 const shipping_floor = ref(null);
 const chosenCountry = ref('');
+
+const currentUserId = ref(null);
 // Order status 'pending' lesz alapból
 // totalamount = totalWithShipping
 // totalquantity = item.quantity
 
+const getUserDataFromId = async (id) => {
+  try {
+    const response = await http.get(`/users/${id}`);
+    const userData = response.data.data;
 
+    shipping_name.value = userData.name
+    shipping_phone.value = userData.phone
+    shipping_city.value = userData.city
+    shipping_zip.value = userData.zip
+    shipping_street_name.value = userData.street_name
+    shipping_street_type.value = userData.street_type
+    shipping_street_number.value = userData.street_number
+    shipping_floor.value = userData.floor
+    shipping_email.value = userData.email
+    selectedCountry.value = userData.country || 'Magyarország' 
+
+    console.log('response cart: ', response.data.data);
+  } catch (error) {
+    console.error('Hiba a getUserDataFromId közben: ', error)
+  }
+}
 
 const countries = ['Magyarország', 'Németország', 'Ausztria', 'Románia', 'Szlovákia'];
 const shippingTypes = ['Futárszolgálat', 'Magyar Posta Logisztikai szállítás', 'FOXPOST'];
@@ -344,21 +366,10 @@ const submitOrder = async (event) => {
     console.error('Hiba a rendelés beküldésekor:', error);
   }
 }
-onMounted(() => {
+onMounted(async() => {
   document.addEventListener('click', handleClickAway);
-  console.log('Felhasználó:', userStore.user)
-  if(userStore.user){
-    shipping_name.value = userStore.user.name,
-    shipping_phone.value = userStore.user.phone,
-    chosenCountry.value = userStore.user.country,
-    shipping_city.value = userStore.user.city,
-    shipping_zip.value = userStore.user.zip,
-    shipping_street_name.value = userStore.user.street_name,
-    shipping_street_type.value = userStore.user.street_type,
-    shipping_street_number.value = userStore.user.street_number,
-    shipping_floor.value = userStore.user.floor,
-    shipping_email.value = userStore.user.email
-  }
 
+  currentUserId.value = await userStore.getUser();
+  await getUserDataFromId(currentUserId.value);
 })
 </script>

@@ -6,7 +6,10 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use Auth;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Log;
 
 class CategoryController extends Controller
 {

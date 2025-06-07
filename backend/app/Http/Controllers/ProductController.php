@@ -6,11 +6,12 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
     public function index()
-    {
+    {        
         $products = Product::with(['category', 'brand','variants'])->get();
         return ProductResource::collection($products);
     }

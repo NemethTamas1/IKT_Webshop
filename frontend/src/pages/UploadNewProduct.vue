@@ -72,8 +72,14 @@ import { useProductStore } from '@stores/ProductStore.mjs';
 import BaseSpinner from '@components/layout/BaseSpinner.vue';
 import BaseProductImageUploader from '@components/layout/BaseProductImageUploader.vue';
 import { onMounted, ref, computed } from 'vue';
+import { useUserStore } from '@stores/UserStore';
+import { useRouter } from 'vue-router';
 
 const productStore = useProductStore();
+const userStore = useUserStore();
+
+const router = useRouter();
+
 const isLoading = ref(false);
 const categories = ref(null);
 const brands = ref(null);
@@ -151,6 +157,13 @@ const handleForm = async () => {
 };
 
 onMounted(async () => {
+    await userStore.getUser();
+
+    if(!userStore.isAdmin) {
+        router.replace('/');
+        return;
+    }
+
     isLoading.value = true;
     categories.value = await productStore.getCategories();
     brands.value = await productStore.getBrands();
