@@ -61,10 +61,10 @@ export const useUserStore = defineStore('users', {
 
         logout() {
             this.token = null;
+            this.userData = {};
 
             sessionStorage.removeItem('token');
-            sessionStorage.removeItem('user');
-            sessionStorage.removeItem('tokenType');
+            sessionStorage.removeItem('userData');
 
             console.log('Token törölve. Kijelentkezett a felhasználó.')
         }

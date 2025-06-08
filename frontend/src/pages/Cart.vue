@@ -206,15 +206,15 @@ const selectedCountry = ref('');
 const selectedShippingType = ref('');
 const selectedPaymentMethod = ref('');
 
-const shipping_email = ref(null);
-const shipping_name = ref(null);
-const shipping_phone = ref(null);
-const shipping_city = ref(null);
-const shipping_zip = ref(null);
-const shipping_street_name = ref(null);
-const shipping_street_type = ref(null);
-const shipping_street_number = ref(null);
-const shipping_floor = ref(null);
+const shipping_email = ref('');
+const shipping_name = ref('');
+const shipping_phone = ref('');
+const shipping_city = ref('');
+const shipping_zip = ref('');
+const shipping_street_name = ref('');
+const shipping_street_type = ref('');
+const shipping_street_number = ref('');
+const shipping_floor = ref('');
 const chosenCountry = ref('');
 
 const currentUserId = ref(null);
