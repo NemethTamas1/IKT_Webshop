@@ -68,6 +68,9 @@
               <li>
                 <RouterLink :to="'/UserProfile'" class="block px-4 py-2 hover:bg-sky-100">Saját profilom</RouterLink>
               </li>
+              <li v-if="isUserAdmin">
+                <RouterLink :to="'/UploadNewProduct'" class="block px-4 py-2 hover:bg-sky-100">Új Termék Hozzáadása</RouterLink>
+              </li>
               <li>
                 <button @click="handleLogOut"
                   class="block w-full text-left px-4 py-2 hover:bg-sky-100">Kijelentkezés</button>
@@ -161,6 +164,7 @@ const userStore = useUserStore();
 const menuOpen = ref(false);
 const activeDropdown = ref(null);
 const navMenuRef = ref(null);
+const isUserAdmin = ref(null);
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
@@ -192,6 +196,10 @@ const handleClickAway = (e) => {
 onMounted(async () => {
   document.addEventListener('click', handleClickAway);
 
+  await userStore.getUser();
+  if (userStore.isAdmin) {
+    isUserAdmin.value = true;
+  }
   router.afterEach(() => {
     activeDropdown.value = null;
     menuOpen.value = false;

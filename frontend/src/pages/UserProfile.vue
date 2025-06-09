@@ -1,47 +1,40 @@
 <template>
     <BaseLayout>
-        <h1 class="text-4xl mt-5">Saját adataim módosítása</h1>
-
-        <div class="w-8/12">
-            <FormKit type="form" :actions="false" @submit="submitForm">
-                <FormKit v-model="name" name="name" input-class="w-6/12 p-2 rounded-lg border border-gray-500"
-                    label-class="text-sky-600 text-2xl" type="text" label="Teljes név" validation="alpha" />
-
-                <FormKit v-model="email" name="email" input-class="w-6/12 p-2 rounded-lg border border-gray-500"
-                    label-class="text-sky-600 text-2xl" type="email" label="Email" validation="email" />
-
-                <FormKit type="text" v-model="phone" label=Telefonszám name="phone"
-                    input-class="w-6/12 p-2 rounded-lg border border-gray-500" label-class="text-sky-600 text-2xl" />
-
-                <FormKit v-model="country" name="country" input-class="w-6/12 p-2 rounded-lg border border-gray-500"
-                    label-class="text-sky-600 text-2xl" type="text" label="Ország" validation="alpha" />
-
-                <FormKit v-model="city" name="city" input-class="w-6/12 p-2 rounded-lg border border-gray-500"
-                    label-class="text-sky-600 text-2xl" type="text" label="Város" validation="alpha" />
-
-                <FormKit v-model="zip" name="zip" input-class="w-6/12 p-2 rounded-lg border border-gray-500"
-                    label-class="text-sky-600 text-2xl" type="number" label="Irányítószám" validation="alphanumeric" />
-
-                <FormKit v-model="street_name" name="street_name"
-                    input-class="w-6/12 p-2 rounded-lg border border-gray-500" label-class="text-sky-600 text-2xl"
-                    type="text" label="Helység neve" validation="alpha" />
-
-                <FormKit v-model="street_type" name="street_type"
-                    input-class="w-6/12 p-2 rounded-lg border border-gray-500" label-class="text-sky-600 text-2xl"
-                    type="text" label="Helység típusa" validation="alpha" />
-
-                <FormKit v-model="street_number" name="street_number"
-                    input-class="w-6/12 p-2 rounded-lg border border-gray-500" label-class="text-sky-600 text-2xl"
-                    type="number" label="Helység száma" validation="alphanumeric" />
-
-                <FormKit v-model="floor" name="floor" input-class="w-6/12 p-2 rounded-lg border border-gray-500"
-                    label-class="text-sky-600 text-2xl" type="text" label="Emelet / Ajtó" validation="alpha" />
-
-                <button type="submit" class="p-2 rounded-lg bg-sky-600 text-white mt-5">Módosítások mentése</button>
-            </FormKit>
-        </div>
+      <div class="max-w-3xl mx-auto py-10">
+        <h1 class="text-4xl font-semibold text-sky-700 mb-8 text-center">Saját adataim módosítása</h1>
+  
+        <FormKit type="form" :actions="false" @submit="submitForm" class="space-y-6">
+          <FormKit type="text" name="name" label="Teljes név" v-model="name" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alpha" />
+  
+          <FormKit type="email" name="email" label="Email" v-model="email" input-class="form-inpu w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="email" />
+  
+          <FormKit type="text" name="phone" label="Telefonszám" v-model="phone" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" />
+  
+          <FormKit type="text" name="country" label="Ország" v-model="country" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alpha" />
+  
+          <FormKit type="text" name="city" label="Város" v-model="city" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alpha" />
+  
+          <FormKit type="number" name="zip" label="Irányítószám" v-model="zip" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alphanumeric" />
+  
+          <FormKit type="text" name="street_name" label="Helység neve" v-model="street_name" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alpha" />
+  
+          <FormKit type="text" name="street_type" label="Helység típusa" v-model="street_type" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alpha" />
+  
+          <FormKit type="number" name="street_number" label="Helység száma" v-model="street_number" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alphanumeric" />
+  
+          <FormKit type="text" name="floor" label="Emelet / Ajtó" v-model="floor" input-class="form-input w-6/12 my-3 border border-gray-400 p-2 rounded-lg" label-class="form-label text-2xl text-sky-600" validation="alpha" /> 
+   
+          <div class="text-center">
+            <button type="submit" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition">
+              Módosítások mentése
+            </button>
+          </div>
+        </FormKit>
+      </div>
     </BaseLayout>
-</template>
+  </template>
+  
+  
 
 <script setup>
 import BaseLayout from '@layouts/BaseLayout.vue';

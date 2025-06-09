@@ -31,9 +31,11 @@ class ProductPolicy extends BasePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
-        //
+        return $this->isAdmin($user)
+            ? Response::allow()
+            : Response::deny("Adminisztrátornak kell lennie!");
     }
 
     /**

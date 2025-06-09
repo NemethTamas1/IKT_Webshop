@@ -157,9 +157,7 @@ const handleForm = async () => {
 };
 
 onMounted(async () => {
-    await userStore.getUser();
-
-    if(!userStore.isAdmin) {
+    if(!userStore.isAdmin || !userStore.isLoggedIn) {
         router.replace('/');
         return;
     }
