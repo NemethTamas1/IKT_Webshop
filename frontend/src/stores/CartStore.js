@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { http } from "@utils/http.mjs";
 import { ToastService } from "@stores/ToastService.js";
 
 export const useCartStore = defineStore("cart", () => {
   // Változók
-  const storedCart = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  const storedCart = JSON.parse(localStorage.getItem("cartItems") || "[]");
   const cart = ref(storedCart);
 
   // Függvények
@@ -23,7 +22,7 @@ export const useCartStore = defineStore("cart", () => {
 
   // Hogy f5 után ne ürüljön a kosár..
   const saveCartToLocalStorage = () => {
-    localStorage.setItem('cartItems', JSON.stringify(cart.value));
+    localStorage.setItem("cartItems", JSON.stringify(cart.value));
   };
 
   const confirmAndRemoveFromCart = (productId) => {
@@ -47,18 +46,12 @@ export const useCartStore = defineStore("cart", () => {
     return cart.value.reduce((sum, item) => sum + item.quantity, 0);
   });
 
-  // EZT MÓDOSÍTOTTAM A FENTIRE! [!!!]
-
-  // const totalItems = () => {
-  //     cart.value.reduce((sum, item) => sum + item.quantity, 0);
-  // }
-
-  // Visszatérési értékek
   return {
     cart,
+    totalItems,
+
     addToCart,
     confirmAndRemoveFromCart,
     clearCart,
-    totalItems,
   };
 });

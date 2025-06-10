@@ -116,15 +116,8 @@ const currentVariant = ref(null);
 const selectedFlavour = ref('');
 const selectedSize = ref('');
 
-console.log('searchName paraméter:', route.params.brand);
-console.log('quantity paraméter:', route.params.quantity);
-console.log('flavour paraméter:', route.params.branflavourd);
-
-console.log('currentVariant: ', currentVariant)
-
 const addVariantToCart = async (variant) => {
   const productData = await productStore.getProduct(variant.product_id);
-  console.log('productData.product_id: ', productData.product_id)
 
   if (!productData) {
     ToastService.showError("Nem sikerült a terméket betölteni.");
@@ -281,7 +274,6 @@ const loadProduct = async (searchName, quantity, flavour) => {
 
     // Keressük meg a terméket pontos név egyezéssel először
     let product = productStore.products.find(p => p.name === searchName);
-    console.log('első lépés név egyezés: ', product)
 
     // Ha nincs találat név alapján, próbáljuk brand alapján
     if (!product) {
@@ -304,9 +296,6 @@ const loadProduct = async (searchName, quantity, flavour) => {
     // Variáns keresése
     const variant = product.productvariants?.find(v => {
       const quantityMatch = String(v.quantity) === extractNumericQuantity(quantity);
-      console.log('adott product quantity-je: ', v.quantity)
-      console.log('quantity: ', quantity)
-      console.log('van prodtct. quantityMatch: ', quantityMatch)
       const flavourMatch = !flavour || v.flavour?.toLowerCase() === flavour?.toLowerCase();
       return quantityMatch && flavourMatch;
     });

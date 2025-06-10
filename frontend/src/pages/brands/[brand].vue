@@ -74,7 +74,6 @@ watch(
     () => route.path,
     async (newPath) => {
         linkText.value = newPath;
-        console.log('Útvonal változott:', newPath);
         await filterByBrand(newPath);
     },
     { immediate: true }

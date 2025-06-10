@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('role', 50)->default('user');
             $table->string('name', 100);
             $table->string('password');
-            $table->string('email', 100)->unique(); //between 20-100!            
+            $table->string('email', 100)->unique(); 
             $table->string('phone')->nullable();
             $table->string('country', 60)->nullable();
             $table->string('city', 40)->nullable();

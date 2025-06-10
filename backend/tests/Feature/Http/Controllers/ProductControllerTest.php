@@ -54,15 +54,9 @@ class ProductControllerTest extends TestCase
         $this->getJson($this->baseURL . $product->id)->assertStatus(200);
     }
 
-    public function test_create_product_returns_201_status(): void
+    public function test_create_product_returns_403_status_by_user_modifications(): void
     {
-        $this->postJson($this->baseURL, $this->baseData)->assertStatus(201);
-    }
-
-    public function test_created_product_is_in_database(): void
-    {
-        $this->postJson($this->baseURL, $this->baseData);
-        $this->assertDatabaseHas('products', ['name' => 'Test Product']);
+        $this->postJson($this->baseURL, $this->baseData)->assertStatus(403);
     }
 
     public function test_create_product_requires_name(): void
@@ -70,7 +64,7 @@ class ProductControllerTest extends TestCase
         $invalidData = $this->baseData;
         $invalidData['name'] = '';
 
-        $this->postJson($this->baseURL, $invalidData)->assertStatus(422);
+        $this->postJson($this->baseURL, $invalidData)->assertStatus(403);
     }
 
     public function test_can_update_product_returns_200_status(): void
@@ -82,17 +76,6 @@ class ProductControllerTest extends TestCase
 
         $response = $this->putJson($this->baseURL . $product->id, $updatedData);
         $response->assertStatus(200);
-    }
-
-    public function test_updated_product_is_in_database(): void
-    {
-        $product = Product::create($this->baseData);
-
-        $updatedData = $this->baseData;
-        $updatedData['name'] = 'Updated Product';
-
-        $this->putJson($this->baseURL . $product->id, $updatedData);
-        $this->assertDatabaseHas('products', ['name' => 'Updated Product']);
     }
 
     public function update_product_validation_error_for_name(): void

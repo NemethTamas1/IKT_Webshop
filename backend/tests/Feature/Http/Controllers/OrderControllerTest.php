@@ -23,7 +23,7 @@ class OrderControllerTest extends TestCase
         $this->baseURL = '/api/orders/';
         $this->testData = [
             "user_id" => $this->user->id,
-            "orderstatus" => "pending", // ez lesz majd a default érték!
+            "orderstatus" => "pending",
             "totalamount" => 36500,
             "totalquantity" => 3,
             "shipping_email" => "test@example.com",
@@ -65,7 +65,7 @@ class OrderControllerTest extends TestCase
     public function test_user_id_do_not_have_to_be_unique_to_create_in_database()
     {
         $this->postJson($this->baseURL, $this->testData);
-        $response = $this->postJson($this->baseURL, $this->testData); // Ugyanaz a user_id kétszer
+        $response = $this->postJson($this->baseURL, $this->testData);
 
         $response->assertStatus(201);
     }

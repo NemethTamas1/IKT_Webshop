@@ -72,17 +72,12 @@ const getUserDataFromId = async (id) => {
         street_type.value = userData.street_type;
         street_number.value = userData.street_number;
         floor.value = userData.floor;
-
-
-
-        console.log('response userprofile: ', response.data.data);
     } catch (error) {
         console.error('Hiba a getUserDataFromId közben: ', error)
     }
 }
 
 const submitForm = async (formValues) => {
-    console.log('Küldendő adatok: ', formValues)
     try {
         const dataToSend = {
             ...formValues

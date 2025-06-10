@@ -4,10 +4,7 @@ namespace App\Mail;
 
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class OrderConfirmation extends Mailable
@@ -49,8 +46,8 @@ class OrderConfirmation extends Mailable
 
     public function build()
     {
-        $htmlContent = view('mail.order-confirmation', [ //ez a template, nem ez a fájl!
-            'order' => $this->order, // Ez hiányzott - adjuk át az egész order objektumot
+        $htmlContent = view('mail.order-confirmation', [ 
+            'order' => $this->order, 
             "shipping_email" => $this->shipping_email,
             "shipping_name" => $this->shipping_name,
             "shipping_phone" => $this->shipping_phone,

@@ -97,13 +97,10 @@ const vitaminProducts = computed(() => {
     });
 });
 
-console.log("Vitamin Products:");
 vitaminProducts.value.forEach(p => {
     if (p.category?.id === 3) {
-        console.log('product.name:', ' | ', p.name); // searchName
     }
 });
-
 
 const generateProductUrl = (variant) => {
     return `/${variant.product_name}-${variant.quantity}${variant.unit}-${variant.flavour}`;
@@ -227,10 +224,7 @@ const loadProducts = async () => {
 
         // Vitamin kategóriájú termékek szűrése (category id === 3)
         const vitaminProducts = productStore.products.filter(p => p.category?.id === 3);
-        console.log('vitamin products: ', vitaminProducts)
-
         if (vitaminProducts.length === 0) {
-            console.warn("Nincsenek vitamin kategóriájú termékek.");
             return;
         }
 
@@ -238,9 +232,6 @@ const loadProducts = async () => {
             const variant = product.productvariants?.[0];
 
             if (variant) {
-                console.log('próbálom betölteni...: ', variant);
-                console.log("Betöltött vitamin (variánssal):", product.brand.name, product.name);
-
                 baseProduct.value = product;
                 currentVariant.value = variant;
                 selectedFlavour.value = variant.flavour || '';
@@ -254,8 +245,6 @@ const loadProducts = async () => {
                 selectedFlavour.value = '';
                 selectedSize.value = null;
             }
-
-            console.log('product objektum: ', product);
         }
 
     } catch (error) {

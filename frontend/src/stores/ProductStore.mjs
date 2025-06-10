@@ -34,7 +34,6 @@ export const useProductStore = defineStore("products", () => {
   const getProducts = async () => {
     try {
       if (products.value.length > 0) {
-        console.log("Adatok már betöltésre kerültek."); //később kivenni!
         return products.value;
       }
       loading.value = true;
@@ -54,7 +53,6 @@ export const useProductStore = defineStore("products", () => {
       loading.value = true;
       const resp = await http.get(`/products/${id}`);
       product.value = resp.data.data;
-      console.log('product.value: ', product.value)
       return resp.data.data
     } catch (error) {
       console.error("Hiba a termék lekérése során:", error);
@@ -74,7 +72,7 @@ export const useProductStore = defineStore("products", () => {
 
       // 2. Termékek feldolgozása
       const processedProducts = [];
-      const processedItems = new Set(); // Követjük a már feldolgozott termék-mennyiség párokat
+      const processedItems = new Set();
 
       brandFiltered.forEach((product) => {
         if (Array.isArray(product.productvariants)) {
@@ -160,7 +158,7 @@ export const useProductStore = defineStore("products", () => {
       throw error;
     }
   };
-  // EGYBEN ////////////////////////////////////////////////////////
+  // EGYBEN //
   const getFlavoursByDescriptionAndWeight = async (description, quantity) => {
     try {
       const flavours = [];
@@ -236,7 +234,7 @@ export const useProductStore = defineStore("products", () => {
       loading.value = false;
     }
   };
-  // EGYBEN VÉGE ////////////////////////////////////////////////////////
+  // EGYBEN VÉGE //
 
   const updateSelectedFlavour = (flavour) => {
     try {
@@ -339,7 +337,6 @@ export const useProductStore = defineStore("products", () => {
     const response = await http.post('/products', data);
     return response.data.data;
   }
-  
 
   return {
     // Reaktívok
@@ -361,6 +358,10 @@ export const useProductStore = defineStore("products", () => {
     categoryOptions,
     brandTypes,
     productLines,
+    categoryOptions,
+    brandOptions,
+    productLineOptions,
+    availabilityOptions,
 
     // Alap műveletek
     getProducts,
@@ -375,14 +376,8 @@ export const useProductStore = defineStore("products", () => {
     // Szűrés és rendezés
     sortProductsByBrand,
     sortGetOneProduct,
-
     getFlavoursByDescriptionAndWeight,
     getDefaultVariantForSize,
-    categoryOptions,
-    brandOptions,
-    productLineOptions,
-    availabilityOptions,
-
     formatToOneThousandPrice,
     createProduct,
   };

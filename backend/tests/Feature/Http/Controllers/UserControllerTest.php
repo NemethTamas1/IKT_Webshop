@@ -54,7 +54,7 @@ class UserControllerTest extends TestCase
 
         $response = $this->getJson($this->baseURL . $user->id);
         $response->assertStatus(200)
-            ->assertJsonFragment(['id' => $user->id, 'email' => $user->email]);
+            ->assertJsonFragment(['name' => $user->name, 'email' => $user->email]);
     }
 
     public function test_create_user_returns_201_status(): void

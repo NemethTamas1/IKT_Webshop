@@ -5,32 +5,24 @@ namespace App\Policies;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class ProductPolicy extends BasePolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user): Response
     {
-        \Log::info($user->role);
+        Log::info($user->role);
 
         return $this->isAdmin($user)
             ? Response::allow()
             : Response::deny();
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): Response
     {
         return $this->isAdmin($user)
@@ -38,35 +30,23 @@ class ProductPolicy extends BasePolicy
             : Response::deny("Adminisztrátornak kell lennie!");
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
     public function restore(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
     public function forceDelete(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 }

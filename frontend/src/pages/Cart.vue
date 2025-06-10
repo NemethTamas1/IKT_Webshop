@@ -237,8 +237,6 @@ const getUserDataFromId = async (id) => {
     shipping_floor.value = userData.floor
     shipping_email.value = userData.email
     selectedCountry.value = userData.country || 'Magyarország' 
-
-    console.log('response cart: ', response.data.data);
   } catch (error) {
     console.error('Hiba a getUserDataFromId közben: ', error)
   }
@@ -353,8 +351,6 @@ const submitOrder = async (event) => {
       totalamount: totalWithShipping.value,
       totalquantity: cartStore.totalItems,
     };
-    console.log('Küldendő adatok:', data);
-
     const resp = await http.post('/orders', data);
     if (resp.data) {
       cartStore.clearCart()

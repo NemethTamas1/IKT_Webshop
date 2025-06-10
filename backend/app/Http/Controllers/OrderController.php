@@ -26,8 +26,7 @@ class OrderController extends Controller
     {
         $data = $request->validated();
         $order = Order::create($data);
-        // Nah ITT küldjük el az e-mailt, ha létrejött a rendelés!
-        $this->orderService->sendOrderConfirmationEmail($order); // OrderService-ben lévő sendOrder(kinemírom) osztályát(függvényét) meghívjuk!
+        $this->orderService->sendOrderConfirmationEmail($order);
         
         return new OrderResource($order);
     }

@@ -12,18 +12,6 @@ else
     ln -s backend/.env
 fi
 
-if [ -f "backend/.env.testing" ]; then
-    echo "A .env.testing fájl már létezik"
-else
-    cp backend/.env.testing backend/.env.testing
-fi
-
-if [ -f ".env.testing" ]; then
-    echo "A .env.testing fájl már létezik"
-else
-    ln -s backend/.env.testing
-fi
-
 docker run --rm  -v "$(pwd)/frontend:/app" --entrypoint npm idomi27/vue install
 
 docker compose up -d

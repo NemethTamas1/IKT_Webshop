@@ -57,7 +57,7 @@ class BrandControllerTest extends TestCase
             'description' => 'Test Brand Description',
         ];
         $response = $this->post($this->baseURL, $this->testData);
-        $response = $this->post($this->baseURL, $this->testData); // Direkt 2x ugyanazt!
+        $response = $this->post($this->baseURL, $this->testData);
 
         $response->assertStatus(302);
     }

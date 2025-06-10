@@ -11,7 +11,6 @@ class ProductVariantSeeder extends Seeder
 {
     public function run(): void
     {
-        // Termékek lekérése DB-ből (egyelőre így jó lesz!)
         $wppProduct = Product::where('name', '100% Whey Protein Professional')->first();
         $jumboProduct = Product::where('name', 'Jumbo!')->first();
         $megaDailyOne = Product::where('name', 'Mega Daily One')->first();

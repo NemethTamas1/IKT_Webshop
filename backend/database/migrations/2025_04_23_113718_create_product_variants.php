@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
-            $table->string('unit', 10); // Ez lesz a gr, db, pcs, ilyenek.
+            $table->string('unit', 10);
             $table->string('flavour', 45)->nullable(); 
             $table->integer('stock')->default(0); 
             $table->integer('price')->default(666666); 

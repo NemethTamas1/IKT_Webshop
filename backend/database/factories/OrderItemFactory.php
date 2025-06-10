@@ -13,7 +13,7 @@ class OrderItemFactory extends Factory
         $total_amount = $unit_price * $ordered_quantity;
         return [
             "order_id" => 1,
-            "product_variant_id" => 1, // Wpp - Scitec pl.
+            "product_variant_id" => 1,
             "ordered_quantity" => $ordered_quantity,
             "unit_price" => $unit_price,
             "total_amount" => $total_amount,

@@ -104,10 +104,8 @@ const slug = computed(() => {
 const selectedImage = (imageData) => {
     if (imageData) {
         productImage.value = imageData;
-        console.log('Kép sikeresen feltöltve:', imageData);
     } else {
         productImage.value = null;
-        console.log('Kép törölve');
     }
 };
 
@@ -127,8 +125,6 @@ const resetForm = () => {
 };
 
 const handleForm = async () => {
-    console.log('ProductImage értéke:', productImage.value);
-
     if (!productImage.value) {
         alert('Kérjük töltsön fel egy képet!');
         return;

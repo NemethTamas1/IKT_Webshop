@@ -75,9 +75,6 @@ const password = ref('');
 const router = useRouter();
 
 const handleLogin = async () => {
-    console.log('email: ', email.value);
-    console.log('password: ', password.value);
-
     await userStore.authenticateUser(email.value, password.value);
     router.push('/')
     ToastService.showSuccess(`${email.value} sikeresen bejelentkezett!`)
