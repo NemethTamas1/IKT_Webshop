@@ -12,7 +12,6 @@ use Tests\TestCase;
 class ProductAuthorizationTest extends TestCase
 {
     use DatabaseTransactions;
-
     protected $category;
     protected $brand;
     protected $admin;
